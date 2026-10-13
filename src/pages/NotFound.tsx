@@ -12,7 +12,7 @@ export default function NotFound() {
 
   return (
     <Container className="flex min-h-[70vh] flex-col items-center justify-center pt-24 text-center">
-      <p className="text-sm font-semibold text-brand-600">404</p>
+      <p className="text-sm font-semibold text-brand-600 dark:text-brand-400">404</p>
       <h1 className="mt-3 text-4xl font-semibold">{p.title}</h1>
       <p className="mt-4 max-w-md text-slate-600">{p.description}</p>
       <Button to={routes.home} iconLeft={ArrowLeft} className="mt-8">

@@ -37,14 +37,14 @@ export default function Accordion({ items, defaultOpenId, headingLevel: Heading 
                 aria-expanded={open}
                 aria-controls={panelId}
                 onClick={() => setOpenId(open ? null : item.id)}
-                className="flex w-full items-center justify-between gap-6 py-5 text-left font-semibold text-navy-950 transition-colors hover:text-brand-700"
+                className="flex w-full items-center justify-between gap-6 py-5 text-left font-semibold text-ink transition-colors hover:text-brand-700 dark:hover:text-brand-300"
               >
                 <span>{item.title}</span>
                 <span
                   aria-hidden="true"
                   className={cn(
                     'flex size-7 shrink-0 items-center justify-center rounded-md ring-1 ring-slate-200 transition-transform duration-200',
-                    open && 'rotate-45 bg-brand-50 text-brand-700 ring-brand-200',
+                    open && 'rotate-45 bg-brand-50 text-brand-700 dark:text-brand-300 ring-brand-200',
                   )}
                 >
                   <Plus size={16} />

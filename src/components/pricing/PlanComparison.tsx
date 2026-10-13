@@ -27,7 +27,7 @@ export default function PlanComparison() {
                 <th
                   key={plan.id}
                   scope="col"
-                  className={cn('px-3 py-4 text-center font-semibold text-navy-950', plan.highlighted && 'bg-brand-50/60')}
+                  className={cn('px-3 py-4 text-center font-semibold text-ink', plan.highlighted && 'bg-brand-50/60')}
                 >
                   {plan.name}
                 </th>
@@ -46,7 +46,7 @@ export default function PlanComparison() {
                     <td key={plan.id} className={cn('px-3 py-3.5 text-center', plan.highlighted && 'bg-brand-50/60')}>
                       {value === true ? (
                         <>
-                          <Check size={18} aria-hidden="true" className="mx-auto text-brand-600" />
+                          <Check size={18} aria-hidden="true" className="mx-auto text-brand-600 dark:text-brand-400" />
                           <span className="sr-only">{t.pricing.included}</span>
                         </>
                       ) : value === false ? (
@@ -55,7 +55,7 @@ export default function PlanComparison() {
                           <span className="sr-only">{t.pricing.notIncluded}</span>
                         </>
                       ) : (
-                        <span className="text-navy-900">{value}</span>
+                        <span className="text-ink-soft">{value}</span>
                       )}
                     </td>
                   );

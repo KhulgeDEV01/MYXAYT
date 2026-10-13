@@ -45,7 +45,7 @@ export default function About() {
             return (
               <Reveal as="li" key={value.id} delay={index * 70}>
                 <Card className="h-full">
-                  <Icon size={22} aria-hidden="true" className="text-brand-600" />
+                  <Icon size={22} aria-hidden="true" className="text-brand-600 dark:text-brand-400" />
                   <h3 className="mt-4 font-semibold">{value.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-slate-600">{value.description}</p>
                 </Card>

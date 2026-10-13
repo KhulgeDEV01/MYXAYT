@@ -18,8 +18,8 @@ export default function DeviceEcosystem() {
           {devices[locale].map((device, index) => {
             const Icon = device.icon;
             return (
-              <Reveal as="li" key={device.id} delay={index * 70} className="rounded-xl bg-white p-6 shadow-soft ring-1 ring-slate-200">
-                <Icon size={24} aria-hidden="true" className="text-brand-600" />
+              <Reveal as="li" key={device.id} delay={index * 70} className="rounded-xl bg-surface p-6 shadow-soft ring-1 ring-slate-200">
+                <Icon size={24} aria-hidden="true" className="text-brand-600 dark:text-brand-400" />
                 <h3 className="mt-4 font-semibold">{device.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{device.description}</p>
               </Reveal>

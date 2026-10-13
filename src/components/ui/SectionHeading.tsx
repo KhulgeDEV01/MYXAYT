@@ -29,7 +29,7 @@ export default function SectionHeading({
         <p
           className={cn(
             'mb-3 text-xs font-semibold tracking-[0.14em] uppercase',
-            dark ? 'text-accent-300' : 'text-brand-600',
+            dark ? 'text-accent-300' : 'text-brand-600 dark:text-brand-400',
           )}
         >
           {eyebrow}
@@ -39,7 +39,7 @@ export default function SectionHeading({
         id={id}
         className={cn(
           'text-3xl leading-tight font-semibold text-balance sm:text-4xl',
-          dark ? 'text-white' : 'text-navy-950',
+          dark ? 'text-white' : 'text-ink',
         )}
       >
         {title}

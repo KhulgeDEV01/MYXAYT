@@ -10,6 +10,7 @@ import Button from '../ui/Button';
 import Container from '../ui/Container';
 import Logo from '../ui/Logo';
 import LanguageSwitcher from './LanguageSwitcher';
+import ThemeToggle from './ThemeToggle';
 import MobileMenu from './MobileMenu';
 
 const MOBILE_MENU_ID = 'mobile-navigation';
@@ -32,7 +33,7 @@ export default function Navbar() {
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color] duration-300',
         solid
-          ? 'border-b border-slate-200/80 bg-white/90 shadow-[0_1px_12px_rgb(16_26_53/0.04)] backdrop-blur-md'
+          ? 'border-b border-slate-200/80 bg-surface/90 shadow-[0_1px_12px_rgb(16_26_53/0.04)] backdrop-blur-md'
           : 'border-b border-transparent bg-transparent',
       )}
     >
@@ -40,17 +41,17 @@ export default function Navbar() {
         <nav aria-label={t.nav.mainAria} className="flex h-16 items-center justify-between gap-4 lg:h-[72px]">
           <Logo />
 
-          <ul className="hidden items-center gap-1 lg:flex">
+          <ul className="hidden items-center gap-0.5 lg:flex xl:gap-1">
             {mainNav[locale].map((item) => (
               <li key={item.to}>
                 <NavLink
                   to={item.to}
                   className={({ isActive }) =>
                     cn(
-                      'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                      'rounded-md px-2 py-2 text-sm font-medium whitespace-nowrap transition-colors xl:px-3',
                       isActive && !item.to.includes('#')
-                        ? 'text-brand-700'
-                        : 'text-slate-600 hover:bg-navy-50 hover:text-navy-950',
+                        ? 'text-brand-700 dark:text-brand-300'
+                        : 'text-slate-600 hover:bg-navy-50 hover:text-ink',
                     )
                   }
                 >
@@ -61,11 +62,14 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <LanguageSwitcher />
             <div className="hidden items-center gap-2 sm:flex">
-              <Button to={routes.login} variant="ghost" size="sm">
-                {t.nav.login}
-              </Button>
+              <div className="hidden xl:block">
+                <Button to={routes.login} variant="ghost" size="sm">
+                  {t.nav.login}
+                </Button>
+              </div>
               <Button to={routes.signup} size="sm" iconRight={ArrowRight}>
                 {t.nav.startFree}
               </Button>
@@ -76,7 +80,7 @@ export default function Navbar() {
               aria-expanded={menuOpen}
               aria-controls={MOBILE_MENU_ID}
               aria-label={menuOpen ? t.nav.closeMenu : t.nav.openMenu}
-              className="-mr-2 inline-flex size-10 items-center justify-center rounded-md text-navy-900 hover:bg-navy-50 lg:hidden"
+              className="-mr-2 inline-flex size-10 items-center justify-center rounded-md text-ink-soft hover:bg-navy-50 lg:hidden"
             >
               {menuOpen ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
             </button>

@@ -43,13 +43,13 @@ export default function MobileMenu({ id, open, onClose }: MobileMenuProps) {
       id={id}
       ref={panelRef}
       hidden={!open}
-      className={cn('h-[calc(100dvh-4rem)] overflow-y-auto border-t border-slate-200 bg-white lg:hidden', open && 'animate-slide-in')}
+      className={cn('h-[calc(100dvh-4rem)] overflow-y-auto border-t border-slate-200 bg-surface lg:hidden', open && 'animate-slide-in')}
     >
       <nav aria-label={t.nav.mobileAria} className="px-4 pt-4 pb-8 sm:px-6">
         <ul className="divide-y divide-slate-100">
           {mainNav[locale].map((item) => (
             <li key={item.to}>
-              <NavLink to={item.to} className="flex items-center justify-between py-4 text-base font-medium text-navy-950">
+              <NavLink to={item.to} className="flex items-center justify-between py-4 text-base font-medium text-ink">
                 {item.label}
                 <ChevronRight size={18} aria-hidden="true" className="text-slate-400" />
               </NavLink>

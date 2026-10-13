@@ -10,12 +10,12 @@ export default function StatCounter({ stat, start }: { stat: Stat; start: boolea
     <div>
       <dt className="sr-only">{stat.label}</dt>
       <dd>
-        <span className="block text-3xl font-semibold tracking-tight text-navy-950 tabular-nums sm:text-4xl" aria-hidden="true">
+        <span className="block text-3xl font-semibold tracking-tight text-ink tabular-nums sm:text-4xl" aria-hidden="true">
           {formatNumber(value, stat.decimals)}
           {stat.suffix}
         </span>
         <span className="sr-only">{finalText}</span>
-        <span className="mt-2 block text-sm font-medium text-navy-800">{stat.label}</span>
+        <span className="mt-2 block text-sm font-medium text-ink-muted">{stat.label}</span>
         {stat.description && <span className="block text-sm text-slate-500">{stat.description}</span>}
       </dd>
     </div>

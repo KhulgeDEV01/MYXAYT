@@ -13,14 +13,14 @@ export default function BillingToggle({ value, onChange }: BillingToggleProps) {
   const { t } = useI18n();
 
   return (
-    <fieldset className="inline-flex items-center gap-1 rounded-lg bg-white p-1 shadow-soft ring-1 ring-slate-200">
+    <fieldset className="inline-flex items-center gap-1 rounded-lg bg-surface p-1 shadow-soft ring-1 ring-slate-200">
       <legend className="sr-only">{t.pricing.billingLegend}</legend>
       {periods.map((period) => (
         <label
           key={period}
           className={cn(
             'relative flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-brand-500',
-            value === period ? 'bg-navy-950 text-white' : 'text-slate-600 hover:text-navy-950',
+            value === period ? 'bg-ink text-surface' : 'text-slate-600 hover:text-ink',
           )}
         >
           <input

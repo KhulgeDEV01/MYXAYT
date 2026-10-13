@@ -5,6 +5,7 @@ export const routes = {
   pricing: '/pricing',
   about: '/about',
   contact: '/contact',
+  partnership: '/contact?type=partnership',
   login: '/login',
   signup: '/login?mode=signup',
   faq: '/#faq',

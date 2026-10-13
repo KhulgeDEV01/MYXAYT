@@ -31,9 +31,9 @@ export default function HowItWorks() {
                 delay={index * 100}
                 className="relative flex gap-5 lg:flex-col lg:items-center lg:text-center"
               >
-                <div className="relative z-10 flex size-12 shrink-0 items-center justify-center rounded-xl bg-white text-brand-600 shadow-soft ring-1 ring-slate-200">
+                <div className="relative z-10 flex size-12 shrink-0 items-center justify-center rounded-xl bg-surface text-brand-600 dark:text-brand-400 shadow-soft ring-1 ring-slate-200">
                   <Icon size={22} aria-hidden="true" />
-                  <span className="absolute -top-2 -right-2 flex size-5 items-center justify-center rounded-full bg-navy-950 text-[10px] font-semibold text-white">
+                  <span className="absolute -top-2 -right-2 flex size-5 items-center justify-center rounded-full bg-ink text-[10px] font-semibold text-surface">
                     {index + 1}
                   </span>
                 </div>

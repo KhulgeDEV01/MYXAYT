@@ -4,10 +4,10 @@ import { cn } from '../../utils/cn';
 type CardVariant = 'default' | 'muted' | 'dark' | 'outline';
 
 const variants: Record<CardVariant, string> = {
-  default: 'bg-white ring-1 ring-slate-200/80 shadow-soft',
+  default: 'bg-surface ring-1 ring-slate-200/80 shadow-soft',
   muted: 'bg-slate-50 ring-1 ring-slate-200/70',
   dark: 'bg-navy-900 ring-1 ring-white/10 text-navy-100',
-  outline: 'bg-white ring-1 ring-slate-200',
+  outline: 'bg-surface ring-1 ring-slate-200',
 };
 
 interface CardProps extends HTMLAttributes<HTMLElement> {

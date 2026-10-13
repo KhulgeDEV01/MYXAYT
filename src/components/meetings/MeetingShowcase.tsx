@@ -51,9 +51,9 @@ export default function MeetingShowcase() {
             <VideoGrid topic={demo.showcaseTopic} participants={demo.showcaseParticipants} />
           </div>
 
-          <div className="rounded-xl bg-white p-4 shadow-elevated sm:p-5 xl:col-span-5">
+          <div className="rounded-xl bg-surface p-4 shadow-elevated sm:p-5 xl:col-span-5">
             <div className="mb-4 flex items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-navy-950">{t.showcase.panelTitle}</p>
+              <p className="text-sm font-semibold text-ink">{t.showcase.panelTitle}</p>
               <span className="text-[11px] text-slate-500">{t.showcase.tryIt}</span>
             </div>
             <Tabs items={tabs} label={t.showcase.tabsLabel}>

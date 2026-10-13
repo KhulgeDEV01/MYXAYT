@@ -24,14 +24,14 @@ export default function SubmissionList({ items, showVotes = true }: SubmissionLi
       {sorted.map((item) => (
         <li key={item.id} className="flex gap-3 rounded-lg p-3 ring-1 ring-slate-200">
           {showVotes && (
-            <span className="flex w-10 shrink-0 flex-col items-center justify-center rounded-md bg-slate-50 py-1 text-navy-900 ring-1 ring-slate-200">
+            <span className="flex w-10 shrink-0 flex-col items-center justify-center rounded-md bg-slate-50 py-1 text-ink-soft ring-1 ring-slate-200">
               <ChevronUp size={14} aria-hidden="true" />
               <span className="text-xs font-semibold tabular-nums">{item.upvotes}</span>
               <span className="sr-only">{t.submissions.upvotes}</span>
             </span>
           )}
           <div className="min-w-0 flex-1">
-            <p className="text-sm leading-snug text-navy-950">{item.body}</p>
+            <p className="text-sm leading-snug text-ink">{item.body}</p>
             <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-500">
               <span>{item.authorName}</span>
               <span aria-hidden="true">·</span>

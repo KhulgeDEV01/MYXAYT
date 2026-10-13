@@ -29,7 +29,7 @@ export default function Solutions() {
             return (
               <li key={title}>
                 <Card variant="muted" className="h-full">
-                  <Icon size={22} aria-hidden="true" className="text-brand-600" />
+                  <Icon size={22} aria-hidden="true" className="text-brand-600 dark:text-brand-400" />
                   <h3 className="mt-4 text-lg font-semibold">{title}</h3>
                   <p className="mt-2 leading-relaxed text-slate-600">{description}</p>
                 </Card>

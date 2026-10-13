@@ -11,6 +11,7 @@ import PricingSection from '../components/pricing/PricingSection';
 import TestimonialsSection from '../components/testimonials/TestimonialsSection';
 import FaqSection from '../components/faq/FaqSection';
 import FinalCta from '../components/cta/FinalCta';
+import ContactSection from '../components/contact/ContactSection';
 import { usePageMeta } from '../hooks/usePageMeta';
 
 export default function Home() {
@@ -35,6 +36,8 @@ export default function Home() {
       <PricingSection />
       <TestimonialsSection />
       <FaqSection />
+      {/* Get in touch / partner with us */}
+      <ContactSection tone="white" />
       <FinalCta />
     </>
   );

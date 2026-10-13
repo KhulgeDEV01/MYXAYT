@@ -32,7 +32,7 @@ export default function VotePanel({ question, options, total, eligible, myVote, 
         </span>
         <span className="text-[11px] text-slate-500">{v.threshold}</span>
       </div>
-      <p id="showcase-question" className="mt-2 font-semibold text-navy-950">
+      <p id="showcase-question" className="mt-2 font-semibold text-ink">
         {question}
       </p>
 
@@ -50,7 +50,7 @@ export default function VotePanel({ question, options, total, eligible, myVote, 
                 'flex h-11 items-center justify-between rounded-lg px-4 text-sm font-semibold ring-1 transition-colors disabled:cursor-default',
                 selected
                   ? selectedStyles[option.tone]
-                  : 'bg-white text-navy-900 ring-slate-300 enabled:hover:bg-slate-50 enabled:hover:ring-brand-500',
+                  : 'bg-surface text-ink-soft ring-slate-300 enabled:hover:bg-slate-50 enabled:hover:ring-brand-500',
                 myVote && !selected && 'opacity-60',
               )}
             >
@@ -66,8 +66,8 @@ export default function VotePanel({ question, options, total, eligible, myVote, 
           <div key={option.id}>
             <div className="mb-1 flex justify-between text-xs">
               <span className="text-slate-600">{option.label}</span>
-              <span className="font-semibold text-navy-950 tabular-nums">
-                {option.percent}% <span className="font-normal text-slate-400">({option.votes})</span>
+              <span className="font-semibold text-ink tabular-nums">
+                {option.percent}% <span className="font-normal text-slate-500">({option.votes})</span>
               </span>
             </div>
             <ProgressBar
@@ -81,7 +81,7 @@ export default function VotePanel({ question, options, total, eligible, myVote, 
       </div>
 
       <div className="mt-5 flex items-center justify-between gap-3 border-t border-slate-100 pt-4 text-sm">
-        <span className="font-semibold text-navy-950">
+        <span className="font-semibold text-ink">
           <span className="tabular-nums">{total}</span> {v.votedCount}
         </span>
         <span className="text-xs text-slate-500 tabular-nums">

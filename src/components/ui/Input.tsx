@@ -4,7 +4,7 @@ import type { LucideIcon } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
 export const fieldClasses =
-  'block w-full rounded-lg bg-white text-sm text-navy-950 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 transition-shadow focus:outline-none focus:ring-2 focus:ring-brand-500 aria-[invalid=true]:ring-danger-500 disabled:bg-slate-50';
+  'block w-full rounded-lg bg-surface text-sm text-ink ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 transition-shadow focus:outline-none focus:ring-2 focus:ring-brand-500 aria-[invalid=true]:ring-danger-500 disabled:bg-slate-50';
 
 interface FieldWrapperProps {
   id: string;
@@ -20,7 +20,7 @@ export function FieldWrapper({ id, label, hint, error, labelAction, required, ch
   return (
     <div>
       <div className="mb-1.5 flex items-center justify-between gap-2">
-        <label htmlFor={id} className="text-sm font-medium text-navy-900">
+        <label htmlFor={id} className="text-sm font-medium text-ink-soft">
           {label}
           {required && (
             <span aria-hidden="true" className="ml-0.5 text-danger-500">

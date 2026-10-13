@@ -24,7 +24,7 @@ export default function TestimonialsSection() {
           </Reveal>
         ))}
       </ul>
-      <p className="mt-6 text-center text-xs text-slate-400">{t.testimonials.disclaimer}</p>
+      <p className="mt-6 text-center text-xs text-slate-500">{t.testimonials.disclaimer}</p>
     </Section>
   );
 }

@@ -73,7 +73,7 @@ export default function Modal({ open, onClose, title, description, children, siz
         aria-labelledby={titleId}
         aria-describedby={description ? descId : undefined}
         className={cn(
-          'relative w-full animate-fade-up rounded-xl bg-white p-6 shadow-elevated sm:p-8',
+          'relative w-full animate-fade-up rounded-xl bg-surface p-6 shadow-elevated sm:p-8',
           size === 'sm' ? 'max-w-md' : size === 'md' ? 'max-w-lg' : 'max-w-2xl',
         )}
       >
@@ -81,7 +81,7 @@ export default function Modal({ open, onClose, title, description, children, siz
           type="button"
           onClick={onClose}
           aria-label={t.common.close}
-          className="absolute top-4 right-4 rounded-md p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-navy-900"
+          className="absolute top-4 right-4 rounded-md p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink-soft"
         >
           <X size={20} aria-hidden="true" />
         </button>

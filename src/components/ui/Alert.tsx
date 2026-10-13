@@ -5,7 +5,7 @@ import { cn } from '../../utils/cn';
 type Tone = 'info' | 'success' | 'warning';
 
 const styles: Record<Tone, string> = {
-  info: 'bg-brand-50 text-navy-900 ring-brand-200',
+  info: 'bg-brand-50 text-ink-soft ring-brand-200',
   success: 'bg-success-50 text-success-700 ring-success-500/25',
   warning: 'bg-warning-50 text-warning-700 ring-warning-500/30',
 };

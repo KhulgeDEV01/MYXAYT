@@ -5,9 +5,9 @@ import Container from './Container';
 type Tone = 'white' | 'muted' | 'dark';
 
 const tones: Record<Tone, string> = {
-  white: 'bg-white',
+  white: 'bg-surface',
   muted: 'bg-slate-50 border-y border-slate-200/70',
-  dark: 'bg-navy-950 text-navy-200',
+  dark: 'bg-deep text-navy-200',
 };
 
 interface SectionProps {

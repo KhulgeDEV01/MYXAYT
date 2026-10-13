@@ -13,7 +13,7 @@ export default function Hero() {
   const h = t.hero;
 
   return (
-    <section aria-labelledby="hero-title" className="relative overflow-hidden bg-white pt-28 pb-20 sm:pt-36 lg:pt-40 lg:pb-28">
+    <section aria-labelledby="hero-title" className="relative overflow-hidden bg-surface pt-28 pb-20 sm:pt-36 lg:pt-40 lg:pb-28">
       <div
         aria-hidden="true"
         className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_70%_60%_at_60%_30%,black,transparent)]"
@@ -23,7 +23,7 @@ export default function Hero() {
       <Container className="relative">
         <div className="grid items-center gap-16 xl:grid-cols-12 xl:gap-10">
           <div className="max-w-2xl animate-fade-up xl:col-span-5 xl:max-w-none">
-            <p className="inline-flex items-center gap-2 rounded-md bg-white px-2.5 py-1 text-xs font-medium text-navy-800 shadow-soft ring-1 ring-slate-200">
+            <p className="inline-flex items-center gap-2 rounded-md bg-surface px-2.5 py-1 text-xs font-medium text-ink-muted shadow-soft ring-1 ring-slate-200">
               <span className="size-1.5 rounded-full bg-accent-500" aria-hidden="true" />
               {h.badge}
             </p>
@@ -32,7 +32,7 @@ export default function Hero() {
               className="mt-6 text-[2.1rem] leading-[1.1] font-semibold tracking-tight sm:text-5xl xl:text-[2.9rem]"
             >
               {h.titleLines.map((line, i) => (
-                <span key={line} className={cn('block', i === h.titleLines.length - 1 && 'text-brand-600')}>
+                <span key={line} className={cn('block', i === h.titleLines.length - 1 && 'text-brand-600 dark:text-brand-400')}>
                   {line}
                 </span>
               ))}
@@ -53,7 +53,7 @@ export default function Hero() {
                 const Icon = highlightIcons[i];
                 return (
                   <li key={label} className="flex items-start gap-2.5 text-sm text-slate-600">
-                    <Icon size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-brand-600" />
+                    <Icon size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-brand-600 dark:text-brand-400" />
                     {label}
                   </li>
                 );

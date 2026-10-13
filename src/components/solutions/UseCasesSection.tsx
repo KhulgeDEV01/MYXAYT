@@ -19,10 +19,10 @@ export default function UseCasesSection({ tone = 'white' }: { tone?: 'white' | '
         {useCases[locale].map((useCase, index) => {
           const Icon = useCase.icon;
           return (
-            <Reveal as="li" key={useCase.id} delay={(index % 4) * 60} className="group bg-white p-6 transition-colors hover:bg-slate-50">
+            <Reveal as="li" key={useCase.id} delay={(index % 4) * 60} className="group bg-surface p-6 transition-colors hover:bg-slate-50">
               <div className="flex items-start justify-between gap-3">
-                <Icon size={22} aria-hidden="true" className="shrink-0 text-brand-600" />
-                <span className="text-right text-[11px] font-medium tracking-wide text-slate-400 uppercase">{useCase.tag}</span>
+                <Icon size={22} aria-hidden="true" className="shrink-0 text-brand-600 dark:text-brand-400" />
+                <span className="text-right text-[11px] font-medium tracking-wide text-slate-500 uppercase">{useCase.tag}</span>
               </div>
               <h3 className="mt-6 font-semibold">{useCase.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{useCase.description}</p>

@@ -9,6 +9,7 @@ export const mainNav: Localized<NavItem[]> = {
     { label: 'Үнэ', to: routes.pricing },
     { label: 'Бидний тухай', to: routes.about },
     { label: 'Тусламж', to: routes.faq },
+    { label: 'Холбоо барих', to: routes.contact },
   ],
   en: [
     { label: 'Features', to: routes.features },
@@ -16,6 +17,7 @@ export const mainNav: Localized<NavItem[]> = {
     { label: 'Pricing', to: routes.pricing },
     { label: 'About', to: routes.about },
     { label: 'Help', to: routes.faq },
+    { label: 'Contact', to: routes.contact },
   ],
 };
 
@@ -35,6 +37,7 @@ export const footerColumns: Localized<FooterColumn[]> = {
       links: [
         { label: 'Бидний тухай', to: routes.about },
         { label: 'Холбоо барих', to: routes.contact },
+        { label: 'Хамтран ажиллах', to: routes.partnership },
         { label: 'Карьер', to: '/careers', comingSoon: true },
       ],
     },
@@ -69,6 +72,7 @@ export const footerColumns: Localized<FooterColumn[]> = {
       links: [
         { label: 'About', to: routes.about },
         { label: 'Contact', to: routes.contact },
+        { label: 'Partner with us', to: routes.partnership },
         { label: 'Careers', to: '/careers', comingSoon: true },
       ],
     },

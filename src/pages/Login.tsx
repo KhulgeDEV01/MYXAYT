@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Building2, Eye, EyeOff, LockKeyhole, Mail, User } from 'lucide-react';
 import LanguageSwitcher from '../components/navbar/LanguageSwitcher';
+import ThemeToggle from '../components/navbar/ThemeToggle';
 import Alert from '../components/ui/Alert';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
@@ -122,10 +123,11 @@ export default function Login() {
         <div className="flex items-center justify-between gap-3">
           <Logo />
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <LanguageSwitcher />
             <Link
               to={routes.home}
-              className="hidden items-center gap-1.5 rounded-md text-sm font-medium text-slate-600 hover:text-navy-950 sm:inline-flex"
+              className="hidden items-center gap-1.5 rounded-md text-sm font-medium text-slate-600 hover:text-ink sm:inline-flex"
             >
               <ArrowLeft size={16} aria-hidden="true" /> {p.backHome}
             </Link>
@@ -141,7 +143,7 @@ export default function Login() {
             {isSignup ? p.googleSignUp : p.googleSignIn}
           </Button>
 
-          <div className="my-6 flex items-center gap-4 text-xs text-slate-400" role="separator">
+          <div className="my-6 flex items-center gap-4 text-xs text-slate-500" role="separator">
             <span className="h-px flex-1 bg-slate-200" />
             {p.orEmail}
             <span className="h-px flex-1 bg-slate-200" />
@@ -179,7 +181,7 @@ export default function Login() {
                       setResetNotice(null);
                       setResetOpen(true);
                     }}
-                    className="rounded text-sm font-medium text-brand-700 hover:underline"
+                    className="rounded text-sm font-medium text-brand-700 dark:text-brand-300 hover:underline"
                   >
                     {p.forgot}
                   </button>
@@ -191,7 +193,7 @@ export default function Login() {
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? p.hidePassword : p.showPassword}
                   aria-pressed={showPassword}
-                  className="flex size-9 items-center justify-center rounded-md text-slate-500 hover:text-navy-900"
+                  className="flex size-9 items-center justify-center rounded-md text-slate-500 hover:text-ink-soft"
                 >
                   {showPassword ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
                 </button>
@@ -210,32 +212,32 @@ export default function Login() {
             <button
               type="button"
               onClick={() => switchMode(isSignup ? 'signin' : 'signup')}
-              className="rounded font-semibold text-brand-700 hover:underline"
+              className="rounded font-semibold text-brand-700 dark:text-brand-300 hover:underline"
             >
               {isSignup ? p.switchToSignIn : p.switchToSignUp}
             </button>
           </p>
         </div>
 
-        <p className="text-center text-xs text-slate-400">{p.terms}</p>
+        <p className="text-center text-xs text-slate-500">{p.terms}</p>
       </main>
 
       {/* Brand panel */}
-      <aside aria-hidden="true" className="relative hidden overflow-hidden bg-navy-950 lg:flex lg:flex-col lg:justify-center lg:px-16">
+      <aside aria-hidden="true" className="relative hidden overflow-hidden bg-deep lg:flex lg:flex-col lg:justify-center lg:px-16">
         <div className="bg-grid-dark absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
         <div className="relative mx-auto w-full max-w-md">
           <p className="text-2xl leading-snug font-semibold text-white">{p.panelQuote}</p>
           <p className="mt-4 text-navy-300">{p.panelText}</p>
 
-          <div className="mt-10 rounded-xl bg-white p-5 shadow-elevated">
-            <p className="text-[11px] font-semibold tracking-wider text-brand-600 uppercase">{p.panelPollLabel}</p>
-            <p className="mt-2 font-semibold text-navy-950">{p.panelPollQuestion}</p>
+          <div className="mt-10 rounded-xl bg-surface p-5 shadow-elevated">
+            <p className="text-[11px] font-semibold tracking-wider text-brand-600 dark:text-brand-400 uppercase">{p.panelPollLabel}</p>
+            <p className="mt-2 font-semibold text-ink">{p.panelPollQuestion}</p>
             <div className="mt-4 space-y-3">
               {panelPoll.map((row, i) => (
                 <div key={row.tone}>
                   <div className="mb-1 flex justify-between text-xs">
                     <span className="text-slate-600">{p.panelPollOptions[i]}</span>
-                    <span className="font-semibold text-navy-950">{row.value}%</span>
+                    <span className="font-semibold text-ink">{row.value}%</span>
                   </div>
                   <ProgressBar value={row.value} tone={row.tone} label={p.panelPollOptions[i]} />
                 </div>

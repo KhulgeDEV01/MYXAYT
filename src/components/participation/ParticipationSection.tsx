@@ -16,35 +16,35 @@ function InteractionStream() {
 
   return (
     <div aria-hidden="true" className="relative mx-auto max-w-md space-y-3 lg:max-w-none">
-      <div className="rounded-xl bg-white p-4 shadow-card ring-1 ring-slate-200">
+      <div className="rounded-xl bg-surface p-4 shadow-card ring-1 ring-slate-200">
         <div className="flex items-center gap-2.5">
           <Avatar name={s.questionAuthor} size="sm" />
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold text-navy-950">{s.questionAuthor}</p>
+            <p className="text-xs font-semibold text-ink">{s.questionAuthor}</p>
             <p className="text-[11px] text-slate-500">{s.questionMeta}</p>
           </div>
           <Badge tone="brand" size="sm">
             <CircleHelp size={11} /> {s.questionTag}
           </Badge>
         </div>
-        <p className="mt-3 text-sm text-navy-900">{s.questionBody}</p>
+        <p className="mt-3 text-sm text-ink-soft">{s.questionBody}</p>
         <div className="mt-3 flex items-center gap-2 text-xs text-slate-500">
-          <span className="inline-flex items-center gap-1 rounded-md bg-brand-50 px-2 py-1 font-semibold text-brand-700">
+          <span className="inline-flex items-center gap-1 rounded-md bg-brand-50 px-2 py-1 font-semibold text-brand-700 dark:text-brand-300">
             <ChevronUp size={13} /> 18
           </span>
           {s.upvotedBy}
         </div>
       </div>
 
-      <div className="ml-6 rounded-xl bg-white p-4 shadow-card ring-1 ring-slate-200 sm:ml-10">
+      <div className="ml-6 rounded-xl bg-surface p-4 shadow-card ring-1 ring-slate-200 sm:ml-10">
         <div className="flex items-center gap-2.5">
           <Avatar name={s.anonymous} size="sm" />
-          <p className="flex-1 text-xs font-semibold text-navy-950">{s.anonymous}</p>
+          <p className="flex-1 text-xs font-semibold text-ink">{s.anonymous}</p>
           <Badge tone="warning" size="sm">
             <Lightbulb size={11} /> {s.suggestionTag}
           </Badge>
         </div>
-        <p className="mt-3 text-sm text-navy-900">{s.suggestionBody}</p>
+        <p className="mt-3 text-sm text-ink-soft">{s.suggestionBody}</p>
       </div>
 
       <div className="rounded-xl bg-navy-950 p-4 text-white shadow-card">
@@ -64,11 +64,11 @@ function InteractionStream() {
         </p>
       </div>
 
-      <div className="ml-6 flex items-center gap-3 rounded-xl bg-white p-3 shadow-card ring-1 ring-slate-200 sm:ml-10">
-        <span className="flex size-8 items-center justify-center rounded-md bg-navy-50 text-navy-700">
+      <div className="ml-6 flex items-center gap-3 rounded-xl bg-surface p-3 shadow-card ring-1 ring-slate-200 sm:ml-10">
+        <span className="flex size-8 items-center justify-center rounded-md bg-navy-50 text-ink-muted">
           <Hand size={16} />
         </span>
-        <p className="flex-1 text-xs text-navy-900">
+        <p className="flex-1 text-xs text-ink-soft">
           <span className="font-semibold">{s.requestName}</span> {s.requestAction}
         </p>
         <Badge tone="success" size="sm">
@@ -104,10 +104,10 @@ export default function ParticipationSection() {
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-brand-700">{p.capabilitiesTitle(siteConfig.name)}</h3>
+              <h3 className="text-sm font-semibold text-brand-700 dark:text-brand-300">{p.capabilitiesTitle(siteConfig.name)}</h3>
               <ul className="mt-4 space-y-3">
                 {participationCapabilities[locale].map((capability) => (
-                  <li key={capability} className="flex items-start gap-2.5 text-sm font-medium text-navy-900">
+                  <li key={capability} className="flex items-start gap-2.5 text-sm font-medium text-ink-soft">
                     <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-brand-600 text-white">
                       <Check size={12} aria-hidden="true" />
                     </span>
@@ -118,7 +118,7 @@ export default function ParticipationSection() {
             </div>
           </div>
 
-          <blockquote className="mt-10 border-l-2 border-brand-600 pl-5 text-lg font-medium text-navy-950">{p.quote}</blockquote>
+          <blockquote className="mt-10 border-l-2 border-brand-600 pl-5 text-lg font-medium text-ink">{p.quote}</blockquote>
         </div>
 
         <Reveal>

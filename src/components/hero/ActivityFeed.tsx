@@ -7,9 +7,9 @@ import { cn } from '../../utils/cn';
 
 const typeStyles: Record<ActivityType, { icon: typeof Vote; className: string }> = {
   vote: { icon: Vote, className: 'bg-success-50 text-success-600' },
-  question: { icon: CircleHelp, className: 'bg-brand-50 text-brand-600' },
+  question: { icon: CircleHelp, className: 'bg-brand-50 text-brand-600 dark:text-brand-400' },
   suggestion: { icon: Lightbulb, className: 'bg-warning-50 text-warning-700' },
-  request: { icon: Hand, className: 'bg-navy-50 text-navy-700' },
+  request: { icon: Hand, className: 'bg-navy-50 text-ink-muted' },
   join: { icon: LogIn, className: 'bg-slate-100 text-slate-600' },
 };
 
@@ -47,7 +47,7 @@ export default function ActivityFeed({ events, visible = 4, active = true, inter
               <Icon size={13} aria-hidden="true" />
             </span>
             <p className="min-w-0 text-[11px] leading-snug text-slate-600">
-              <span className="font-semibold text-navy-900">{event.actorName}</span> {event.message}
+              <span className="font-semibold text-ink-soft">{event.actorName}</span> {event.message}
               <span className="mt-0.5 block text-[10px] text-slate-400">{index === 0 ? t.activity.justNow : event.timeLabel}</span>
             </p>
           </li>

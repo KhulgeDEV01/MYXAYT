@@ -66,7 +66,7 @@ export default function Tabs({ items, label, defaultValue, className, listClassN
               onKeyDown={(e) => onKeyDown(e, index)}
               className={cn(
                 'flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-2 text-xs font-semibold transition-colors sm:text-sm',
-                selected ? 'bg-white text-navy-950 shadow-soft' : 'text-slate-600 hover:text-navy-900',
+                selected ? 'bg-surface text-ink shadow-soft' : 'text-slate-600 hover:text-ink-soft',
               )}
             >
               {Icon && <Icon size={15} aria-hidden="true" className="hidden shrink-0 sm:block" />}
@@ -75,7 +75,7 @@ export default function Tabs({ items, label, defaultValue, className, listClassN
                 <span
                   className={cn(
                     'rounded px-1 text-[10px] tabular-nums',
-                    selected ? 'bg-brand-50 text-brand-700' : 'bg-slate-200 text-slate-600',
+                    selected ? 'bg-brand-50 text-brand-700 dark:text-brand-300' : 'bg-slate-200 text-slate-600',
                   )}
                 >
                   {item.count}

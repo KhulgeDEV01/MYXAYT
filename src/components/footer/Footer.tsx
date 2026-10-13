@@ -11,7 +11,7 @@ export default function Footer() {
   const { locale, t } = useI18n();
 
   return (
-    <footer className="bg-navy-950 text-navy-300" aria-labelledby="footer-heading">
+    <footer className="bg-deep text-navy-300" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         {t.footer.heading}
       </h2>
@@ -48,7 +48,7 @@ export default function Footer() {
                   {column.links.map((link) => (
                     <li key={link.label}>
                       {link.comingSoon ? (
-                        <span className="inline-flex flex-wrap items-center gap-2 text-navy-400">
+                        <span className="inline-flex flex-wrap items-center gap-2 text-navy-300">
                           {link.label}
                           <span className="rounded bg-white/5 px-1.5 py-0.5 text-[10px] font-medium text-navy-300">
                             {t.common.comingSoon}
@@ -68,7 +68,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col-reverse items-start justify-between gap-6 border-t border-white/10 pt-8 sm:flex-row sm:items-center">
-          <p className="text-sm text-navy-400">
+          <p className="text-sm text-navy-300">
             © {siteConfig.foundedYear} {siteConfig.name}. {t.footer.rights}
           </p>
           <SocialIcons />

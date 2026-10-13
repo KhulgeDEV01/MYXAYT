@@ -28,7 +28,7 @@ export default function Logo({ tone = 'dark', className }: LogoProps) {
       className={cn('inline-flex shrink-0 items-center gap-2.5 rounded-md', className)}
     >
       <LogoMark />
-      <span className={cn('text-lg font-bold tracking-tight', tone === 'dark' ? 'text-navy-950' : 'text-white')}>
+      <span className={cn('text-lg font-bold tracking-tight', tone === 'dark' ? 'text-ink' : 'text-white')}>
         {siteConfig.name}
       </span>
     </Link>

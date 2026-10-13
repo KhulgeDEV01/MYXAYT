@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* `dark:` utilities follow the theme chosen on <html data-theme="…"> (set by ThemeProvider). */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
 /* ------------------------------------------------------------------
    Design tokens — the single source of truth for colors, type, shadows
    and motion. Components only reference these via Tailwind utilities.
@@ -7,6 +10,13 @@
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif;
+
+  /* Theme-aware semantic colors (re-mapped for dark mode below) */
+  --color-surface: #ffffff; /* page & card background */
+  --color-deep: #0b1229; /* intentionally dark sections (footer, security…) */
+  --color-ink: #0b1229; /* headings, strongest text */
+  --color-ink-soft: #101a35;
+  --color-ink-muted: #213154;
 
   /* Primary: deep navy */
   --color-navy-50: #f2f5fb;
@@ -115,19 +125,65 @@
     scroll-padding-top: 5.5rem;
     -webkit-text-size-adjust: 100%;
   }
+  :root {
+    color-scheme: light;
+    --grid-line: rgb(16 26 53 / 0.05);
+  }
+
+  /* Dark theme: re-map the semantic tokens and invert the neutral (slate) scale.
+     Intentionally dark areas use navy / `deep` and stay dark in both themes. */
+  [data-theme='dark'] {
+    color-scheme: dark;
+    --grid-line: rgb(255 255 255 / 0.035);
+
+    --color-surface: #0e1528;
+    --color-deep: #070b18;
+    --color-ink: #f3f5fa;
+    --color-ink-soft: #dfe5f0;
+    --color-ink-muted: #c3cce0;
+
+    --color-slate-50: #0a1020;
+    --color-slate-100: #141c33;
+    --color-slate-200: #1f2944;
+    --color-slate-300: #2d3956;
+    --color-slate-400: #7d89a5;
+    --color-slate-500: #95a1ba;
+    --color-slate-600: #b0bacd;
+    --color-slate-700: #c2cadb;
+    --color-slate-800: #dbe1ec;
+    --color-slate-900: #eef1f7;
+
+    --color-navy-50: #18223d;
+    --color-brand-50: #121c3c;
+    --color-brand-100: #182654;
+    --color-brand-200: #243b84;
+
+    --color-success-50: rgb(18 183 106 / 0.14);
+    --color-success-600: #32d583;
+    --color-success-700: #47cd89;
+    --color-danger-50: rgb(240 68 56 / 0.15);
+    --color-danger-600: #f97066;
+    --color-warning-50: rgb(247 144 9 / 0.15);
+    --color-warning-700: #fdb022;
+
+    --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.35), 0 4px 16px -6px rgb(0 0 0 / 0.45);
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35), 0 12px 32px -12px rgb(0 0 0 / 0.6);
+    --shadow-elevated: 0 2px 6px rgb(0 0 0 / 0.35), 0 32px 64px -24px rgb(0 0 0 / 0.75);
+  }
+
   body {
-    @apply bg-white font-sans text-slate-600 antialiased;
+    @apply bg-surface font-sans text-slate-600 antialiased;
     text-rendering: optimizeLegibility;
   }
   h1,
   h2,
   h3,
   h4 {
-    @apply text-navy-950;
+    @apply text-ink;
     letter-spacing: -0.015em;
   }
   ::selection {
-    @apply bg-brand-100 text-navy-950;
+    @apply bg-brand-100 text-ink;
   }
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-brand-500;
@@ -152,8 +208,8 @@
   /* Subtle engineering grid used behind hero and dark sections */
   .bg-grid {
     background-image:
-      linear-gradient(to right, rgb(16 26 53 / 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(16 26 53 / 0.05) 1px, transparent 1px);
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
     background-size: 48px 48px;
   }
   .bg-grid-dark {

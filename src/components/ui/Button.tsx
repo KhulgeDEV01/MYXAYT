@@ -27,9 +27,9 @@ export type ButtonProps = AsButton | AsRouterLink | AsAnchor;
 const variants: Record<Variant, string> = {
   primary:
     'bg-brand-600 text-white shadow-[0_1px_2px_rgb(16_26_53/0.15),inset_0_1px_0_rgb(255_255_255/0.12)] hover:bg-brand-700 active:bg-brand-800',
-  secondary: 'bg-white text-navy-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 hover:ring-slate-400',
-  ghost: 'text-navy-800 hover:bg-navy-50',
-  inverse: 'bg-white text-navy-950 hover:bg-brand-50',
+  secondary: 'bg-surface text-ink-soft ring-1 ring-inset ring-slate-300 hover:bg-slate-50 hover:ring-slate-400',
+  ghost: 'text-ink-muted hover:bg-navy-50',
+  inverse: 'bg-white text-navy-950 hover:bg-white/90',
   'outline-inverse': 'text-white ring-1 ring-inset ring-white/30 hover:bg-white/10 hover:ring-white/50',
 };
 

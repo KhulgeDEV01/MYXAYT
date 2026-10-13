@@ -1,0 +1,182 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Design tokens — the single source of truth for colors, type, shadows
+   and motion. Components only reference these via Tailwind utilities.
+------------------------------------------------------------------- */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+
+  /* Primary: deep navy */
+  --color-navy-50: #f2f5fb;
+  --color-navy-100: #e3e9f5;
+  --color-navy-200: #c4cfe6;
+  --color-navy-300: #97a8cc;
+  --color-navy-400: #6479a8;
+  --color-navy-500: #415784;
+  --color-navy-600: #2e4069;
+  --color-navy-700: #213154;
+  --color-navy-800: #172443;
+  --color-navy-900: #101a35;
+  --color-navy-950: #0b1229;
+
+  /* Secondary: brand blue / indigo */
+  --color-brand-50: #eef3ff;
+  --color-brand-100: #dce6ff;
+  --color-brand-200: #c0d1ff;
+  --color-brand-300: #94b1ff;
+  --color-brand-400: #6189ff;
+  --color-brand-500: #3b63fb;
+  --color-brand-600: #1f4ff0;
+  --color-brand-700: #1a3fd0;
+  --color-brand-800: #1b36a8;
+  --color-brand-900: #1c3284;
+
+  /* Accent: electric cyan */
+  --color-accent-300: #67e8f9;
+  --color-accent-400: #22d3ee;
+  --color-accent-500: #06b6d4;
+  --color-accent-600: #0891b2;
+
+  /* Semantic */
+  --color-success-50: #ecfdf3;
+  --color-success-500: #12b76a;
+  --color-success-600: #039855;
+  --color-success-700: #027a48;
+  --color-danger-50: #fef3f2;
+  --color-danger-500: #f04438;
+  --color-danger-600: #d92d20;
+  --color-warning-50: #fffaeb;
+  --color-warning-500: #f79009;
+  --color-warning-700: #b54708;
+
+  --shadow-soft: 0 1px 2px rgb(16 26 53 / 0.04), 0 4px 16px -6px rgb(16 26 53 / 0.08);
+  --shadow-card: 0 1px 2px rgb(16 26 53 / 0.05), 0 12px 32px -12px rgb(16 26 53 / 0.14);
+  --shadow-elevated: 0 2px 6px rgb(16 26 53 / 0.05), 0 32px 64px -24px rgb(16 26 53 / 0.28);
+
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.4s ease-out both;
+  --animate-slide-in: slide-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-live-dot: live-dot 1.6s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes live-dot {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-white font-sans text-slate-600 antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-navy-950;
+    letter-spacing: -0.015em;
+  }
+  ::selection {
+    @apply bg-brand-100 text-navy-950;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500;
+  }
+}
+
+@layer components {
+  /* Scroll-reveal: toggled by <Reveal /> via IntersectionObserver */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Subtle engineering grid used behind hero and dark sections */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgb(16 26 53 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(16 26 53 / 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .bg-grid-dark {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
