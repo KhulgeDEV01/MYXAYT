@@ -26,7 +26,7 @@ export default function SocialIcons() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${siteConfig.name} — ${labels[key]}`}
-            className="flex size-9 items-center justify-center rounded-md text-navy-300 ring-1 ring-white/10 transition-colors hover:bg-white/5 hover:text-white"
+            className="flex size-11 items-center justify-center rounded-md text-navy-300 sm:size-9 ring-1 ring-white/10 transition-colors hover:bg-white/5 hover:text-white"
           >
             <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden="true">
               <path d={icons[key]} />

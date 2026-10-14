@@ -12,10 +12,10 @@ export default function SecuritySection() {
   return (
     <Section id="security" tone="dark" labelledBy="security-title" className="overflow-hidden">
       <div aria-hidden="true" className="bg-grid-dark absolute inset-0 [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_70%)]" />
-      <div className="relative grid gap-14 lg:grid-cols-12">
+      <div className="relative grid gap-10 sm:gap-14 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <span className="flex size-12 items-center justify-center rounded-xl bg-white/5 text-accent-300 ring-1 ring-white/10">
-            <ShieldCheck size={24} aria-hidden="true" />
+          <span className="flex size-10 items-center justify-center rounded-xl bg-white/5 sm:size-12 text-accent-300 ring-1 ring-white/10">
+            <ShieldCheck size={24} aria-hidden="true" className="size-5 sm:size-6" />
           </span>
           <SectionHeading
             id="security-title"
@@ -26,7 +26,7 @@ export default function SecuritySection() {
             className="mt-6"
           />
         </div>
-        <ul className="grid gap-px overflow-hidden rounded-xl bg-white/10 ring-1 ring-white/10 sm:grid-cols-2 lg:col-span-8">
+        <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-white/10 ring-1 ring-white/10 lg:col-span-8">
           {items.map((item, index) => {
             const Icon = item.icon;
             return (
@@ -34,11 +34,11 @@ export default function SecuritySection() {
                 as="li"
                 key={item.id}
                 delay={(index % 2) * 80}
-                className={index === items.length - 1 ? 'bg-navy-950 p-6 sm:col-span-2' : 'bg-navy-950 p-6'}
+                className={index === items.length - 1 ? 'col-span-2 bg-navy-950 p-4 sm:p-6' : 'bg-navy-950 p-4 sm:p-6'}
               >
-                <Icon size={20} aria-hidden="true" className="text-accent-300" />
-                <h3 className="mt-4 font-semibold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-navy-300">{item.description}</p>
+                <Icon size={20} aria-hidden="true" className="size-[18px] text-accent-300 sm:size-5" />
+                <h3 className="mt-3 text-sm font-semibold sm:text-base text-white sm:mt-4">{item.title}</h3>
+                <p className="mt-1.5 text-[13px] leading-snug sm:text-sm sm:leading-relaxed text-navy-300 sm:mt-2">{item.description}</p>
               </Reveal>
             );
           })}

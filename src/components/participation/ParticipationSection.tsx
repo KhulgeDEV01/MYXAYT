@@ -118,7 +118,7 @@ export default function ParticipationSection() {
             </div>
           </div>
 
-          <blockquote className="mt-10 border-l-2 border-brand-600 pl-5 text-lg font-medium text-ink">{p.quote}</blockquote>
+          <blockquote className="mt-10 border-l-2 border-brand-600 pl-4 text-base font-medium text-ink sm:pl-5 sm:text-lg">{p.quote}</blockquote>
         </div>
 
         <Reveal>

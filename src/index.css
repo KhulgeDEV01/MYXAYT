@@ -124,6 +124,7 @@
     scroll-behavior: smooth;
     scroll-padding-top: 5.5rem;
     -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
   :root {
     color-scheme: light;
@@ -181,6 +182,17 @@
   h4 {
     @apply text-ink;
     letter-spacing: -0.015em;
+  }
+  /* Long Mongolian words must wrap inside narrow (2-column) phone cards. */
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  dd,
+  blockquote {
+    overflow-wrap: break-word;
   }
   ::selection {
     @apply bg-brand-100 text-ink;

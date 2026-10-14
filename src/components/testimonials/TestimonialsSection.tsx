@@ -17,7 +17,7 @@ export default function TestimonialsSection() {
         description={t.testimonials.description}
         align="center"
       />
-      <ul className="mt-14 grid gap-6 lg:grid-cols-3">
+      <ul className="mt-8 grid gap-4 sm:mt-14 sm:gap-6 lg:grid-cols-3">
         {testimonials[locale].map((testimonial, index) => (
           <Reveal as="li" key={testimonial.id} delay={index * 80}>
             <TestimonialCard testimonial={testimonial} />

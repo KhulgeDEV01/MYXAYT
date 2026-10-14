@@ -46,12 +46,12 @@ export default function MeetingShowcase() {
           description={t.showcase.description}
         />
 
-        <div ref={ref} className="mt-14 grid gap-4 xl:grid-cols-12">
-          <div className="xl:col-span-7" aria-hidden="true">
+        <div ref={ref} className="mt-10 grid grid-cols-1 gap-4 sm:mt-14 xl:grid-cols-12">
+          <div className="min-w-0 xl:col-span-7" aria-hidden="true">
             <VideoGrid topic={demo.showcaseTopic} participants={demo.showcaseParticipants} />
           </div>
 
-          <div className="rounded-xl bg-surface p-4 shadow-elevated sm:p-5 xl:col-span-5">
+          <div className="min-w-0 rounded-xl bg-surface p-4 shadow-elevated sm:p-5 xl:col-span-5">
             <div className="mb-4 flex items-center justify-between gap-3">
               <p className="text-sm font-semibold text-ink">{t.showcase.panelTitle}</p>
               <span className="text-[11px] text-slate-500">{t.showcase.tryIt}</span>

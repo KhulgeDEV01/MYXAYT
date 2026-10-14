@@ -38,14 +38,14 @@ export default function SectionHeading({
       <Heading
         id={id}
         className={cn(
-          'text-3xl leading-tight font-semibold text-balance sm:text-4xl',
+          'text-2xl leading-tight font-semibold text-balance sm:text-4xl',
           dark ? 'text-white' : 'text-ink',
         )}
       >
         {title}
       </Heading>
       {description && (
-        <p className={cn('mt-4 text-base leading-relaxed text-pretty sm:text-lg', dark ? 'text-navy-200' : 'text-slate-600')}>
+        <p className={cn('mt-3 text-[15px] leading-relaxed text-pretty sm:mt-4 sm:text-lg', dark ? 'text-navy-200' : 'text-slate-600')}>
           {description}
         </p>
       )}

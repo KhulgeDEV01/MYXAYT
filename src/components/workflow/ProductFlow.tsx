@@ -18,10 +18,10 @@ export default function ProductFlow({ className }: { className?: string }) {
   const steps = productWorkflow[locale];
 
   return (
-    <div className={cn('rounded-xl bg-surface p-6 shadow-soft ring-1 ring-slate-200 sm:p-8', className)}>
-      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+    <div className={cn('rounded-xl bg-surface p-5 shadow-soft ring-1 ring-slate-200 sm:p-8', className)}>
+      <div className="flex flex-col justify-between gap-3 md:flex-row md:gap-4 md:items-center">
         <h3 className="text-base font-semibold">{t.workflow.title}</h3>
-        <ul className="flex flex-wrap gap-x-5 gap-y-2" aria-label={t.workflow.legend}>
+        <ul className="flex flex-wrap gap-x-4 gap-y-1.5 sm:gap-x-5 sm:gap-y-2" aria-label={t.workflow.legend}>
           {(Object.keys(labels) as WorkflowActor[]).map((actor) => (
             <li key={actor} className="flex items-center gap-2 text-xs text-slate-600">
               <span aria-hidden="true" className={cn('size-2.5 rounded-sm', actorStyles[actor].dot)} />
@@ -31,12 +31,17 @@ export default function ProductFlow({ className }: { className?: string }) {
         </ul>
       </div>
 
-      <ol className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-3">
+      {/* Phones: one swipeable row (right edge fades to hint at more). md+: wrapped flow. */}
+      <ol
+        tabIndex={0}
+        aria-label={t.workflow.title}
+        className="-mx-5 mt-5 flex snap-x snap-mandatory scroll-px-5 items-center gap-2 overflow-x-auto px-5 pb-1 [mask-image:linear-gradient(to_right,black_calc(100%-3rem),transparent)] [scrollbar-width:none] sm:-mx-8 sm:scroll-px-8 sm:px-8 md:mx-0 md:mt-6 md:flex-wrap md:gap-y-3 md:overflow-visible md:px-0 md:pb-0 md:[mask-image:none] [&::-webkit-scrollbar]:hidden"
+      >
         {steps.map((step, index) => {
           const Icon = step.icon;
           return (
-            <li key={step.id} className="flex items-center gap-2">
-              <span className={cn('inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium', actorStyles[step.actor].chip)}>
+            <li key={step.id} className="flex shrink-0 snap-start items-center gap-2">
+              <span className={cn('inline-flex items-center gap-2 rounded-lg px-3 py-2 text-[13px] font-medium whitespace-nowrap sm:text-sm', actorStyles[step.actor].chip)}>
                 <Icon size={16} aria-hidden="true" className="shrink-0" />
                 <span className="sr-only">{labels[step.actor]}: </span>
                 {step.title}

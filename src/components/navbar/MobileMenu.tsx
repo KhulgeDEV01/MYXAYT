@@ -49,7 +49,15 @@ export default function MobileMenu({ id, open, onClose }: MobileMenuProps) {
         <ul className="divide-y divide-slate-100">
           {mainNav[locale].map((item) => (
             <li key={item.to}>
-              <NavLink to={item.to} className="flex items-center justify-between py-4 text-base font-medium text-ink">
+              <NavLink
+                to={item.to}
+                className={({ isActive }) =>
+                  cn(
+                    'flex items-center justify-between py-4 text-base font-medium',
+                    isActive && !item.to.includes('#') ? 'text-brand-700 dark:text-brand-300' : 'text-ink',
+                  )
+                }
+              >
                 {item.label}
                 <ChevronRight size={18} aria-hidden="true" className="text-slate-400" />
               </NavLink>

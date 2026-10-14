@@ -46,7 +46,7 @@ export default function Tabs({ items, label, defaultValue, className, listClassN
 
   return (
     <div className={className}>
-      <div role="tablist" aria-label={label} className={cn('flex gap-1 rounded-lg bg-slate-100 p-1', listClassName)}>
+      <div role="tablist" aria-label={label} className={cn('grid grid-cols-2 gap-1 rounded-lg bg-slate-100 p-1 sm:flex', listClassName)}>
         {items.map((item, index) => {
           const selected = item.id === active;
           const Icon = item.icon;
@@ -65,7 +65,7 @@ export default function Tabs({ items, label, defaultValue, className, listClassN
               onClick={() => setActive(item.id)}
               onKeyDown={(e) => onKeyDown(e, index)}
               className={cn(
-                'flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-2 text-xs font-semibold transition-colors sm:text-sm',
+                'flex min-h-10 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-2 text-xs font-semibold transition-colors sm:text-sm',
                 selected ? 'bg-surface text-ink shadow-soft' : 'text-slate-600 hover:text-ink-soft',
               )}
             >

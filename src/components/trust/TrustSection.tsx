@@ -13,7 +13,7 @@ export default function TrustSection() {
       <Container>
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-4">
-            <h2 id="trust-title" className="text-2xl leading-snug font-semibold text-balance sm:text-[1.7rem]">
+            <h2 id="trust-title" className="text-xl leading-snug font-semibold text-balance sm:text-[1.7rem]">
               {t.trust.title}
             </h2>
             <p className="mt-3 text-sm text-slate-500">{t.trust.description}</p>

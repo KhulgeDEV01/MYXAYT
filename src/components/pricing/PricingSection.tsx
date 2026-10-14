@@ -4,6 +4,8 @@ import { pricingPlans } from '../../data/pricing';
 import { useI18n } from '../../i18n/useI18n';
 import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
+import { carouselItem, carouselList } from '../../utils/carousel';
+import { cn } from '../../utils/cn';
 import BillingToggle from './BillingToggle';
 import PricingCard from './PricingCard';
 
@@ -31,9 +33,9 @@ export default function PricingSection({ showHeading = true }: PricingSectionPro
         <BillingToggle value={period} onChange={setPeriod} />
       </div>
 
-      <ul className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      <ul className={cn(carouselList, 'mt-7 sm:mt-11 md:mt-14 md:grid-cols-2 xl:grid-cols-4')}>
         {pricingPlans[locale].map((plan) => (
-          <li key={plan.id}>
+          <li key={plan.id} className={carouselItem}>
             <PricingCard plan={plan} period={period} />
           </li>
         ))}

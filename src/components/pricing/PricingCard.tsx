@@ -19,24 +19,24 @@ export default function PricingCard({ plan, period }: PricingCardProps) {
     <article
       aria-labelledby={`plan-${plan.id}`}
       className={cn(
-        'relative flex h-full flex-col rounded-xl p-6 lg:p-7',
+        'relative flex h-full flex-col rounded-xl p-5 sm:p-6 lg:p-7',
         featured ? 'bg-navy-950 text-navy-200 shadow-elevated ring-1 ring-navy-950 dark:ring-brand-500/50' : 'bg-surface shadow-soft ring-1 ring-slate-200',
       )}
     >
       {plan.badge && (
         <p className="absolute -top-3 left-6 rounded-md bg-accent-400 px-2.5 py-1 text-xs font-semibold text-navy-950">{plan.badge}</p>
       )}
-      <h3 id={`plan-${plan.id}`} className={cn('text-lg font-semibold', featured ? 'text-white' : 'text-ink')}>
+      <h3 id={`plan-${plan.id}`} className={cn('text-base font-semibold sm:text-lg', featured ? 'text-white' : 'text-ink')}>
         {plan.name}
       </h3>
       <p className={cn('mt-1 min-h-10 text-sm', featured ? 'text-navy-300' : 'text-slate-500')}>{plan.tagline}</p>
 
       <div className="mt-6 flex min-h-16 flex-col justify-end">
         {price === null ? (
-          <p className={cn('text-3xl font-semibold tracking-tight', featured ? 'text-white' : 'text-ink')}>{t.pricing.custom}</p>
+          <p className={cn('text-2xl font-semibold tracking-tight sm:text-3xl', featured ? 'text-white' : 'text-ink')}>{t.pricing.custom}</p>
         ) : (
           <p className="flex items-baseline gap-1">
-            <span className={cn('text-4xl font-semibold tracking-tight tabular-nums', featured ? 'text-white' : 'text-ink')}>
+            <span className={cn('text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl', featured ? 'text-white' : 'text-ink')}>
               {price === 0 ? '0₮' : formatPrice(price)}
             </span>
             {price > 0 && <span className="text-sm">{t.pricing.perMonth}</span>}
