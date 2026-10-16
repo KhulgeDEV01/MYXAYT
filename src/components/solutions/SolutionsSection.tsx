@@ -3,6 +3,8 @@ import { useI18n } from '../../i18n/useI18n';
 import Reveal from '../ui/Reveal';
 import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
+import { carouselItem, carouselList } from '../../utils/carousel';
+import { cn } from '../../utils/cn';
 import SolutionCard from './SolutionCard';
 
 export default function SolutionsSection({ tone = 'muted' }: { tone?: 'white' | 'muted' }) {
@@ -16,9 +18,9 @@ export default function SolutionsSection({ tone = 'muted' }: { tone?: 'white' | 
         title={t.solutions.title}
         description={t.solutions.description}
       />
-      <ul className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <ul className={cn(carouselList, 'mt-7 sm:mt-11 md:mt-14 md:grid-cols-2 lg:grid-cols-3')}>
         {solutions[locale].map((solution, index) => (
-          <Reveal as="li" key={solution.id} delay={(index % 3) * 80}>
+          <Reveal as="li" key={solution.id} delay={(index % 3) * 80} className={carouselItem}>
             <SolutionCard solution={solution} />
           </Reveal>
         ))}

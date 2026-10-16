@@ -16,7 +16,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
       aria-label={dark ? t.theme.toLight : t.theme.toDark}
       title={dark ? t.theme.toLight : t.theme.toDark}
       className={cn(
-        'relative inline-flex size-9 items-center justify-center overflow-hidden rounded-lg bg-surface text-slate-600 ring-1 ring-slate-200 transition-colors hover:text-ink',
+        'relative inline-flex size-10 items-center sm:size-9 justify-center overflow-hidden rounded-lg bg-surface text-slate-600 ring-1 ring-slate-200 transition-colors hover:text-ink',
         className,
       )}
     >

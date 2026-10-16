@@ -160,7 +160,7 @@ export default function DashboardMockup() {
                 </div>
 
                 {/* Activity */}
-                <div className="rounded-lg p-3.5 ring-1 ring-slate-200 @lg:col-span-2">
+                <div className="hidden rounded-lg p-3.5 ring-1 ring-slate-200 @sm:block @lg:col-span-2">
                   <p className="mb-3 flex items-center gap-1.5 text-[11px] font-semibold text-ink-soft">
                     <span className="size-1.5 animate-live-dot rounded-full bg-success-500" />
                     {d.activity}
@@ -174,7 +174,7 @@ export default function DashboardMockup() {
                 {counters.map(({ icon: Icon, label, value }) => (
                   <div key={label} className="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2 ring-1 ring-slate-200/70">
                     <Icon size={14} className="shrink-0 text-brand-600 dark:text-brand-400" />
-                    <span className="truncate text-[11px] text-slate-600">{label}</span>
+                    <span className="hidden truncate text-[11px] text-slate-600 @sm:inline">{label}</span>
                     <span className="ml-auto text-sm font-semibold text-ink tabular-nums">{value}</span>
                   </div>
                 ))}

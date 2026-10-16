@@ -19,7 +19,7 @@ interface CardProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode;
 }
 
-const paddings = { none: '', sm: 'p-4', md: 'p-6', lg: 'p-8' } as const;
+const paddings = { none: '', sm: 'p-4', md: 'p-5 sm:p-6', lg: 'p-5 sm:p-8' } as const;
 
 export default function Card({
   as: Component = 'div',

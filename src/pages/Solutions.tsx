@@ -23,15 +23,15 @@ export default function Solutions() {
 
       <Section labelledBy="roles-title">
         <SectionHeading id="roles-title" title={p.rolesTitle} align="center" />
-        <ul className="mt-12 grid gap-5 md:grid-cols-3">
+        <ul className="mt-8 grid gap-3 sm:mt-12 sm:gap-5 md:grid-cols-3">
           {p.roles.map(({ title, description }, i) => {
             const Icon = roleIcons[i];
             return (
               <li key={title}>
-                <Card variant="muted" className="h-full">
-                  <Icon size={22} aria-hidden="true" className="text-brand-600 dark:text-brand-400" />
-                  <h3 className="mt-4 text-lg font-semibold">{title}</h3>
-                  <p className="mt-2 leading-relaxed text-slate-600">{description}</p>
+                <Card variant="muted" padding="none" className="h-full p-4 sm:p-6">
+                  <Icon size={22} aria-hidden="true" className="size-5 sm:size-[22px] text-brand-600 dark:text-brand-400" />
+                  <h3 className="mt-3 text-base font-semibold sm:mt-4 sm:text-lg">{title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-slate-600 sm:mt-2 sm:text-base">{description}</p>
                 </Card>
               </li>
             );

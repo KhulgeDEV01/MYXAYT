@@ -24,11 +24,11 @@ export default function About() {
           <div className="lg:col-span-4">
             <SectionHeading id="mission-title" eyebrow={p.missionEyebrow} title={p.missionTitle} />
           </div>
-          <div className="space-y-10 lg:col-span-8">
+          <div className="space-y-8 sm:space-y-10 lg:col-span-8">
             {p.principles(siteConfig.name).map((item) => (
               <Reveal key={item.title}>
-                <h3 className="text-xl font-semibold">{item.title}</h3>
-                <p className="mt-3 text-lg leading-relaxed text-slate-600">{item.body}</p>
+                <h3 className="text-lg font-semibold sm:text-xl">{item.title}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-slate-600 sm:mt-3 sm:text-lg">{item.body}</p>
               </Reveal>
             ))}
           </div>
@@ -39,15 +39,15 @@ export default function About() {
 
       <Section labelledBy="values-title">
         <SectionHeading id="values-title" eyebrow={p.valuesEyebrow} title={p.valuesTitle} align="center" />
-        <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-5 lg:grid-cols-4">
           {companyValues[locale].map((value, index) => {
             const Icon = value.icon;
             return (
               <Reveal as="li" key={value.id} delay={index * 70}>
-                <Card className="h-full">
-                  <Icon size={22} aria-hidden="true" className="text-brand-600 dark:text-brand-400" />
-                  <h3 className="mt-4 font-semibold">{value.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{value.description}</p>
+                <Card padding="none" className="h-full p-4 sm:p-6">
+                  <Icon size={22} aria-hidden="true" className="size-5 sm:size-[22px] text-brand-600 dark:text-brand-400" />
+                  <h3 className="mt-3 text-sm font-semibold sm:text-base sm:mt-4">{value.title}</h3>
+                  <p className="mt-1.5 text-[13px] leading-snug sm:text-sm sm:leading-relaxed text-slate-600 sm:mt-2">{value.description}</p>
                 </Card>
               </Reveal>
             );

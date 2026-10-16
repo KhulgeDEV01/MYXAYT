@@ -13,7 +13,7 @@ export default function Hero() {
   const h = t.hero;
 
   return (
-    <section aria-labelledby="hero-title" className="relative overflow-hidden bg-surface pt-28 pb-20 sm:pt-36 lg:pt-40 lg:pb-28">
+    <section aria-labelledby="hero-title" className="relative overflow-hidden bg-surface pt-24 pb-16 sm:pt-36 sm:pb-20 lg:pt-40 lg:pb-28">
       <div
         aria-hidden="true"
         className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_70%_60%_at_60%_30%,black,transparent)]"
@@ -21,7 +21,7 @@ export default function Hero() {
       <div aria-hidden="true" className="absolute top-0 right-0 h-[560px] w-[60%] bg-brand-50/70 [clip-path:polygon(18%_0,100%_0,100%_100%,0_78%)]" />
 
       <Container className="relative">
-        <div className="grid items-center gap-16 xl:grid-cols-12 xl:gap-10">
+        <div className="grid items-center gap-12 sm:gap-16 xl:grid-cols-12 xl:gap-10">
           <div className="max-w-2xl animate-fade-up xl:col-span-5 xl:max-w-none">
             <p className="inline-flex items-center gap-2 rounded-md bg-surface px-2.5 py-1 text-xs font-medium text-ink-muted shadow-soft ring-1 ring-slate-200">
               <span className="size-1.5 rounded-full bg-accent-500" aria-hidden="true" />
@@ -29,7 +29,7 @@ export default function Hero() {
             </p>
             <h1
               id="hero-title"
-              className="mt-6 text-[2.1rem] leading-[1.1] font-semibold tracking-tight sm:text-5xl xl:text-[2.9rem]"
+              className="mt-5 text-[1.75rem] leading-[1.15] sm:mt-6 font-semibold tracking-tight sm:text-5xl xl:text-[2.9rem]"
             >
               {h.titleLines.map((line, i) => (
                 <span key={line} className={cn('block', i === h.titleLines.length - 1 && 'text-brand-600 dark:text-brand-400')}>
@@ -37,8 +37,8 @@ export default function Hero() {
                 </span>
               ))}
             </h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-pretty text-slate-600">{h.description}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <p className="mt-5 max-w-lg text-base leading-relaxed sm:mt-6 sm:text-lg text-pretty text-slate-600">{h.description}</p>
+            <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row">
               <Button to={routes.signup} size="lg" iconRight={ArrowRight}>
                 {h.primaryCta}
               </Button>
@@ -48,7 +48,7 @@ export default function Hero() {
             </div>
             <p className="mt-4 text-sm text-slate-500">{h.note}</p>
 
-            <ul className="mt-10 grid gap-4 border-t border-slate-200 pt-6 sm:grid-cols-3">
+            <ul className="mt-8 grid gap-3 border-t sm:mt-10 sm:gap-4 border-slate-200 pt-6 sm:grid-cols-3">
               {h.highlights.map((label, i) => {
                 const Icon = highlightIcons[i];
                 return (

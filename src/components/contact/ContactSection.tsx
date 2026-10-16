@@ -52,9 +52,9 @@ export default function ContactSection({ showHeading = true, initialType = 'cont
           <Card as="section" aria-label={c.infoAria}>
             <div className="flex items-center gap-3">
               <span className="flex size-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600 dark:text-brand-400">
-                <Headset size={20} aria-hidden="true" />
+                <Headset size={20} aria-hidden="true" className="size-[18px] sm:size-5" />
               </span>
-              <h3 className="text-lg font-semibold">{c.contactTitle}</h3>
+              <h3 className="text-base font-semibold sm:text-lg">{c.contactTitle}</h3>
             </div>
             <p className="mt-3 text-sm text-slate-600">{c.contactText}</p>
             <dl className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
@@ -65,7 +65,7 @@ export default function ContactSection({ showHeading = true, initialType = 'cont
                     <dt className="text-xs text-slate-500">{label}</dt>
                     <dd className="text-sm font-semibold break-words text-ink">
                       {href ? (
-                        <a href={href} className="hover:text-brand-700 dark:hover:text-brand-300">
+                        <a href={href} className="inline-block py-1.5 hover:text-brand-700 sm:py-0 dark:hover:text-brand-300">
                           {value}
                         </a>
                       ) : (
@@ -82,9 +82,9 @@ export default function ContactSection({ showHeading = true, initialType = 'cont
           <Card as="section" variant="dark" aria-labelledby="partner-title">
             <div className="flex items-center gap-3">
               <span className="flex size-10 items-center justify-center rounded-lg bg-white/10 text-accent-300">
-                <Handshake size={20} aria-hidden="true" />
+                <Handshake size={20} aria-hidden="true" className="size-[18px] sm:size-5" />
               </span>
-              <h3 id="partner-title" className="text-lg font-semibold text-white">
+              <h3 id="partner-title" className="text-base font-semibold text-white sm:text-lg">
                 {c.partnerTitle}
               </h3>
             </div>
@@ -101,7 +101,7 @@ export default function ContactSection({ showHeading = true, initialType = 'cont
               type="button"
               onClick={startPartnership}
               aria-controls={FORM_ID}
-              className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent-300 hover:text-white"
+              className="group mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-accent-300 hover:text-white sm:mt-6 sm:min-h-0"
             >
               {c.partnerCta}
               <ArrowRight size={16} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
@@ -111,7 +111,7 @@ export default function ContactSection({ showHeading = true, initialType = 'cont
 
         {/* Request form */}
         <Card padding="lg" className="lg:col-span-7">
-          <h3 className="text-xl font-semibold">{t.requestForm.title}</h3>
+          <h3 className="text-lg font-semibold sm:text-xl">{t.requestForm.title}</h3>
           <p className="mt-1 mb-6 text-sm text-slate-500">{t.requestForm.subtitle}</p>
           <RequestForm id={FORM_ID} type={type} onTypeChange={setType} />
         </Card>

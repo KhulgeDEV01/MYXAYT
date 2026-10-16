@@ -103,7 +103,7 @@ export default function RequestForm({ id = 'request-form', type, onTypeChange }:
         <span className="flex size-14 items-center justify-center rounded-full bg-success-50 text-success-600">
           <CircleCheck size={28} aria-hidden="true" />
         </span>
-        <h3 className="mt-5 text-xl font-semibold">{f.successTitle}</h3>
+        <h3 className="mt-5 text-lg font-semibold sm:text-xl">{f.successTitle}</h3>
         {sentTo && <p className="mt-2 max-w-sm text-slate-600">{f.successText(sentTo)}</p>}
         <Button variant="secondary" className="mt-8" onClick={() => setStatus('idle')}>
           {f.sendAnother}

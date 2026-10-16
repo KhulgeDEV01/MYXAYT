@@ -25,7 +25,7 @@ export default function Section({ id, tone = 'white', className, containerClassN
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={cn('relative py-20 sm:py-24 lg:py-28', tones[tone], className)}
+      className={cn('relative py-16 sm:py-24 lg:py-28', tones[tone], className)}
     >
       <Container className={containerClassName}>{children}</Container>
     </section>

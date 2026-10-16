@@ -32,7 +32,7 @@ export default function FeaturesSection({ detailed = false, showLink = true }: F
           </Button>
         )}
       </div>
-      <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-10 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-5 lg:grid-cols-3">
         {coreFeatures[locale].map((feature, index) => (
           <Reveal as="li" key={feature.id} delay={(index % 3) * 80}>
             <FeatureCard feature={feature} showPoints={detailed} />

@@ -61,7 +61,7 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <ThemeToggle />
             <LanguageSwitcher />
             <div className="hidden items-center gap-2 sm:flex">

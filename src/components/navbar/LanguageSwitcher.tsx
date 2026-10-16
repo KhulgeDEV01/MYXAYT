@@ -86,7 +86,7 @@ export default function LanguageSwitcher({ className }: { className?: string }) 
           }
         }}
         className={cn(
-          'inline-flex h-9 items-center gap-2 rounded-lg bg-surface pr-2 pl-2.5 text-xs font-semibold text-ink ring-1 ring-slate-200 transition-colors hover:ring-slate-300',
+          'inline-flex h-10 items-center gap-2 rounded-lg sm:h-9 bg-surface pr-2 pl-2.5 text-xs font-semibold text-ink ring-1 ring-slate-200 transition-colors hover:ring-slate-300',
           open && 'ring-brand-500',
         )}
       >
