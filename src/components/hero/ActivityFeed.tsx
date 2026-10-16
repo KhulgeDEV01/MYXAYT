@@ -1,3 +1,9 @@
+/**
+ * ActivityFeed.tsx — "Шууд үйл явдал" жагсаалт (нүүр хуудасны жишээ самбар дотор).
+ *
+ * ЖИШЭЭ: Бэлэн үйл явдлуудыг ("Б.Сараа санал өглөө" г.м.) хэдэн секунд тутам
+ * эргэлдүүлж, шинэ үйл явдал дээрээс орж ирж байгаа мэт харагдуулна.
+ */
 import { useEffect, useState } from 'react';
 import { CircleHelp, Hand, Lightbulb, LogIn, Vote } from 'lucide-react';
 import type { ActivityEvent, ActivityType } from '../../types/domain';
@@ -5,6 +11,7 @@ import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import { useI18n } from '../../i18n/useI18n';
 import { cn } from '../../utils/cn';
 
+/** Үйл явдлын төрөл бүрийн дүрс ба өнгө (санал — ногоон, асуулт — цэнхэр…). */
 const typeStyles: Record<ActivityType, { icon: typeof Vote; className: string }> = {
   vote: { icon: Vote, className: 'bg-success-50 text-success-600' },
   question: { icon: CircleHelp, className: 'bg-brand-50 text-brand-600 dark:text-brand-400' },
@@ -15,15 +22,18 @@ const typeStyles: Record<ActivityType, { icon: typeof Vote; className: string }>
 
 interface ActivityFeedProps {
   events: ActivityEvent[];
+  /** Нэг удаад харагдах мөрийн тоо. */
   visible?: number;
+  /** false бол эргэлдэхгүй (самбар дэлгэцэнд харагдахгүй үед). */
   active?: boolean;
   intervalMs?: number;
 }
 
-/** DEMO: rotates through sample events to suggest a live activity stream. */
+/** ЖИШЭЭ: үйл явдлуудыг эргэлдүүлж "шууд" урсгал мэт харуулна. */
 export default function ActivityFeed({ events, visible = 4, active = true, intervalMs = 3200 }: ActivityFeedProps) {
   const reducedMotion = usePrefersReducedMotion();
   const { t } = useI18n();
+  // Эргэлтийн байрлал — нэмэгдэх бүрт жагсаалт нэг мөрөөр шилжинэ.
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
@@ -32,6 +42,7 @@ export default function ActivityFeed({ events, visible = 4, active = true, inter
     return () => window.clearInterval(timer);
   }, [active, reducedMotion, events.length, intervalMs]);
 
+  // Харагдах мөрүүдийг сонгоно; хамгийн дээд мөр нь "дөнгөж сая" гэж харагдаж, гулсаж орж ирнэ.
   const items = Array.from({ length: visible }, (_, i) => {
     const event = events[(events.length - offset + i) % events.length];
     return { event, key: `${event.id}-${offset - i}` };

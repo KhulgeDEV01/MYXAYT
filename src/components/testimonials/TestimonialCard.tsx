@@ -1,8 +1,12 @@
+/**
+ * TestimonialCard.tsx — Нэг хэрэглэгчийн сэтгэгдлийн карт: ишлэл + нэр, албан тушаал, байгууллага.
+ */
 import { Quote } from 'lucide-react';
 import type { Testimonial } from '../../types/content';
 import Avatar from '../ui/Avatar';
 import Card from '../ui/Card';
 
+/** <figure> + <blockquote> — ишлэлийн зөв HTML бүтэц. */
 export default function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
     <Card as="figure" className="flex h-full flex-col">

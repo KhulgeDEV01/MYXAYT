@@ -1,3 +1,9 @@
+/**
+ * HowItWorks.tsx — "Хэрхэн ажилладаг вэ" хэсэг.
+ *
+ * Дээд хэсэгт 4 алхам (дугаартай), доор нь "Хурлын бүтэн мөчлөг" (ProductFlow).
+ * Алхмуудын текст: data/workflow.ts → processSteps.
+ */
 import { processSteps } from '../../data/workflow';
 import { useI18n } from '../../i18n/useI18n';
 import Reveal from '../ui/Reveal';
@@ -5,6 +11,7 @@ import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
 import ProductFlow from './ProductFlow';
 
+/** 4 алхам + хурлын бүтэн мөчлөг. */
 export default function HowItWorks() {
   const { locale, t } = useI18n();
 
@@ -19,7 +26,7 @@ export default function HowItWorks() {
       />
 
       <div className="relative mt-10 sm:mt-16">
-        {/* Connecting timeline line (desktop) */}
+        {/* Алхмуудыг холбосон хэвтээ шугам (зөвхөн том дэлгэцэнд) */}
         <span aria-hidden="true" className="absolute top-6 right-[12%] left-[12%] hidden h-px bg-slate-300 lg:block" />
         <ol className="relative grid grid-cols-2 gap-x-4 gap-y-8 md:gap-10 lg:grid-cols-4 lg:gap-6">
           {processSteps[locale].map((step, index) => {
@@ -33,6 +40,7 @@ export default function HowItWorks() {
               >
                 <div className="relative z-10 flex size-10 shrink-0 sm:size-12 items-center justify-center rounded-xl bg-surface text-brand-600 dark:text-brand-400 shadow-soft ring-1 ring-slate-200">
                   <Icon size={22} aria-hidden="true" className="size-5 sm:size-[22px]" />
+                  {/* Алхмын дугаар (1, 2, 3, 4) — дүрсний баруун дээд буланд. */}
                   <span className="absolute -top-2 -right-2 flex size-5 items-center justify-center rounded-full bg-ink text-[10px] font-semibold text-surface">
                     {index + 1}
                   </span>

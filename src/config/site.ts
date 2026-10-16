@@ -1,23 +1,26 @@
 /**
- * Global brand + company configuration (language-independent).
- * Localized texts (titles, address, hours…) live in src/i18n/dictionaries.
- * Replace placeholder values (marked TODO) before going live.
+ * site.ts — Байгууллагын ерөнхий мэдээлэл (хэлнээс хамаарахгүй).
+ *
+ * Брэндийн нэр, домэйн, имэйл, утас, сошиал хаягууд энд байна. Энд өөрчилбөл
+ * сайтын бүх газарт (Footer, Холбоо барих хэсэг г.м.) автоматаар солигдоно.
+ * Хэлнээс хамаарах текстүүд (хаяг, ажлын цаг…) src/i18n/dictionaries дотор байна.
+ * TODO гэсэн тэмдэгтэй утгуудыг сайтаа нийтлэхээс өмнө жинхэнэ мэдээллээр солино уу.
  */
 export const siteConfig = {
   name: 'МҮХАҮТ',
-  // TODO: replace with the production domain
+  // TODO: жинхэнэ домэйн хаягаар солих
   url: 'https://meetsync.mn',
-  // TODO: replace with real contact details
+  // TODO: жинхэнэ холбоо барих мэдээллээр солих
   contact: {
-    email: 'hello@meetsync.mn',
-    salesEmail: 'sales@meetsync.mn',
+    email: 'hello@meetsync.mn', // Сайт дээр харагдах ерөнхий имэйл
+    salesEmail: 'sales@meetsync.mn', // Борлуулалтын имэйл
     phone: '+976 7700 0000',
   },
-  // TODO: replace with real profile URLs
+  // TODO: байгууллагын жинхэнэ сошиал хуудсуудын хаягаар солих
   social: {
     facebook: 'https://facebook.com/',
     linkedin: 'https://linkedin.com/',
     youtube: 'https://youtube.com/',
   },
-  foundedYear: 2026,
+  foundedYear: 2026, // Footer дээрх "© 2026" он
 } as const;

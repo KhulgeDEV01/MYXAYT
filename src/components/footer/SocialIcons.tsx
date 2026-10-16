@@ -1,6 +1,12 @@
+/**
+ * SocialIcons.tsx — Facebook, LinkedIn, YouTube холбоосын дүрсүүд (Footer дотор).
+ *
+ * Хаягуудыг config/site.ts → social хэсгээс засна. Шинэ сүлжээ нэмэх бол доорх
+ * `icons` ба `labels`-д нэмж, site.ts-д хаягийг нь оруулна.
+ */
 import { siteConfig } from '../../config/site';
 
-// Inline brand marks (lucide no longer ships brand icons).
+// Брэндийн дүрсүүдийн SVG зам (lucide сан брэнд дүрс агуулдаггүй тул энд шууд бичсэн).
 const icons = {
   facebook:
     'M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.1 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.44 2.9h-2.34V22c4.78-.79 8.43-4.94 8.43-9.94Z',
@@ -10,12 +16,14 @@ const icons = {
     'M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8ZM9.6 15.57V8.43L15.82 12 9.6 15.57Z',
 } as const;
 
+/** Дэлгэц уншигчид зориулсан нэрс. */
 const labels: Record<keyof typeof icons, string> = {
   facebook: 'Facebook',
   linkedin: 'LinkedIn',
   youtube: 'YouTube',
 };
 
+/** Сошиал сүлжээний холбоосууд — шинэ цонхонд нээгдэнэ. */
 export default function SocialIcons() {
   return (
     <ul className="flex gap-2">

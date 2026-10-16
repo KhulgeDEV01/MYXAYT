@@ -1,6 +1,13 @@
+/**
+ * ProgressBar.tsx — Хувиар дүүрэх зураас (санал хураалтын үр дүн г.м.).
+ *
+ * Хэрэглээ: <ProgressBar value={68} tone="positive" label="Дэмжиж байна" marker={50} />
+ * role="progressbar" — дэлгэц уншигч "68 хувь" гэж уншина.
+ */
 import { cn } from '../../utils/cn';
 import type { VoteTone } from '../../types/domain';
 
+/** Өнгө: positive — ногоон, negative — улаан, neutral — саарал, brand — цэнхэр, accent — цайвар цэнхэр. */
 type Tone = VoteTone | 'brand' | 'accent';
 
 const fills: Record<Tone, string> = {
@@ -12,16 +19,19 @@ const fills: Record<Tone, string> = {
 };
 
 interface ProgressBarProps {
+  /** Дүүргэлтийн хувь (0–100). */
   value: number;
   tone?: Tone;
+  /** Дэлгэц уншигчид зориулсан нэр. */
   label: string;
   size?: 'xs' | 'sm' | 'md';
-  /** Optional vertical marker, e.g. the pass threshold. */
+  /** Босоо тэмдэглэгээ (хувиар), жишээ нь батлах босго 50%. */
   marker?: number;
   trackClassName?: string;
   className?: string;
 }
 
+/** Өнгөт дүүргэлттэй хэвтээ зураас. */
 export default function ProgressBar({
   value,
   tone = 'brand',
@@ -31,6 +41,7 @@ export default function ProgressBar({
   trackClassName,
   className,
 }: ProgressBarProps) {
+  // Утгыг 0–100 хооронд барина (алдаатай утга ирсэн ч эвдрэхгүй).
   const clamped = Math.max(0, Math.min(100, value));
   return (
     <div
@@ -46,6 +57,7 @@ export default function ProgressBar({
         className,
       )}
     >
+      {/* Дүүргэлт: өргөн нь өөрчлөгдөхөд 0.7 секундэд зөөлөн шилжинэ. */}
       <div
         className={cn('h-full rounded-full transition-[width] duration-700 ease-out', fills[tone])}
         style={{ width: `${clamped}%` }}

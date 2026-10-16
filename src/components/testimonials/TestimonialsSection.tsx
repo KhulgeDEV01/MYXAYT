@@ -1,3 +1,8 @@
+/**
+ * TestimonialsSection.tsx — Хэрэглэгчдийн сэтгэгдлийн хэсэг (3 карт).
+ *
+ * Доор нь "жишээ сэтгэгдэл" гэсэн тайлбар бий. Өгөгдөл: data/testimonials.ts.
+ */
 import { testimonials } from '../../data/testimonials';
 import { useI18n } from '../../i18n/useI18n';
 import Reveal from '../ui/Reveal';
@@ -5,6 +10,7 @@ import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
 import TestimonialCard from './TestimonialCard';
 
+/** Сэтгэгдлүүд. */
 export default function TestimonialsSection() {
   const { locale, t } = useI18n();
 

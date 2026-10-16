@@ -1,8 +1,15 @@
+/**
+ * Badge.tsx — Жижиг шошго (жишээ нь "Шууд", "Нээлттэй", "Удахгүй").
+ *
+ * Хэрэглээ: <Badge tone="success" dot>Нээлттэй</Badge>
+ */
 import type { ReactNode } from 'react';
 import { cn } from '../../utils/cn';
 
+/** Шошгоны өнгөний төрлүүд. live — улаан, анивчдаг цэгтэй ("Шууд" дамжуулалт). */
 type Tone = 'brand' | 'neutral' | 'success' | 'danger' | 'warning' | 'live' | 'dark';
 
+// Төрөл бүрийн дэвсгэр, текст, хүрээний өнгө.
 const tones: Record<Tone, string> = {
   brand: 'bg-brand-50 text-brand-700 dark:text-brand-300 ring-brand-200/70',
   neutral: 'bg-slate-100 text-slate-700 ring-slate-200',
@@ -13,6 +20,7 @@ const tones: Record<Tone, string> = {
   dark: 'bg-white/10 text-white ring-white/15',
 };
 
+// Шошгоны өмнөх жижиг цэгийн өнгө (`dot` сонголттой үед).
 const dotTones: Record<Tone, string> = {
   brand: 'bg-brand-500',
   neutral: 'bg-slate-400',
@@ -25,12 +33,14 @@ const dotTones: Record<Tone, string> = {
 
 interface BadgeProps {
   tone?: Tone;
+  /** Текстийн өмнө жижиг өнгөт цэг харуулах эсэх. */
   dot?: boolean;
   size?: 'sm' | 'md';
   className?: string;
   children: ReactNode;
 }
 
+/** Өнгөт жижиг шошго. */
 export default function Badge({ tone = 'brand', dot, size = 'md', className, children }: BadgeProps) {
   return (
     <span

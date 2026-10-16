@@ -1,3 +1,10 @@
+/**
+ * LanguageSwitcher.tsx — Дээд цэсний хэл сонгох товч (туг + МН / EN).
+ *
+ * Дарахад жагсаалт нээгдэж, Монгол / English сонголт гарна. Гараар бүрэн удирдана:
+ * ↑ ↓ — сонголт хооронд шилжих, Enter — сонгох, Escape — хаах.
+ * Гадна талд дарахад автоматаар хаагдана.
+ */
 import { useEffect, useId, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { Check, ChevronDown } from 'lucide-react';
@@ -7,18 +14,21 @@ import type { Locale } from '../../i18n/types';
 import { cn } from '../../utils/cn';
 import { LocaleFlag } from './Flags';
 
+/** Товчин дээр харагдах товч нэр. */
 const shortLabels: Record<Locale, string> = { mn: 'МН', en: 'EN' };
 
-/** Flag dropdown for choosing the site language (WAI-ARIA menu with radio items). */
+/** Туг бүхий хэл сонгох цэс (WAI-ARIA menu + menuitemradio загвар). */
 export default function LanguageSwitcher({ className }: { className?: string }) {
   const { locale, setLocale, t } = useI18n();
+  // Цэс нээлттэй эсэх.
   const [open, setOpen] = useState(false);
+  // Элементүүдэд шууд хандах лавлагаа (ref): бүхэл блок, товч, цэсний мөрүүд.
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const menuId = useId();
 
-  // Close on outside click; focus the current language when opening.
+  // Цэс нээгдэхэд одоогийн хэл рүү focus шилжүүлж, гадна талд дарвал хаана.
   useEffect(() => {
     if (!open) return;
     itemRefs.current[locales.indexOf(locale)]?.focus();
@@ -29,16 +39,19 @@ export default function LanguageSwitcher({ className }: { className?: string }) 
     return () => document.removeEventListener('pointerdown', onPointerDown);
   }, [open, locale]);
 
+  /** Цэсийг хаана; refocus=true бол focus-ийг товч руу буцаана (гараар удирдагчид чухал). */
   const close = (refocus = true) => {
     setOpen(false);
     if (refocus) triggerRef.current?.focus();
   };
 
+  /** Хэл сонгоод цэсийг хаана. */
   const choose = (code: Locale) => {
     setLocale(code);
     close();
   };
 
+  /** Цэс доторх гарын удирдлага: сумнууд, Home / End, Escape, Tab. */
   const onMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const current = itemRefs.current.findIndex((el) => el === document.activeElement);
     const move = (index: number) => itemRefs.current[(index + locales.length) % locales.length]?.focus();
@@ -90,6 +103,7 @@ export default function LanguageSwitcher({ className }: { className?: string }) 
           open && 'ring-brand-500',
         )}
       >
+        {/* Одоогийн хэлний туг + (том дэлгэцэнд) МН / EN + сум. */}
         <LocaleFlag locale={locale} />
         <span className="hidden sm:inline">{shortLabels[locale]}</span>
         <ChevronDown
@@ -99,6 +113,7 @@ export default function LanguageSwitcher({ className }: { className?: string }) 
         />
       </button>
 
+      {/* Нээгдэх жагсаалт. */}
       {open && (
         <div
           id={menuId}

@@ -1,3 +1,11 @@
+/**
+ * useCases.ts — "Хэрэглээний жишээ" хэсгийн 8 карт.
+ *
+ * `tag` — картын буланд харагдах жижиг ангиллын шошго.
+ *
+ * Текст засах: доорх `mn:` хэсэгт монгол, `en:` хэсэгт англи хувилбарыг засна.
+ * Хоёр хэлэнд ижил `id`-тай байх ёстой.
+ */
 import { BookOpenCheck, ClipboardList, FolderKanban, Gavel, Handshake, PieChart, Presentation, UsersRound } from 'lucide-react';
 import type { UseCase } from '../types/content';
 import type { Localized } from '../i18n/types';

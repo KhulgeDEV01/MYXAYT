@@ -1,3 +1,11 @@
+/**
+ * Login.tsx — Нэвтрэх / бүртгүүлэх хуудас (/login, /login?mode=signup).
+ *
+ * АНХААР: Одоогоор зөвхөн дүрс төрх. Backend холбогдоогүй тул "Нэвтрэх" дарахад
+ * "систем хараахан холбогдоогүй" гэсэн үнэн мэдэгдэл гарна (services/auth.ts).
+ * Зүүн талд маягт, баруун талд (том дэлгэцэнд) брэндийн самбар.
+ * Хайлтын системд бүртгүүлэхгүй (noIndex).
+ */
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -17,16 +25,21 @@ import { useI18n } from '../i18n/useI18n';
 import { authService } from '../services/auth';
 import type { VoteTone } from '../types/domain';
 
+/** Горим: нэвтрэх эсвэл бүртгүүлэх. */
 type Mode = 'signin' | 'signup';
+/** Талбар бүрийн алдааны мэдэгдэл. */
 type Errors = Partial<Record<'fullName' | 'organization' | 'email' | 'password', string>>;
 
+/** Имэйлийн хэлбэр шалгах энгийн загвар. */
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/** Брэндийн самбар дахь жишээ санал хураалтын хувь. */
 const panelPoll: Array<{ value: number; tone: VoteTone }> = [
   { value: 74, tone: 'positive' },
   { value: 18, tone: 'negative' },
   { value: 8, tone: 'neutral' },
 ];
 
+/** Google-ийн өнгөт "G" лого. */
 function GoogleIcon() {
   return (
     <svg viewBox="0 0 24 24" className="size-[18px]" aria-hidden="true">
@@ -38,10 +51,12 @@ function GoogleIcon() {
   );
 }
 
+/** Нэвтрэх / бүртгүүлэх хуудас. */
 export default function Login() {
   const { t } = useI18n();
   const p = t.pages.login;
   const [params, setParams] = useSearchParams();
+  // Горимыг URL-аас уншина: ?mode=signup бол бүртгүүлэх.
   const mode: Mode = params.get('mode') === 'signup' ? 'signup' : 'signin';
   const isSignup = mode === 'signup';
 
@@ -51,6 +66,7 @@ export default function Login() {
     noIndex: true,
   });
 
+  // Төлөвүүд: нууц үг харуулах, алдаанууд, мэдэгдэл, илгээж буй эсэх, нууц үг сэргээх цонх.
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [notice, setNotice] = useState<string | null>(null);
@@ -58,12 +74,14 @@ export default function Login() {
   const [resetOpen, setResetOpen] = useState(false);
   const [resetNotice, setResetNotice] = useState<string | null>(null);
 
+  /** Нэвтрэх ↔ бүртгүүлэх горим солих (URL-ийг шинэчилнэ). */
   const switchMode = (next: Mode) => {
     setErrors({});
     setNotice(null);
     setParams(next === 'signup' ? { mode: 'signup' } : {}, { replace: true });
   };
 
+  /** Маягт илгээх: талбаруудыг шалгаад нэвтрэлтийн үйлчилгээ рүү хандана. */
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -85,7 +103,7 @@ export default function Login() {
 
     setSubmitting(true);
     try {
-      // Real implementation will redirect into the app on success.
+      // Жинхэнэ хэрэгжүүлэлтэд амжилттай бол апп руу шилжүүлнэ.
       if (isSignup) await authService.signUp({ email, password, fullName, organization });
       else await authService.signIn({ email, password });
     } catch {
@@ -95,6 +113,7 @@ export default function Login() {
     }
   };
 
+  /** "Google-ээр нэвтрэх" товч. */
   const onGoogle = async () => {
     try {
       await authService.signInWithGoogle();
@@ -103,6 +122,7 @@ export default function Login() {
     }
   };
 
+  /** "Нууц үг сэргээх" цонхны маягт. */
   const onReset = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const email = String(new FormData(event.currentTarget).get('resetEmail') ?? '');
@@ -222,7 +242,7 @@ export default function Login() {
         <p className="text-center text-xs text-slate-500">{p.terms}</p>
       </main>
 
-      {/* Brand panel */}
+      {/* Брэндийн самбар (зөвхөн том дэлгэцэнд, чимэглэл) */}
       <aside aria-hidden="true" className="relative hidden overflow-hidden bg-deep lg:flex lg:flex-col lg:justify-center lg:px-16">
         <div className="bg-grid-dark absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
         <div className="relative mx-auto w-full max-w-md">
@@ -248,6 +268,7 @@ export default function Login() {
         </div>
       </aside>
 
+      {/* Нууц үг сэргээх цонх. */}
       <Modal open={resetOpen} onClose={() => setResetOpen(false)} title={p.resetTitle} description={p.resetDescription} size="sm">
         <form noValidate onSubmit={onReset} className="space-y-4">
           <Input name="resetEmail" type="email" label={p.email} icon={Mail} autoComplete="email" />

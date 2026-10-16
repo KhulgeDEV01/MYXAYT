@@ -1,5 +1,11 @@
+/**
+ * PageLoader.tsx — Хуудас ачаалагдаж байх үеийн эргэлддэг дугуй.
+ *
+ * App.tsx-д lazy хуудас татагдаж байх хооронд харагдана.
+ */
 import { useI18n } from '../../i18n/useI18n';
 
+/** Ачаалж буйг харуулах эргэлдэх дүрс + дэлгэц уншигчид зориулсан "Ачаалж байна" текст. */
 export default function PageLoader() {
   const { t } = useI18n();
   return (

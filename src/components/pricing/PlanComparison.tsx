@@ -1,3 +1,9 @@
+/**
+ * PlanComparison.tsx — Үнэ хуудасны "Багцуудыг харьцуулах" хүснэгт.
+ *
+ * ✓ — багцад багтсан, — — багтаагүй, эсвэл текст утга. Өгөгдөл: data/pricing.ts → planComparison.
+ * Онцолсон (Pro) багцын багана цайвар цэнхэр дэвсгэртэй.
+ */
 import { Check, Minus } from 'lucide-react';
 import { planComparison, pricingPlans } from '../../data/pricing';
 import { siteConfig } from '../../config/site';
@@ -6,6 +12,7 @@ import { cn } from '../../utils/cn';
 import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
 
+/** Багцуудын онцлогийн харьцуулалт. */
 export default function PlanComparison() {
   const { locale, t } = useI18n();
   const plans = pricingPlans[locale];
@@ -14,7 +21,7 @@ export default function PlanComparison() {
     <Section labelledBy="compare-title">
       <SectionHeading id="compare-title" title={t.pricing.compareTitle} description={t.pricing.compareDescription} />
 
-      {/* Horizontal scroll is contained inside this wrapper on small screens. */}
+      {/* Жижиг дэлгэцэнд хүснэгт зөвхөн энэ хүрээ дотроо хажуу тийш гүйлгэгдэнэ (хуудас бүхэлдээ биш). */}
       <div className="mt-10 -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0" tabIndex={0} role="region" aria-label={t.pricing.compareRegion}>
         <table className="w-full min-w-[640px] border-collapse text-left text-sm">
           <caption className="sr-only">{t.pricing.compareCaption(siteConfig.name)}</caption>

@@ -2,8 +2,11 @@ import type { Testimonial } from '../types/content';
 import type { Localized } from '../i18n/types';
 
 /**
- * DEMO testimonials — fictional people and organizations.
- * Replace with real, approved customer quotes before launch.
+ * testimonials.ts — Хэрэглэгчдийн сэтгэгдэл.
+ *
+ * ЖИШЭЭ: Хүмүүс, байгууллагууд нь зохиомол. Сайтаа нийтлэхээс өмнө жинхэнэ,
+ * зөвшөөрөл авсан харилцагчдын сэтгэгдлээр солино уу.
+ * Текст засах: `mn:` хэсэгт монгол, `en:` хэсэгт англи хувилбарыг засна.
  */
 export const testimonials: Localized<Testimonial[]> = {
   mn: [

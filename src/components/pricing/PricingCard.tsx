@@ -1,3 +1,9 @@
+/**
+ * PricingCard.tsx — Нэг үнийн багцын карт.
+ *
+ * Нэр, товч тайлбар, үнэ (сараар / жилээр), товч, багтсан зүйлсийн жагсаалт.
+ * Онцолсон багц (`highlighted`) харанхуй өнгөтэй, дээр нь шошготой.
+ */
 import { ArrowRight, Check } from 'lucide-react';
 import type { BillingPeriod, PricingPlan } from '../../types/content';
 import { useI18n } from '../../i18n/useI18n';
@@ -10,8 +16,10 @@ interface PricingCardProps {
   period: BillingPeriod;
 }
 
+/** plan — багцын өгөгдөл, period — сонгосон төлбөрийн давтамж. */
 export default function PricingCard({ plan, period }: PricingCardProps) {
   const { t } = useI18n();
+  // Сонгосон давтамжийн үнэ (null бол "Тохиролцоно").
   const price = plan.price[period];
   const featured = plan.highlighted;
 
@@ -23,6 +31,7 @@ export default function PricingCard({ plan, period }: PricingCardProps) {
         featured ? 'bg-navy-950 text-navy-200 shadow-elevated ring-1 ring-navy-950 dark:ring-brand-500/50' : 'bg-surface shadow-soft ring-1 ring-slate-200',
       )}
     >
+      {/* Картын дээд ирмэг дээрх шошго. */}
       {plan.badge && (
         <p className="absolute -top-3 left-6 rounded-md bg-accent-400 px-2.5 py-1 text-xs font-semibold text-navy-950">{plan.badge}</p>
       )}
@@ -32,6 +41,7 @@ export default function PricingCard({ plan, period }: PricingCardProps) {
       <p className={cn('mt-1 min-h-10 text-sm', featured ? 'text-navy-300' : 'text-slate-500')}>{plan.tagline}</p>
 
       <div className="mt-6 flex min-h-16 flex-col justify-end">
+        {/* Үнэ: тусгай үнэ эсвэл дүн + "/сар". */}
         {price === null ? (
           <p className={cn('text-2xl font-semibold tracking-tight sm:text-3xl', featured ? 'text-white' : 'text-ink')}>{t.pricing.custom}</p>
         ) : (

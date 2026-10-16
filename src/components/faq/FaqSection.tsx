@@ -1,3 +1,9 @@
+/**
+ * FaqSection.tsx — "Түгээмэл асуулт" хэсэг.
+ *
+ * Зүүн талд гарчиг ба холбоо барих холбоос, баруун талд нээгддэг асуулт хариултууд
+ * (эхнийх нь нээлттэй). Асуулт, хариултуудыг data/faq.ts-ээс засна.
+ */
 import { Link } from 'react-router-dom';
 import { faqItems } from '../../data/faq';
 import { routes } from '../../config/routes';
@@ -7,6 +13,7 @@ import Accordion from '../ui/Accordion';
 import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
 
+/** Түгээмэл асуулт, хариулт. */
 export default function FaqSection({ tone = 'muted' }: { tone?: 'white' | 'muted' }) {
   const { locale, t } = useI18n();
   const items = faqItems[locale];
@@ -27,6 +34,7 @@ export default function FaqSection({ tone = 'muted' }: { tone?: 'white' | 'muted
           </p>
         </div>
         <div className="lg:col-span-8">
+          {/* FAQ өгөгдлийг Accordion-ы хэлбэрт (id, гарчиг, агуулга) хөрвүүлж дамжуулна. */}
           <Accordion
             defaultOpenId={items[0]?.id}
             items={items.map((item) => ({ id: item.id, title: item.question, content: item.answer }))}

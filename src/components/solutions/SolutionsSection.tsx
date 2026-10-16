@@ -1,3 +1,8 @@
+/**
+ * SolutionsSection.tsx — "Шийдэл" хэсэг: байгууллагын төрөл бүрт зориулсан 6 карт.
+ *
+ * Утсан дээр хажуу тийш гүйлгэдэг (utils/carousel.ts), том дэлгэцэнд 2–3 багана.
+ */
 import { solutions } from '../../data/solutions';
 import { useI18n } from '../../i18n/useI18n';
 import Reveal from '../ui/Reveal';
@@ -7,6 +12,7 @@ import { carouselItem, carouselList } from '../../utils/carousel';
 import { cn } from '../../utils/cn';
 import SolutionCard from './SolutionCard';
 
+/** tone — дэвсгэр өнгө (white эсвэл muted). */
 export default function SolutionsSection({ tone = 'muted' }: { tone?: 'white' | 'muted' }) {
   const { locale, t } = useI18n();
 

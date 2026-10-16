@@ -1,8 +1,16 @@
+/**
+ * Card.tsx — Дугуй булантай, хүрээ / сүүдэртэй карт.
+ *
+ * Хэрэглээ: <Card variant="muted" padding="lg" interactive>…</Card>
+ * `as` — ямар HTML элемент болохыг сонгоно (article, figure, li…).
+ */
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 import { cn } from '../../utils/cn';
 
+/** Загвар: default — цагаан + сүүдэр, muted — саарал дэвсгэр, dark — харанхуй, outline — зөвхөн хүрээ. */
 type CardVariant = 'default' | 'muted' | 'dark' | 'outline';
 
+// Загвар бүрийн өнгө.
 const variants: Record<CardVariant, string> = {
   default: 'bg-surface ring-1 ring-slate-200/80 shadow-soft',
   muted: 'bg-slate-50 ring-1 ring-slate-200/70',
@@ -13,14 +21,16 @@ const variants: Record<CardVariant, string> = {
 interface CardProps extends HTMLAttributes<HTMLElement> {
   as?: ElementType;
   variant?: CardVariant;
-  /** Adds the subtle lift-on-hover interaction. */
+  /** true бол хулгана дээр нь очиход бага зэрэг дээш өргөгдөж, сүүдэр нь томорно. */
   interactive?: boolean;
   padding?: 'none' | 'sm' | 'md' | 'lg';
   children: ReactNode;
 }
 
+// Дотор зай: утсан дээр бага, том дэлгэцэнд их (sm: — 640px-ээс дээш).
 const paddings = { none: '', sm: 'p-4', md: 'p-5 sm:p-6', lg: 'p-5 sm:p-8' } as const;
 
+/** Агуулгыг хүрээлэх карт. */
 export default function Card({
   as: Component = 'div',
   variant = 'default',

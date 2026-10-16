@@ -1,13 +1,21 @@
+/**
+ * Logo.tsx — МҮХАҮТ-ийн лого (дүрс + нэр).
+ *
+ * Дарахад нүүр хуудас руу буцна. Лого солих бол доорх LogoMark доторх SVG-г
+ * өөрийн лого файлаар (жишээ нь <img src="/logo.svg" />) сольж болно.
+ */
 import { Link } from 'react-router-dom';
 import { siteConfig } from '../../config/site';
 import { useI18n } from '../../i18n/useI18n';
 import { cn } from '../../utils/cn';
 
+/** tone: dark — гэгээлэг дэвсгэр дээр, light — харанхуй дэвсгэр (Footer) дээр. */
 interface LogoProps {
   tone?: 'dark' | 'light';
   className?: string;
 }
 
+/** Зөвхөн дүрс хэсэг: цэнхэр дөрвөлжин дотор өсөх 3 багана (санал хураалтын график). */
 export function LogoMark({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" aria-hidden="true" className={cn('size-8', className)}>
@@ -19,6 +27,7 @@ export function LogoMark({ className }: { className?: string }) {
   );
 }
 
+/** Дүрс + брэндийн нэр, нүүр хуудас руу холбоостой. */
 export default function Logo({ tone = 'dark', className }: LogoProps) {
   const { t } = useI18n();
   return (

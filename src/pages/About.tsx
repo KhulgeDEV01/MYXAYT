@@ -1,3 +1,9 @@
+/**
+ * About.tsx — "Бидний тухай" хуудас (/about).
+ *
+ * Бүтэц: гарчиг → эрхэм зорилго ба зарчмууд → статистик → үнэт зүйлс → уриалга.
+ * Текстүүд: i18n толины pages.about, үнэт зүйлс: data/company.ts.
+ */
 import PageHeader from '../components/layout/PageHeader';
 import TrustSection from '../components/trust/TrustSection';
 import FinalCta from '../components/cta/FinalCta';
@@ -10,6 +16,7 @@ import { siteConfig } from '../config/site';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { useI18n } from '../i18n/useI18n';
 
+/** "Бидний тухай" хуудас. */
 export default function About() {
   const { locale, t } = useI18n();
   const p = t.pages.about;

@@ -1,3 +1,8 @@
+/**
+ * Flags.tsx — Хэл сонгох цэсний тугнууд (SVG зураг).
+ *
+ * Зургийн файл татахгүй, кодоор зурдаг тул хурдан ачаалж, ямар ч хэмжээнд тод харагдана.
+ */
 import { useId } from 'react';
 import type { Locale } from '../../i18n/types';
 import { cn } from '../../utils/cn';
@@ -6,7 +11,7 @@ interface FlagProps {
   className?: string;
 }
 
-/** Mongolian flag (red–blue–red with a simplified gold Soyombo). */
+/** Монгол Улсын туг (улаан–цэнхэр–улаан, хялбаршуулсан алтан шар Соёмботой). */
 export function MongoliaFlag({ className }: FlagProps) {
   return (
     <svg viewBox="0 0 60 30" aria-hidden="true" className={className}>
@@ -30,8 +35,9 @@ export function MongoliaFlag({ className }: FlagProps) {
   );
 }
 
-/** United Kingdom flag, used for English. */
+/** Их Британийн туг — англи хэлийг илэрхийлнэ. */
 export function UkFlag({ className }: FlagProps) {
+  // SVG доторх clipPath-ийн id давхцахгүйн тулд давтагдашгүй id (хуудсанд хэд хэдэн туг байж болно).
   const id = useId().replace(/:/g, '');
   return (
     <svg viewBox="0 0 60 30" aria-hidden="true" className={className}>
@@ -52,7 +58,7 @@ export function UkFlag({ className }: FlagProps) {
   );
 }
 
-/** Rounded flag badge for a locale. */
+/** Хэлний кодоор (mn / en) тохирох тугийг дугуй булантай жижиг хүрээнд харуулна. */
 export function LocaleFlag({ locale, className }: { locale: Locale; className?: string }) {
   const Flag = locale === 'mn' ? MongoliaFlag : UkFlag;
   return (

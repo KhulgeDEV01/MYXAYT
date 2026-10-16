@@ -1,7 +1,13 @@
+/**
+ * stats.ts — Статистикийн тоонууд (нүүр хуудасны итгэлцлийн хэсэг).
+ *
+ * Текст засах: доорх `mn:` хэсэгт монгол, `en:` хэсэгт англи хувилбарыг засна.
+ * Хоёр хэлэнд ижил `id`-тай байх ёстой.
+ */
 import type { Stat } from '../types/content';
 import type { Localized } from '../i18n/types';
 
-/** DEMO numbers — replace with real platform metrics (or fetch from the API). */
+/** ЖИШЭЭ тоонууд — жинхэнэ үзүүлэлтээр солих (эсвэл ирээдүйд API-аас татах). */
 export const platformStats: Localized<Stat[]> = {
   mn: [
     { id: 'meetings', value: 500, suffix: '+', label: 'Хурал', description: 'зохион байгуулагдсан' },

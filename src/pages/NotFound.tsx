@@ -1,3 +1,8 @@
+/**
+ * NotFound.tsx — 404 хуудас: байхгүй хаяг руу ороход харагдана.
+ *
+ * Хайлтын системд бүртгүүлэхгүй (noIndex). "Нүүр хуудас руу буцах" товчтой.
+ */
 import { ArrowLeft } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Container from '../components/ui/Container';
@@ -5,6 +10,7 @@ import { routes } from '../config/routes';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { useI18n } from '../i18n/useI18n';
 
+/** "Хуудас олдсонгүй" хуудас. */
 export default function NotFound() {
   const { t } = useI18n();
   const p = t.pages.notFound;

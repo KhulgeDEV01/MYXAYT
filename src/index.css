@@ -1,24 +1,33 @@
+/* ==================================================================
+   index.css — Сайтын бүх загварын үндэс (Tailwind CSS v4).
+
+   • @theme — өнгө, фонт, сүүдэр, анимэйшний "токенууд". Өнгө солих бол
+     зөвхөн энд солиход бүх сайтад нөлөөлнө (жишээ нь --color-brand-600).
+   • [data-theme='dark'] — харанхуй горимд өнгөнүүдийг дахин тодорхойлно.
+   • @layer base — HTML элементүүдийн үндсэн загвар.
+   • @layer components — давтан хэрэглэгддэг тусгай класууд (.reveal, .bg-grid).
+   ================================================================== */
 @import 'tailwindcss';
 
-/* `dark:` utilities follow the theme chosen on <html data-theme="…"> (set by ThemeProvider). */
+/* `dark:` угтвартай класууд <html data-theme="dark"> үед идэвхжинэ (ThemeProvider тохируулна). */
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 /* ------------------------------------------------------------------
-   Design tokens — the single source of truth for colors, type, shadows
-   and motion. Components only reference these via Tailwind utilities.
+   Дизайн токенууд — өнгө, фонт, сүүдэр, хөдөлгөөний цорын ганц эх сурвалж.
+   Компонентууд эдгээрийг Tailwind класаар (bg-brand-600, text-ink…) ашиглана.
 ------------------------------------------------------------------- */
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif;
 
-  /* Theme-aware semantic colors (re-mapped for dark mode below) */
-  --color-surface: #ffffff; /* page & card background */
-  --color-deep: #0b1229; /* intentionally dark sections (footer, security…) */
-  --color-ink: #0b1229; /* headings, strongest text */
+  /* Горимоос хамаарах утгын өнгөнүүд (харанхуй горимд доор дахин тодорхойлогдоно) */
+  --color-surface: #ffffff; /* хуудас ба картын дэвсгэр */
+  --color-deep: #0b1229; /* үргэлж бараан хэсгүүд (footer, аюулгүй байдал…) */
+  --color-ink: #0b1229; /* гарчиг, хамгийн тод текст */
   --color-ink-soft: #101a35;
   --color-ink-muted: #213154;
 
-  /* Primary: deep navy */
+  /* Үндсэн өнгө: гүн хөх (navy) */
   --color-navy-50: #f2f5fb;
   --color-navy-100: #e3e9f5;
   --color-navy-200: #c4cfe6;
@@ -31,7 +40,7 @@
   --color-navy-900: #101a35;
   --color-navy-950: #0b1229;
 
-  /* Secondary: brand blue / indigo */
+  /* Брэндийн цэнхэр — товч, холбоос, онцлох зүйлс */
   --color-brand-50: #eef3ff;
   --color-brand-100: #dce6ff;
   --color-brand-200: #c0d1ff;
@@ -43,13 +52,13 @@
   --color-brand-800: #1b36a8;
   --color-brand-900: #1c3284;
 
-  /* Accent: electric cyan */
+  /* Нэмэлт өнгө: цайвар цэнхэр (cyan) */
   --color-accent-300: #67e8f9;
   --color-accent-400: #22d3ee;
   --color-accent-500: #06b6d4;
   --color-accent-600: #0891b2;
 
-  /* Semantic */
+  /* Утгын өнгө: success — амжилт (ногоон), danger — алдаа (улаан), warning — анхааруулга (шар) */
   --color-success-50: #ecfdf3;
   --color-success-500: #12b76a;
   --color-success-600: #039855;
@@ -71,6 +80,8 @@
   --animate-live-dot: live-dot 1.6s ease-in-out infinite;
   --animate-float: float 6s ease-in-out infinite;
 
+  /* Анимэйшнүүд: fade-up — доороос гарч ирэх, fade-in — тодрох, slide-in — дээрээс гулсах,
+     live-dot — анивчих цэг, float — дээш доош хөвөх */
   @keyframes fade-up {
     from {
       opacity: 0;
@@ -119,20 +130,23 @@
   }
 }
 
+/* HTML элементүүдийн үндсэн загвар */
 @layer base {
+  /* Зөөлөн гүйлгэлт; #хэсэг рүү үсрэхэд дээд цэсний доор зогсоно (scroll-padding-top). */
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5.5rem;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
   }
+  /* Гэгээлэг горим (анхдагч). */
   :root {
     color-scheme: light;
     --grid-line: rgb(16 26 53 / 0.05);
   }
 
-  /* Dark theme: re-map the semantic tokens and invert the neutral (slate) scale.
-     Intentionally dark areas use navy / `deep` and stay dark in both themes. */
+  /* Харанхуй горим: утгын өнгөнүүдийг дахин тодорхойлж, саарал (slate) шатлалыг урвуулна
+     (цайвар ↔ бараан). Үргэлж бараан хэсгүүд (navy / `deep`) хоёр горимд ч бараан хэвээр. */
   [data-theme='dark'] {
     color-scheme: dark;
     --grid-line: rgb(255 255 255 / 0.035);
@@ -172,6 +186,7 @@
     --shadow-elevated: 0 2px 6px rgb(0 0 0 / 0.35), 0 32px 64px -24px rgb(0 0 0 / 0.75);
   }
 
+  /* Хуудасны дэвсгэр, фонт, үндсэн текстийн өнгө. */
   body {
     @apply bg-surface font-sans text-slate-600 antialiased;
     text-rendering: optimizeLegibility;
@@ -183,7 +198,7 @@
     @apply text-ink;
     letter-spacing: -0.015em;
   }
-  /* Long Mongolian words must wrap inside narrow (2-column) phone cards. */
+  /* Урт монгол үгс утасны нарийн (2 баганат) картад багтахгүй бол шинэ мөрөнд шилжинэ. */
   h1,
   h2,
   h3,
@@ -197,13 +212,15 @@
   ::selection {
     @apply bg-brand-100 text-ink;
   }
+  /* Гараар (Tab) сонгосон элементийн цэнхэр хүрээ — хүртээмжийн шаардлага. */
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-brand-500;
   }
 }
 
+/* Давтан хэрэглэгддэг тусгай класууд */
 @layer components {
-  /* Scroll-reveal: toggled by <Reveal /> via IntersectionObserver */
+  /* Гүйлгэхэд гарч ирэх анимэйшн: <Reveal /> компонент `is-visible` класс нэмнэ */
   .reveal {
     opacity: 0;
     transform: translateY(18px);
@@ -217,7 +234,7 @@
     transform: none;
   }
 
-  /* Subtle engineering grid used behind hero and dark sections */
+  /* Hero ба бараан хэсгүүдийн ард харагдах нарийн тор хээ */
   .bg-grid {
     background-image:
       linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
@@ -232,6 +249,7 @@
   }
 }
 
+/* Хэрэглэгч "хөдөлгөөн багасгах" тохиргоотой бол бүх анимэйшнийг бараг унтраана. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

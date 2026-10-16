@@ -1,3 +1,9 @@
+/**
+ * Solutions.tsx — "Шийдэл" хуудас (/solutions).
+ *
+ * Бүтэц: гарчиг → 3 дүр (зохион байгуулагч, оролцогч, ажиглагч) → байгууллагын
+ * төрлөөрх шийдлүүд → хэрэглээний жишээ → сэтгэгдэл → уриалга.
+ */
 import { Eye, Megaphone, UserCog } from 'lucide-react';
 import PageHeader from '../components/layout/PageHeader';
 import SolutionsSection from '../components/solutions/SolutionsSection';
@@ -10,8 +16,10 @@ import SectionHeading from '../components/ui/SectionHeading';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { useI18n } from '../i18n/useI18n';
 
+/** 3 дүрийн дүрсүүд (дарааллаар). */
 const roleIcons = [UserCog, Megaphone, Eye];
 
+/** "Шийдэл" хуудас. */
 export default function Solutions() {
   const { t } = useI18n();
   const p = t.pages.solutions;

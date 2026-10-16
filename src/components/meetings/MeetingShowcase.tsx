@@ -1,3 +1,10 @@
+/**
+ * MeetingShowcase.tsx — "Шууд хурал" хэсэг: хурал явагдаж буй үеийн жишээ.
+ *
+ * Зүүн талд видео хурлын дэлгэц (VideoGrid), баруун талд "Оролцооны самбар":
+ * санал хураалт (зочин өөрөө дарж санал өгч болно), асуулт, санал, хүсэлтийн табууд.
+ * Хэсэг дэлгэцэнд харагдах үед санал тоо аяндаа өсөж "шууд" мэт харагдана.
+ */
 import { useMemo } from 'react';
 import { CircleHelp, Hand, Lightbulb, Vote } from 'lucide-react';
 import { demoContent, showcaseEligible, showcaseVoteWeights } from '../../data/demo';
@@ -12,21 +19,26 @@ import SubmissionList from './SubmissionList';
 import VideoGrid from './VideoGrid';
 import VotePanel from './VotePanel';
 
+/** Бүтээгдэхүүний интерактив жишээ хэсэг. */
 export default function MeetingShowcase() {
   const { locale, t } = useI18n();
   const demo = demoContent[locale];
+  // once: false — гүйлгээд гарахад загварчлал зогсож, буцаж ирэхэд дахин эхэлнэ.
   const { ref, inView } = useInView<HTMLDivElement>({ once: false, threshold: 0.25 });
+  // Шууд санал хураалтын загварчлал (hooks/useLiveVotes.ts).
   const live = useLiveVotes(demo.showcasePollOptions, {
     eligible: showcaseEligible,
     active: inView,
     weights: showcaseVoteWeights,
   });
 
+  // Илгээсэн зүйлсийг төрлөөр нь (асуулт / санал / хүсэлт) ангилна.
   const groups = useMemo(() => {
     const byKind = (kind: 'question' | 'suggestion' | 'request') => demo.showcaseSubmissions.filter((s) => s.kind === kind);
     return { questions: byKind('question'), suggestions: byKind('suggestion'), requests: byKind('request') };
   }, [demo]);
 
+  // Оролцооны самбарын 4 таб (тоо нь жагсаалтын уртаас автоматаар).
   const tabs: TabItem[] = [
     { id: 'vote', label: t.showcase.tabs.vote, icon: Vote },
     { id: 'questions', label: t.showcase.tabs.questions, icon: CircleHelp, count: groups.questions.length },
@@ -46,6 +58,7 @@ export default function MeetingShowcase() {
           description={t.showcase.description}
         />
 
+        {/* grid-cols-1 + min-w-0 — агуулга урт байсан ч самбарууд дэлгэцээс халихгүй. */}
         <div ref={ref} className="mt-10 grid grid-cols-1 gap-4 sm:mt-14 xl:grid-cols-12">
           <div className="min-w-0 xl:col-span-7" aria-hidden="true">
             <VideoGrid topic={demo.showcaseTopic} participants={demo.showcaseParticipants} />
@@ -57,6 +70,7 @@ export default function MeetingShowcase() {
               <span className="text-[11px] text-slate-500">{t.showcase.tryIt}</span>
             </div>
             <Tabs items={tabs} label={t.showcase.tabsLabel}>
+              {/* Идэвхтэй табаас хамаарч харгалзах агуулгыг харуулна. */}
               {(active) => {
                 switch (active) {
                   case 'vote':

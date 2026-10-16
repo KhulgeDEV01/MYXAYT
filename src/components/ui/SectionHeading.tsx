@@ -1,17 +1,26 @@
+/**
+ * SectionHeading.tsx — Хэсгийн гарчгийн блок: жижиг дээд шошго + том гарчиг + тайлбар.
+ *
+ * Хэрэглээ: <SectionHeading eyebrow="ҮНЭ" title="…" description="…" align="center" />
+ */
 import type { ReactNode } from 'react';
 import { cn } from '../../utils/cn';
 
 interface SectionHeadingProps {
   id?: string;
+  /** Гарчгийн дээрх жижиг том үсэгтэй шошго (жишээ нь "БОЛОМЖУУД"). */
   eyebrow?: string;
   title: ReactNode;
   description?: ReactNode;
   align?: 'left' | 'center';
+  /** dark — харанхуй дэвсгэр дээр цагаан текстээр. */
   tone?: 'light' | 'dark';
+  /** Гарчгийн HTML түвшин (анхдагч h2). Хуудасны үндсэн гарчиг бол 'h1'. */
   as?: 'h1' | 'h2' | 'h3';
   className?: string;
 }
 
+/** Хэсгийн гарчиг, тайлбар. */
 export default function SectionHeading({
   id,
   eyebrow,

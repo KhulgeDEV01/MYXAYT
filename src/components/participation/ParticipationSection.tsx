@@ -1,3 +1,9 @@
+/**
+ * ParticipationSection.tsx — "Оролцоо" хэсэг: хурал дээр хүн бүрийн дуу хоолой сонсогдох тухай.
+ *
+ * Зүүн талд: уламжлалт хурлын асуудлууд ба МҮХАҮТ-ийн шийдэл (data/company.ts), ишлэл.
+ * Баруун талд: оролцогчдын асуулт, санал, санал хураалт, хүсэлтийн жишээ картууд.
+ */
 import { Check, ChevronUp, CircleHelp, Hand, Lightbulb, Minus, Vote } from 'lucide-react';
 import { participationCapabilities, participationProblems } from '../../data/company';
 import { siteConfig } from '../../config/site';
@@ -9,7 +15,7 @@ import Reveal from '../ui/Reveal';
 import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
 
-/** Decorative stream of participant interactions. */
+/** Оролцогчдын харилцан үйлдлийн жишээ картууд (чимэглэл, дэлгэц уншигчаас нуусан). */
 function InteractionStream() {
   const { t } = useI18n();
   const s = t.participation.stream;
@@ -79,6 +85,7 @@ function InteractionStream() {
   );
 }
 
+/** "Оролцоо" хэсэг. */
 export default function ParticipationSection() {
   const { locale, t } = useI18n();
   const p = t.participation;
@@ -89,6 +96,7 @@ export default function ParticipationSection() {
         <div>
           <SectionHeading id="participation-title" eyebrow={p.eyebrow} title={p.title} description={p.description} />
 
+          {/* Хоёр жагсаалт: "Асуудал" (саарал −) ба "Шийдэл" (цэнхэр ✓). */}
           <div className="mt-10 grid gap-8 sm:grid-cols-2">
             <div>
               <h3 className="text-sm font-semibold text-slate-500">{p.problemsTitle}</h3>

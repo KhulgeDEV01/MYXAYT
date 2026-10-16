@@ -1,3 +1,8 @@
+/**
+ * PageHeader.tsx — Дотоод хуудсуудын (Боломжууд, Үнэ, Холбоо барих…) дээд гарчгийн хэсэг.
+ *
+ * Жижиг шошго + том гарчиг (h1) + тайлбар; ар талдаа цайвар тор хээтэй.
+ */
 import type { ReactNode } from 'react';
 import Container from '../ui/Container';
 
@@ -8,10 +13,11 @@ interface PageHeaderProps {
   children?: ReactNode;
 }
 
-/** Intro band used at the top of inner pages. */
+/** Дотоод хуудасны эхний гарчгийн хэсэг. `children` — гарчгийн доор нэмэлт агуулга (товч г.м.). */
 export default function PageHeader({ eyebrow, title, description, children }: PageHeaderProps) {
   return (
     <header className="relative overflow-hidden border-b border-slate-200/70 bg-slate-50 pt-24 pb-12 sm:pt-40 sm:pb-20">
+      {/* Ар талын тор хээ (доошоо бүдгэрнэ). */}
       <div aria-hidden="true" className="bg-grid absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
       <Container className="relative">
         <div className="max-w-3xl animate-fade-up">

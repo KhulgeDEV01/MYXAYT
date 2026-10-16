@@ -1,3 +1,9 @@
+/**
+ * Home.tsx — Нүүр хуудас (/).
+ *
+ * Хэсгүүдийн дарааллыг энд өөрчилнө: мөрийг дээш доош зөөх, эсвэл устгах.
+ * Хэсэг бүрийн агуулга components/ хавтсанд, текст нь i18n/dictionaries дотор байна.
+ */
 import Hero from '../components/hero/Hero';
 import TrustSection from '../components/trust/TrustSection';
 import FeaturesSection from '../components/features/FeaturesSection';
@@ -14,29 +20,31 @@ import FinalCta from '../components/cta/FinalCta';
 import ContactSection from '../components/contact/ContactSection';
 import { usePageMeta } from '../hooks/usePageMeta';
 
+/** Нүүр хуудас. */
 export default function Home() {
+  // Гарчиг, тайлбарыг өгөөгүй тул i18n толины үндсэн (meta) утгыг ашиглана.
   usePageMeta({});
 
   return (
     <>
-      {/* What is it? */}
+      {/* Энэ юу вэ? */}
       <Hero />
       <TrustSection />
       <FeaturesSection />
-      {/* How does it work? */}
+      {/* Хэрхэн ажилладаг вэ? */}
       <HowItWorks />
       <MeetingShowcase />
-      {/* What problem does it solve? */}
+      {/* Ямар асуудлыг шийддэг вэ? */}
       <ParticipationSection />
-      {/* Who is it for? */}
+      {/* Хэнд зориулсан бэ? */}
       <SolutionsSection />
       <UseCasesSection />
-      {/* Why choose it? */}
+      {/* Яагаад сонгох вэ? */}
       <SecuritySection />
       <PricingSection />
       <TestimonialsSection />
       <FaqSection />
-      {/* Get in touch / partner with us */}
+      {/* Холбогдох / хамтран ажиллах */}
       <ContactSection tone="white" />
       <FinalCta />
     </>

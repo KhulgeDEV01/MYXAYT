@@ -1,3 +1,11 @@
+/**
+ * solutions.ts — Байгууллагын төрөл бүрт зориулсан шийдлүүд (Шийдэл хэсэг).
+ *
+ * `benefits` — карт доторх ✓ тэмдэгтэй давуу талуудын жагсаалт.
+ *
+ * Текст засах: доорх `mn:` хэсэгт монгол, `en:` хэсэгт англи хувилбарыг засна.
+ * Хоёр хэлэнд ижил `id`-тай байх ёстой.
+ */
 import { Building2, Briefcase, GraduationCap, HandHeart, Landmark, UsersRound } from 'lucide-react';
 import type { Solution } from '../types/content';
 import type { Localized } from '../i18n/types';

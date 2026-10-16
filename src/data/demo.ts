@@ -2,11 +2,14 @@ import type { ActivityEvent, Participant, PollOption, Submission } from '../type
 import type { Localized } from '../i18n/types';
 
 /**
- * DEMO data for product mockups on the marketing site (hero dashboard,
- * meeting showcase). Not real user data. Option/participant ids are the
- * same in every language so live demo state survives a language switch.
+ * demo.ts — Жишээ самбаруудын (нүүр хуудасны самбар, "Шууд хурал" хэсэг) ЖИШЭЭ өгөгдөл.
+ *
+ * Энэ нь жинхэнэ хэрэглэгчийн өгөгдөл биш, зөвхөн бүтээгдэхүүнийг харуулах зорилготой.
+ * Сонголт, оролцогчдын `id` нь хэл бүрт ижил — ингэснээр хэл солиход
+ * шууд явагдаж буй санал хураалтын төлөв хэвээр үлдэнэ.
  */
 
+/** Нүүр хуудасны самбар дээр харагдах хурлын мэдээлэл. */
 export interface HeroMeeting {
   label: string;
   title: string;
@@ -20,23 +23,27 @@ export interface HeroMeeting {
   counters: { questions: number; suggestions: number; requests: number };
 }
 
+/** Нэг хэл дээрх бүх жишээ өгөгдлийн бүтэц. */
 export interface DemoContent {
   heroMeeting: HeroMeeting;
-  /** 36 / 7 / 3 of 46 votes → 78% / 15% / 7% */
+  /** 46 саналаас 36 / 7 / 3 → 78% / 15% / 7% */
   heroPollOptions: PollOption[];
   heroActivity: ActivityEvent[];
   heroAvatarNames: string[];
   showcaseTopic: string;
   showcaseQuestion: string;
-  /** 16 + 5 + 2 = 23 votes at start; the simulation keeps adding. */
+  /** Эхэндээ 16 + 5 + 2 = 23 санал; загварчлал үргэлжлүүлэн нэмнэ. */
   showcasePollOptions: PollOption[];
   showcaseParticipants: Participant[];
   showcaseSubmissions: Submission[];
 }
 
+/** "Шууд хурал" хэсгийн санал өгөх эрхтэй хүний тоо (загварчлал энд хүрээд зогсоно). */
 export const showcaseEligible = 34;
+/** Загварчлалын санал аль сонголт руу орох магадлалын харьцаа: дэмжсэн 6 : эсэргүүцсэн 2 : түдгэлзсэн 1. */
 export const showcaseVoteWeights = [6, 2, 1];
 
+/** Хэлнээс хамаарахгүй тоон утгууд (хоёр хэлэнд хуваалцана). */
 const meetingNumbers = {
   time: '10:00 – 11:30',
   elapsed: '00:42:18',
@@ -46,6 +53,7 @@ const meetingNumbers = {
   counters: { questions: 12, suggestions: 9, requests: 4 },
 };
 
+/** Хэл бүрийн жишээ өгөгдөл. */
 export const demoContent: Localized<DemoContent> = {
   mn: {
     heroMeeting: {

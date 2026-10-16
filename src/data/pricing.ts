@@ -1,8 +1,14 @@
+/**
+ * pricing.ts — Үнийн багцууд ба тэдгээрийн харьцуулалтын хүснэгт.
+ *
+ * Текст засах: доорх `mn:` хэсэгт монгол, `en:` хэсэгт англи хувилбарыг засна.
+ * Хоёр хэлэнд ижил `id`-тай байх ёстой.
+ */
 import type { PlanComparisonRow, PricingPlan } from '../types/content';
 import type { Localized } from '../i18n/types';
 import { routes } from '../config/routes';
 
-/** DEMO prices (MNT / month). Replace with real pricing before launch. */
+/** ЖИШЭЭ үнэ (төгрөг / сар). Сайтаа нийтлэхээс өмнө жинхэнэ үнээр солино. `null` = "Тохиролцоно". */
 const PRICES = {
   free: { monthly: 0, yearly: 0 },
   pro: { monthly: 49000, yearly: 40800 },
@@ -10,6 +16,7 @@ const PRICES = {
   enterprise: { monthly: null, yearly: null },
 } as const;
 
+/** 4 үнийн багц: Free, Pro, Business, Enterprise. */
 export const pricingPlans: Localized<PricingPlan[]> = {
   mn: [
     {
@@ -93,6 +100,7 @@ export const pricingPlans: Localized<PricingPlan[]> = {
   ],
 };
 
+/** Үнэ хуудасны "Багцуудыг харьцуулах" хүснэгт: true = ✓, false = —. */
 export const planComparison: Localized<PlanComparisonRow[]> = {
   mn: [
     { label: 'Оролцогчийн тоо', values: { free: '25', pro: '150', business: '500', enterprise: 'Хязгааргүй' } },

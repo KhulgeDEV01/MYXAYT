@@ -1,3 +1,10 @@
+/**
+ * MobileMenu.tsx — Утас / таблетын цэс (☰ товч дарахад нээгдэнэ).
+ *
+ * Дэлгэцийг бүтэн эзлэх жагсаалт + "Үнэгүй эхлэх", "Нэвтрэх" товчнууд.
+ * Нээлттэй үед ард талын хуудас гүйлгэгдэхгүй; Escape дарахад, эсвэл дэлгэц
+ * том болоход (1024px+) автоматаар хаагдана.
+ */
 import { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ArrowRight, ChevronRight } from 'lucide-react';
@@ -7,12 +14,14 @@ import { useI18n } from '../../i18n/useI18n';
 import { cn } from '../../utils/cn';
 import Button from '../ui/Button';
 
+/** id — ☰ товчтой холбох id, open — нээлттэй эсэх, onClose — хаах функц. */
 interface MobileMenuProps {
   id: string;
   open: boolean;
   onClose: () => void;
 }
 
+/** Жижиг дэлгэцийн навигацийн цэс. */
 export default function MobileMenu({ id, open, onClose }: MobileMenuProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const { locale, t } = useI18n();
@@ -20,17 +29,21 @@ export default function MobileMenu({ id, open, onClose }: MobileMenuProps) {
   useEffect(() => {
     if (!open) return;
     const { overflow } = document.body.style;
+    // Ард талын хуудсыг гүйлгэгдэхгүй болгох.
     document.body.style.overflow = 'hidden';
+    // Эхний холбоос руу focus шилжүүлнэ.
     panelRef.current?.querySelector<HTMLElement>('a')?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
     };
+    // Дэлгэц томорвол (жишээ нь утсаа хэвтээ эргүүлэхэд) цэс шаардлагагүй болох тул хаана.
     const onResize = () => {
       if (window.innerWidth >= 1024) onClose();
     };
     document.addEventListener('keydown', onKeyDown);
     window.addEventListener('resize', onResize);
+    // Цэс хаагдахад бүх зүйлийг хэвийн байдалд нь буцаана.
     return () => {
       document.body.style.overflow = overflow;
       document.removeEventListener('keydown', onKeyDown);
@@ -49,6 +62,7 @@ export default function MobileMenu({ id, open, onClose }: MobileMenuProps) {
         <ul className="divide-y divide-slate-100">
           {mainNav[locale].map((item) => (
             <li key={item.to}>
+              {/* Одоогийн хуудасны холбоос цэнхэр өнгөөр тодорно (#-тэй холбоосыг тооцохгүй). */}
               <NavLink
                 to={item.to}
                 className={({ isActive }) =>

@@ -1,7 +1,14 @@
+/**
+ * Section.tsx — Хуудасны нэг том хэсэг (дээд доод зай + дэвсгэр өнгө).
+ *
+ * Бүх хэсгүүд ижил зайтай, жигд харагдахын тулд үүнийг ашигладаг.
+ * Хэрэглээ: <Section id="pricing" tone="muted" labelledBy="pricing-title">…</Section>
+ */
 import type { ReactNode } from 'react';
 import { cn } from '../../utils/cn';
 import Container from './Container';
 
+/** Дэвсгэр: white — үндсэн, muted — цайвар саарал, dark — харанхуй. */
 type Tone = 'white' | 'muted' | 'dark';
 
 const tones: Record<Tone, string> = {
@@ -15,11 +22,12 @@ interface SectionProps {
   tone?: Tone;
   className?: string;
   containerClassName?: string;
+  /** Хэсгийн гарчгийн id — дэлгэц уншигч хэсгийг гарчгаар нь нэрлэнэ. */
   labelledBy?: string;
   children: ReactNode;
 }
 
-/** Standard vertical rhythm + background tone for page sections. */
+/** Дээд доод зайтай, дэвсгэр өнгөтэй хуудасны хэсэг; доторх агуулгыг Container-т байрлуулна. */
 export default function Section({ id, tone = 'white', className, containerClassName, labelledBy, children }: SectionProps) {
   return (
     <section

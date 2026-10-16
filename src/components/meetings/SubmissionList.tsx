@@ -1,8 +1,15 @@
+/**
+ * SubmissionList.tsx — Оролцогчдын илгээсэн асуулт / санал / хүсэлтийн жагсаалт.
+ *
+ * Хамгийн олон дэмжлэг авсан нь дээрээ эрэмбэлэгдэнэ. Мөр бүрт зохиогч, цаг,
+ * төлөв (хүлээгдэж буй / хэлэлцэж буй / хариулсан) харагдана.
+ */
 import { ChevronUp } from 'lucide-react';
 import type { Submission, SubmissionStatus } from '../../types/domain';
 import { useI18n } from '../../i18n/useI18n';
 import Badge from '../ui/Badge';
 
+/** Төлөв бүрийн шошгоны өнгө. */
 const statusTones: Record<SubmissionStatus, 'neutral' | 'brand' | 'success'> = {
   pending: 'neutral',
   discussing: 'brand',
@@ -12,11 +19,14 @@ const statusTones: Record<SubmissionStatus, 'neutral' | 'brand' | 'success'> = {
 
 interface SubmissionListProps {
   items: Submission[];
+  /** Дэмжлэгийн тоог (▲ 18) харуулах эсэх — хүсэлтэд харуулахгүй. */
   showVotes?: boolean;
 }
 
+/** Дэмжлэгээр эрэмбэлсэн илгээлтүүдийн жагсаалт. */
 export default function SubmissionList({ items, showVotes = true }: SubmissionListProps) {
   const { t } = useI18n();
+  // Анхны массивыг өөрчлөхгүйн тулд хуулбар үүсгээд эрэмбэлнэ.
   const sorted = [...items].sort((a, b) => b.upvotes - a.upvotes);
 
   return (

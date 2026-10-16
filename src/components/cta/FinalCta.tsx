@@ -1,14 +1,22 @@
+/**
+ * FinalCta.tsx — Хуудасны төгсгөлийн цэнхэр уриалгын хэсэг ("Үнэгүй эхлэх", "Холбогдох").
+ *
+ * Ихэнх хуудасны хамгийн доор, Footer-ийн өмнө байрлана.
+ * `title`, `description` өгвөл хуудас бүрт өөр текст харуулж болно.
+ */
 import { ArrowRight } from 'lucide-react';
 import { routes } from '../../config/routes';
 import { useI18n } from '../../i18n/useI18n';
 import Button from '../ui/Button';
 import Container from '../ui/Container';
 
+/** Өгөөгүй бол i18n толины `cta` хэсгийн үндсэн текстийг ашиглана. */
 interface FinalCtaProps {
   title?: string;
   description?: string;
 }
 
+/** Хуудасны төгсгөлийн уриалга. */
 export default function FinalCta({ title, description }: FinalCtaProps) {
   const { t } = useI18n();
 

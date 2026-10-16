@@ -1,9 +1,16 @@
+/**
+ * UseCasesSection.tsx — "Хэрэглээний жишээ" хэсэг: 8 карт (утсан дээр 2, том дэлгэцэнд 4 багана).
+ *
+ * Картуудын хооронд 1px зайгаар саарал дэвсгэр харагдаж нимгэн хүрээ үүсгэнэ (gap-px).
+ * Өгөгдөл: data/useCases.ts.
+ */
 import { useCases } from '../../data/useCases';
 import { useI18n } from '../../i18n/useI18n';
 import Reveal from '../ui/Reveal';
 import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
 
+/** Хэрэглээний жишээнүүдийн тор. */
 export default function UseCasesSection({ tone = 'white' }: { tone?: 'white' | 'muted' }) {
   const { locale, t } = useI18n();
 
@@ -20,6 +27,7 @@ export default function UseCasesSection({ tone = 'white' }: { tone?: 'white' | '
           const Icon = useCase.icon;
           return (
             <Reveal as="li" key={useCase.id} delay={(index % 4) * 60} className="group bg-surface p-4 transition-colors hover:bg-slate-50 sm:p-6">
+              {/* Дүрс ба ангиллын шошго: утсан дээр шошго дээрээ, том дэлгэцэнд хажуу хажуудаа. */}
               <div className="flex flex-col-reverse items-start gap-2 sm:flex-row sm:justify-between sm:gap-3">
                 <Icon size={22} aria-hidden="true" className="size-5 sm:size-[22px] shrink-0 text-brand-600 dark:text-brand-400" />
                 <span className="text-[10px] font-medium tracking-wide text-slate-500 uppercase sm:text-right sm:text-[11px]">{useCase.tag}</span>

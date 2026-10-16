@@ -1,3 +1,9 @@
+/**
+ * BillingToggle.tsx — "Сараар / Жилээр" төлбөрийн давтамж сонгох товч.
+ *
+ * Жилээр сонгоход үнэ хямдарсан дүнгээр харагдана. Доторх нь радио товч тул
+ * гараар (сумаар) ч сонгох боломжтой.
+ */
 import type { BillingPeriod } from '../../types/content';
 import { useI18n } from '../../i18n/useI18n';
 import { cn } from '../../utils/cn';
@@ -7,8 +13,10 @@ interface BillingToggleProps {
   onChange: (value: BillingPeriod) => void;
 }
 
+/** Сонголтууд. */
 const periods: BillingPeriod[] = ['monthly', 'yearly'];
 
+/** value — одоогийн сонголт, onChange — сонголт солигдоход дуудагдана. */
 export default function BillingToggle({ value, onChange }: BillingToggleProps) {
   const { t } = useI18n();
 
@@ -32,6 +40,7 @@ export default function BillingToggle({ value, onChange }: BillingToggleProps) {
             className="sr-only"
           />
           {t.pricing[period]}
+          {/* Жилийн сонголтын хажууд хямдралын шошго ("2 сар үнэгүй"). */}
           {period === 'yearly' && (
             <span
               className={cn(

@@ -1,7 +1,14 @@
+/**
+ * navigation.ts — Дээд цэс (Navbar) ба доод хэсгийн (Footer) холбоосууд.
+ *
+ * Цэсэнд шинэ холбоос нэмэх бол `mn` ба `en` хоёуланд нь нэмнэ.
+ * `comingSoon: true` — хуудас хараахан бэлэн биш тул "Удахгүй" шошготой, дарагдахгүй текст болно.
+ */
 import type { FooterColumn, NavItem } from '../types/content';
 import type { Localized } from '../i18n/types';
 import { routes } from '../config/routes';
 
+/** Дээд цэсний холбоосууд (утсан дээр ☰ цэс дотор). */
 export const mainNav: Localized<NavItem[]> = {
   mn: [
     { label: 'Боломжууд', to: routes.features },
@@ -21,6 +28,7 @@ export const mainNav: Localized<NavItem[]> = {
   ],
 };
 
+/** Footer-ийн багануудын гарчиг ба холбоосууд. */
 export const footerColumns: Localized<FooterColumn[]> = {
   mn: [
     {

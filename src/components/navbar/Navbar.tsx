@@ -1,3 +1,10 @@
+/**
+ * Navbar.tsx — Хуудасны дээд цэс (бүх хуудсанд дээр нь наалттай байна).
+ *
+ * Агуулга: лого, хуудсуудын холбоос (том дэлгэцэнд), горим солих товч, хэл сонгох,
+ * "Нэвтрэх" / "Үнэгүй эхлэх" товчнууд, жижиг дэлгэцэнд ☰ цэсний товч.
+ * Хуудсын хамгийн дээр тунгалаг, доош гүйлгэхэд цагаан (харанхуй) дэвсгэртэй болно.
+ */
 import { useCallback, useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { ArrowRight, Menu, X } from 'lucide-react';
@@ -13,9 +20,12 @@ import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
 import MobileMenu from './MobileMenu';
 
+/** ☰ товч ба утасны цэсийг холбох id. */
 const MOBILE_MENU_ID = 'mobile-navigation';
 
+/** Сайтын дээд навигацийн цэс. */
 export default function Navbar() {
+  // 12px-ээс илүү доош гүйлгэсэн эсэх.
   const scrolled = useScrolled(12);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
@@ -23,9 +33,10 @@ export default function Navbar() {
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
-  // Close the mobile menu whenever the route changes.
+  // Хуудас солигдох бүрт утасны цэсийг хаана.
   useEffect(closeMenu, [location.pathname, location.hash, closeMenu]);
 
+  // Гүйлгэсэн эсвэл утасны цэс нээлттэй үед дэвсгэртэй (solid) болно.
   const solid = scrolled || menuOpen;
 
   return (
@@ -41,6 +52,7 @@ export default function Navbar() {
         <nav aria-label={t.nav.mainAria} className="flex h-16 items-center justify-between gap-4 lg:h-[72px]">
           <Logo />
 
+          {/* Хуудсуудын холбоос — зөвхөн том дэлгэцэнд (lg: 1024px+) харагдана. */}
           <ul className="hidden items-center gap-0.5 lg:flex xl:gap-1">
             {mainNav[locale].map((item) => (
               <li key={item.to}>
@@ -61,9 +73,11 @@ export default function Navbar() {
             ))}
           </ul>
 
+          {/* Баруун талын товчнууд. */}
           <div className="flex items-center gap-1.5 sm:gap-2">
             <ThemeToggle />
             <LanguageSwitcher />
+            {/* "Нэвтрэх" (зөвхөн маш том дэлгэцэнд) ба "Үнэгүй эхлэх" — утсан дээр нуугдаж, ☰ цэс дотор байрлана. */}
             <div className="hidden items-center gap-2 sm:flex">
               <div className="hidden xl:block">
                 <Button to={routes.login} variant="ghost" size="sm">
@@ -74,6 +88,7 @@ export default function Navbar() {
                 {t.nav.startFree}
               </Button>
             </div>
+            {/* ☰ / × товч — зөвхөн жижиг дэлгэцэнд. */}
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}

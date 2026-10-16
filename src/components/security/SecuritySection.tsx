@@ -1,3 +1,9 @@
+/**
+ * SecuritySection.tsx — "Аюулгүй байдал" хэсэг (харанхуй дэвсгэртэй).
+ *
+ * Зүүн талд гарчиг, баруун талд 7 баталгааны карт (2 багана; сүүлийнх нь бүтэн өргөнөөр).
+ * Өгөгдөл: data/security.ts.
+ */
 import { ShieldCheck } from 'lucide-react';
 import { securityItems } from '../../data/security';
 import { useI18n } from '../../i18n/useI18n';
@@ -5,6 +11,7 @@ import Reveal from '../ui/Reveal';
 import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
 
+/** Аюулгүй байдлын баталгаанууд. */
 export default function SecuritySection() {
   const { locale, t } = useI18n();
   const items = securityItems[locale];
@@ -30,6 +37,7 @@ export default function SecuritySection() {
           {items.map((item, index) => {
             const Icon = item.icon;
             return (
+              // Сүүлийн карт ганцаараа үлдэхгүйн тулд 2 баганыг бүтэн эзэлнэ (col-span-2).
               <Reveal
                 as="li"
                 key={item.id}

@@ -1,3 +1,10 @@
+/**
+ * Hero.tsx — Нүүр хуудасны хамгийн дээд, анхны харагдах хэсэг.
+ *
+ * Зүүн талд: шошго, том гарчиг, тайлбар, "Үнэгүй эхлэх" / "Хэрхэн ажилладаг вэ?" товч,
+ * 3 давуу тал. Баруун талд (утсан дээр доор): бүтээгдэхүүний самбарын жишээ.
+ * Бүх текст i18n толины `hero` хэсгээс ирнэ.
+ */
 import { ArrowRight, CirclePlay, LockKeyhole, MonitorSmartphone, UsersRound } from 'lucide-react';
 import { routes } from '../../config/routes';
 import { useI18n } from '../../i18n/useI18n';
@@ -6,14 +13,17 @@ import Button from '../ui/Button';
 import Container from '../ui/Container';
 import DashboardMockup from './DashboardMockup';
 
+/** Доод 3 давуу талын дүрсүүд (дарааллаар). */
 const highlightIcons = [LockKeyhole, MonitorSmartphone, UsersRound];
 
+/** Нүүр хуудасны эхний хэсэг. */
 export default function Hero() {
   const { t } = useI18n();
   const h = t.hero;
 
   return (
     <section aria-labelledby="hero-title" className="relative overflow-hidden bg-surface pt-24 pb-16 sm:pt-36 sm:pb-20 lg:pt-40 lg:pb-28">
+      {/* Ар талын чимэглэл: тор хээ ба баруун дээд талын цайвар налуу дүрс. */}
       <div
         aria-hidden="true"
         className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_70%_60%_at_60%_30%,black,transparent)]"
@@ -27,6 +37,7 @@ export default function Hero() {
               <span className="size-1.5 rounded-full bg-accent-500" aria-hidden="true" />
               {h.badge}
             </p>
+            {/* Гарчгийн мөр бүр шинэ мөрөнд; сүүлийн мөр нь цэнхэр өнгөтэй. */}
             <h1
               id="hero-title"
               className="mt-5 text-[1.75rem] leading-[1.15] sm:mt-6 font-semibold tracking-tight sm:text-5xl xl:text-[2.9rem]"
@@ -48,6 +59,7 @@ export default function Hero() {
             </div>
             <p className="mt-4 text-sm text-slate-500">{h.note}</p>
 
+            {/* 3 давуу тал (нууцлал, төхөөрөмж, байгууллага). */}
             <ul className="mt-8 grid gap-3 border-t sm:mt-10 sm:gap-4 border-slate-200 pt-6 sm:grid-cols-3">
               {h.highlights.map((label, i) => {
                 const Icon = highlightIcons[i];
@@ -61,6 +73,7 @@ export default function Hero() {
             </ul>
           </div>
 
+          {/* Самбарын жишээ — бичвэрээс бага зэрэг хойно гарч ирнэ. */}
           <div className="animate-fade-up [animation-delay:150ms] xl:col-span-7">
             <DashboardMockup />
           </div>

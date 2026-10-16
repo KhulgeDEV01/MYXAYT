@@ -1,3 +1,9 @@
+/**
+ * PricingSection.tsx — "Үнэ" хэсэг: төлбөрийн давтамж сонгох товч + 4 багцын карт.
+ *
+ * Утсан дээр картууд хажуу тийш гүйлгэдэг (utils/carousel.ts), том дэлгэцэнд 2–4 багана.
+ * Үнэ, багцын агуулга: data/pricing.ts.
+ */
 import { useState } from 'react';
 import type { BillingPeriod } from '../../types/content';
 import { pricingPlans } from '../../data/pricing';
@@ -10,11 +16,13 @@ import BillingToggle from './BillingToggle';
 import PricingCard from './PricingCard';
 
 interface PricingSectionProps {
-  /** On the Pricing page the page header already provides the H1/intro. */
+  /** /pricing хуудас өөрийн гарчигтай тул энэ хэсгийн гарчгийг нуух боломжтой. */
   showHeading?: boolean;
 }
 
+/** Үнийн багцууд. */
 export default function PricingSection({ showHeading = true }: PricingSectionProps) {
+  // Сонгосон төлбөрийн давтамж (анхдагч — сараар).
   const [period, setPeriod] = useState<BillingPeriod>('monthly');
   const { locale, t } = useI18n();
 

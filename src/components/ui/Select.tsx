@@ -1,9 +1,16 @@
+/**
+ * Select.tsx — Сонголтын жагсаалттай талбар (dropdown).
+ *
+ * Хэрэглээ: <Select label="Төрөл" options={[{ value: "a", label: "А" }]} />
+ * Шошго, алдааны текстийг Input.tsx доторх FieldWrapper-ээр харуулна.
+ */
 import { useId } from 'react';
 import type { SelectHTMLAttributes } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import { FieldWrapper, fieldClasses } from './Input';
 
+/** Нэг сонголт: value — кодын утга, label — харагдах текст. */
 export interface SelectOption {
   value: string;
   label: string;
@@ -17,6 +24,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   error?: string;
 }
 
+/** Хөтчийн стандарт <select> дээр сайтын загварыг өгсөн талбар. */
 export default function Select({
   label,
   options,
@@ -51,6 +59,7 @@ export default function Select({
             </option>
           ))}
         </select>
+        {/* Баруун талын сум дүрс (хөтчийн өөрийн сумыг appearance-none-оор нуусан). */}
         <ChevronDown
           size={18}
           aria-hidden="true"

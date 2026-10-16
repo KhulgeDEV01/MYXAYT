@@ -1,9 +1,15 @@
+/**
+ * ThemeToggle.tsx — Гэгээлэг / харанхуй горим солих товч (нар / сар дүрс).
+ *
+ * Дарахад горим солигдож, сонголт хадгалагдана (theme/ThemeProvider.tsx).
+ * Нар ба сар дүрс хоёулаа байрлаж, нэг нь эргэж далдлагдан нөгөө нь гарч ирнэ.
+ */
 import { Moon, Sun } from 'lucide-react';
 import { useI18n } from '../../i18n/useI18n';
 import { useTheme } from '../../theme/useTheme';
 import { cn } from '../../utils/cn';
 
-/** Sun / moon button that switches between light and dark mode. */
+/** Нар / сар товч: гэгээлэг ↔ харанхуй горим солино. */
 export default function ThemeToggle({ className }: { className?: string }) {
   const { theme, toggleTheme } = useTheme();
   const { t } = useI18n();
@@ -20,11 +26,13 @@ export default function ThemeToggle({ className }: { className?: string }) {
         className,
       )}
     >
+      {/* Гэгээлэг горимд харагдах нар. */}
       <Sun
         size={17}
         aria-hidden="true"
         className={cn('absolute transition-all duration-300', dark ? 'scale-50 rotate-90 opacity-0' : 'scale-100 rotate-0 opacity-100')}
       />
+      {/* Харанхуй горимд харагдах сар. */}
       <Moon
         size={16}
         aria-hidden="true"

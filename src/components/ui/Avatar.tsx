@@ -1,6 +1,12 @@
+/**
+ * Avatar.tsx — Хүний нэрийн эхний үсгүүдтэй дугуй зураг (жишээ нь "БГ").
+ *
+ * Нэр бүрт тогтмол нэг өнгө оноогддог (нэр ижил бол өнгө нь үргэлж ижил).
+ */
 import { cn } from '../../utils/cn';
 import { getInitials } from '../../utils/format';
 
+// Аватарт ашиглах өнгөнүүдийн багц.
 const palette = [
   'bg-brand-100 text-brand-800',
   'bg-accent-300/40 text-navy-900',
@@ -10,6 +16,7 @@ const palette = [
   'bg-slate-200 text-slate-700',
 ];
 
+/** Нэрээс тоон "хэш" бодож, түүгээр өнгө сонгоно — ингэснээр нэг хүн үргэлж ижил өнгөтэй. */
 function colorFor(name: string) {
   let hash = 0;
   for (const char of name) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
@@ -20,10 +27,11 @@ interface AvatarProps {
   name: string;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   className?: string;
-  /** Hide from assistive tech when the name is already shown next to it. */
+  /** true бол дэлгэц уншигчаас нууна (хажууд нь нэр аль хэдийн бичигдсэн үед давхар уншуулахгүй). */
   decorative?: boolean;
 }
 
+// Хэмжээний сонголтууд: xs (24px) → lg (56px).
 const sizes = {
   xs: 'size-6 text-[10px]',
   sm: 'size-8 text-xs',
@@ -31,6 +39,7 @@ const sizes = {
   lg: 'size-14 text-base',
 } as const;
 
+/** Нэрийн эхний үсэгтэй өнгөт дугуй. */
 export default function Avatar({ name, size = 'sm', className, decorative = true }: AvatarProps) {
   return (
     <span

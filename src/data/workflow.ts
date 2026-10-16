@@ -1,3 +1,9 @@
+/**
+ * workflow.ts — Хурлын явцын алхмууд.
+ *
+ * Текст засах: доорх `mn:` хэсэгт монгол, `en:` хэсэгт англи хувилбарыг засна.
+ * Хоёр хэлэнд ижил `id`-тай байх ёстой.
+ */
 import {
   Archive,
   CalendarPlus,
@@ -14,7 +20,7 @@ import {
 import type { ProcessStep, WorkflowActor, WorkflowStep } from '../types/content';
 import type { Localized } from '../i18n/types';
 
-/** The simplified 4-step story used in "How it works". */
+/** "Хэрхэн ажилладаг вэ" хэсгийн хялбарчилсан 4 алхам. */
 export const processSteps: Localized<ProcessStep[]> = {
   mn: [
     { id: 'create', icon: CalendarPlus, title: 'Хурлаа үүсгэ', description: 'Хурлын нэр, огноо, хэлэлцэх асуудал, материалаа оруулаад хэдхэн минутад бэлэн болгоно.' },
@@ -30,7 +36,7 @@ export const processSteps: Localized<ProcessStep[]> = {
   ],
 };
 
-/** Full product workflow: who does what, from meeting creation to archive. */
+/** "Хурлын бүтэн мөчлөг": хурал үүсгэхээс архивлах хүртэл хэн юу хийх вэ. `actor` нь өнгийг тодорхойлно. */
 export const productWorkflow: Localized<WorkflowStep[]> = {
   mn: [
     { id: 'create', actor: 'organizer', title: 'Хурал үүсгэнэ', icon: CalendarPlus },
@@ -58,6 +64,7 @@ export const productWorkflow: Localized<WorkflowStep[]> = {
   ],
 };
 
+/** Мөчлөгийн өнгөний тайлбарын нэрс (Зохион байгуулагч, Оролцогч…). */
 export const workflowActorLabels: Localized<Record<WorkflowActor, string>> = {
   mn: { organizer: 'Зохион байгуулагч', participant: 'Оролцогч', system: 'Систем', organization: 'Байгууллага' },
   en: { organizer: 'Organizer', participant: 'Participants', system: 'System', organization: 'Organization' },

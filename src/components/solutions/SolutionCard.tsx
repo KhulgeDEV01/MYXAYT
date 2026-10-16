@@ -1,7 +1,13 @@
+/**
+ * SolutionCard.tsx — Нэг шийдлийн карт: дүрс, гарчиг, тайлбар, ✓ давуу талууд.
+ *
+ * Өгөгдөл: data/solutions.ts.
+ */
 import { Check } from 'lucide-react';
 import type { Solution } from '../../types/content';
 import Card from '../ui/Card';
 
+/** Байгууллагын нэг төрөлд зориулсан шийдлийн карт. */
 export default function SolutionCard({ solution }: { solution: Solution }) {
   const Icon = solution.icon;
   return (

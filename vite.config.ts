@@ -1,3 +1,9 @@
+/**
+ * vite.config.ts — Vite (хөгжүүлэлтийн сервер ба build хэрэгсэл)-ийн тохиргоо.
+ *
+ * react() — React/JSX дэмжлэг, tailwindcss() — Tailwind CSS.
+ * manualChunks — React сангуудыг тусдаа файл (vendor) болгож, хөтөч кэшлэхэд хялбар болгоно.
+ */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';

@@ -3,9 +3,11 @@ import type { SecurityItem } from '../types/content';
 import type { Localized } from '../i18n/types';
 
 /**
- * Describes security principles of the product.
- * Do NOT add third-party certifications here unless they are actually obtained,
- * and make sure each item is true of the real backend before launch.
+ * security.ts — "Аюулгүй байдал" хэсгийн баталгаанууд.
+ *
+ * АНХААР: Жинхэнэ авсан гэрчилгээ (ISO г.м.) биш бол энд бүү нэмээрэй. Мөн
+ * сайтаа нийтлэхээс өмнө бичсэн зүйл бүр жинхэнэ системд үнэн эсэхийг шалгана уу.
+ * Текст засах: `mn:` хэсэгт монгол, `en:` хэсэгт англи хувилбарыг засна.
  */
 export const securityItems: Localized<SecurityItem[]> = {
   mn: [

@@ -1,3 +1,9 @@
+/**
+ * VideoGrid.tsx — Видео хурлын дэлгэцийн жишээ (зөвхөн чимэглэл).
+ *
+ * Оролцогч бүр нэрийн эхний үсгээр, микрофоны төлөвтэйгөөр харагдана; ярьж буй хүн
+ * цайвар хүрээтэй, даргалагч шошготой. Доор нь хурлын удирдлагын товчнууд (дарагдахгүй).
+ */
 import { Hand, LogOut, Mic, MicOff, MonitorUp, Video } from 'lucide-react';
 import type { Participant } from '../../types/domain';
 import { useI18n } from '../../i18n/useI18n';
@@ -9,9 +15,10 @@ interface VideoGridProps {
   participants: Participant[];
 }
 
+/** Видео хавтангуудын ялгаатай бараан өнгөнүүд (ээлжлэн хэрэглэнэ). */
 const tileTints = ['bg-navy-800', 'bg-navy-700', 'bg-[#1d2b52]', 'bg-[#22305a]', 'bg-navy-800', 'bg-[#1a2749]'];
 
-/** Decorative meeting video area for the product showcase. */
+/** Видео хурлын дэлгэцийн чимэглэл. */
 export default function VideoGrid({ topic, participants }: VideoGridProps) {
   const { t } = useI18n();
 
@@ -28,6 +35,7 @@ export default function VideoGrid({ topic, participants }: VideoGridProps) {
         </span>
       </div>
 
+      {/* Оролцогчдын хавтангууд: утсан дээр 2, том дэлгэцэнд 3 багана. */}
       <ul className="grid flex-1 grid-cols-2 content-center gap-2 sm:grid-cols-3">
         {participants.map((p, i) => (
           <li
@@ -54,6 +62,7 @@ export default function VideoGrid({ topic, participants }: VideoGridProps) {
         ))}
       </ul>
 
+      {/* Хурлын удирдлагын товчнууд: микрофон, камер, дэлгэц хуваалцах, гар өргөх, гарах. */}
       <div className="mt-3 flex items-center justify-center gap-2">
         {[Mic, Video, MonitorUp, Hand].map((Icon, i) => (
           <span key={i} className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white">

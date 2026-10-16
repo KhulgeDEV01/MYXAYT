@@ -1,7 +1,14 @@
+/**
+ * company.ts — "Бидний тухай" болон "Оролцоо" хэсгийн текстүүд.
+ *
+ * Текст засах: доорх `mn:` хэсэгт монгол, `en:` хэсэгт англи хувилбарыг засна.
+ * Хоёр хэлэнд ижил `id`-тай байх ёстой.
+ */
 import { Eye, HeartHandshake, ShieldCheck, Sparkle } from 'lucide-react';
 import type { CompanyValue } from '../types/content';
 import type { Localized } from '../i18n/types';
 
+/** Байгууллагын үнэт зүйлс (Бидний тухай хуудасны 4 карт). */
 export const companyValues: Localized<CompanyValue[]> = {
   mn: [
     { id: 'transparency', icon: Eye, title: 'Ил тод байдал', description: 'Шийдвэр хэрхэн, ямар үндэслэлээр гарсныг оролцогч бүр харах ёстой гэж бид үздэг.' },
@@ -17,6 +24,7 @@ export const companyValues: Localized<CompanyValue[]> = {
   ],
 };
 
+/** "Оролцоо" хэсэг: уламжлалт хурлын нийтлэг асуудлууд. */
 export const participationProblems: Localized<string[]> = {
   mn: [
     'Зарим хүн хурал дээр огт дуугардаггүй',
@@ -32,6 +40,7 @@ export const participationProblems: Localized<string[]> = {
   ],
 };
 
+/** "Оролцоо" хэсэг: МҮХАҮТ дээр оролцогч юу хийж чадах вэ. */
 export const participationCapabilities: Localized<string[]> = {
   mn: ['Асуулт асуух', 'Санал оруулах', 'Хүсэлт гаргах', 'Санал өгөх', 'Байр сууриа илэрхийлэх', 'Шийдвэрийн явцыг хянах'],
   en: ['Ask questions', 'Submit suggestions', 'Make requests', 'Vote', 'State their position', 'Follow the decision'],

@@ -1,8 +1,16 @@
+/**
+ * Accordion.tsx — Дарахад нээгдэж / хаагддаг жагсаалт (FAQ хэсэгт ашиглагддаг).
+ *
+ * Гарчиг дээр дарахад доорх хариулт нь гулсаж нээгдэнэ, дахин дарахад хаагдана.
+ * Нэг удаад зөвхөн нэг зүйл нээлттэй байна. Дэлгэц уншигч программд зориулсан
+ * ARIA шинжүүдтэй (aria-expanded, aria-controls) — хүртээмжийн стандартыг хангана.
+ */
 import { useId, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Plus } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
+/** Жагсаалтын нэг зүйл: давтагдашгүй id, гарчиг, нээгдэх агуулга. */
 export interface AccordionItem {
   id: string;
   title: string;
@@ -11,15 +19,18 @@ export interface AccordionItem {
 
 interface AccordionProps {
   items: AccordionItem[];
-  /** Item open on first render. */
+  /** Анх ачаалахад нээлттэй байх зүйлийн id. */
   defaultOpenId?: string;
+  /** Гарчгийн түвшин (h3 эсвэл h4) — хуудасны гарчгийн бүтцэд тааруулна. */
   headingLevel?: 'h3' | 'h4';
   className?: string;
 }
 
-/** WAI-ARIA accordion: buttons inside headings, aria-expanded/controls, region panels. */
+/** Accordion компонент: гарчиг доторх товч + түүнд холбогдсон нээгдэх хэсэг (WAI-ARIA загвар). */
 export default function Accordion({ items, defaultOpenId, headingLevel: Heading = 'h3', className }: AccordionProps) {
+  // Одоо нээлттэй байгаа зүйлийн id (null = бүгд хаалттай).
   const [openId, setOpenId] = useState<string | null>(defaultOpenId ?? null);
+  // Давтагдашгүй id үүсгэнэ — товч ба хэсгийг aria-аар холбоход хэрэгтэй.
   const baseId = useId();
 
   return (
@@ -36,10 +47,12 @@ export default function Accordion({ items, defaultOpenId, headingLevel: Heading 
                 id={buttonId}
                 aria-expanded={open}
                 aria-controls={panelId}
+                // Нээлттэй бол хаана, хаалттай бол нээнэ.
                 onClick={() => setOpenId(open ? null : item.id)}
                 className="flex w-full items-center justify-between gap-6 py-5 text-left font-semibold text-ink transition-colors hover:text-brand-700 dark:hover:text-brand-300"
               >
                 <span>{item.title}</span>
+                {/* "+" дүрс — нээгдэхэд 45° эргэж "×" болно. */}
                 <span
                   aria-hidden="true"
                   className={cn(
@@ -51,6 +64,7 @@ export default function Accordion({ items, defaultOpenId, headingLevel: Heading 
                 </span>
               </button>
             </Heading>
+            {/* Нээгдэх хэсэг: grid-rows 0fr → 1fr шилжилтээр зөөлөн нээгдэнэ. inert — хаалттай үед доторх холбоос руу Tab-аар орохгүй. */}
             <div
               id={panelId}
               role="region"

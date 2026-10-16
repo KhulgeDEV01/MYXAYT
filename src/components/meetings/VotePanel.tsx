@@ -1,3 +1,9 @@
+/**
+ * VotePanel.tsx — Санал хураалтын самбар (зочин жинхэнээр дарж санал өгч болно).
+ *
+ * Дээд хэсэгт сонголтын товчнууд — нэг удаа л санал өгнө, өгсний дараа товчнууд
+ * идэвхгүй болно. Доор нь сонголт бүрийн хувь, санал өгсөн / хүлээгдэж буй тоо.
+ */
 import { CircleCheck, Lock } from 'lucide-react';
 import type { LiveOption } from '../../hooks/useLiveVotes';
 import type { VoteTone } from '../../types/domain';
@@ -5,6 +11,7 @@ import { useI18n } from '../../i18n/useI18n';
 import { cn } from '../../utils/cn';
 import ProgressBar from '../ui/ProgressBar';
 
+/** myVote — зочны сонгосон сонголтын id (өгөөгүй бол null), onVote — санал өгөх функц. */
 interface VotePanelProps {
   question: string;
   options: LiveOption[];
@@ -14,12 +21,14 @@ interface VotePanelProps {
   onVote: (optionId: string) => void;
 }
 
+/** Сонгосон товчны өнгө: дэмжсэн — ногоон, эсэргүүцсэн — улаан, түдгэлзсэн — саарал. */
 const selectedStyles: Record<VoteTone, string> = {
   positive: 'bg-success-500 text-white ring-success-500',
   negative: 'bg-danger-500 text-white ring-danger-500',
   neutral: 'bg-slate-500 text-white ring-slate-500',
 };
 
+/** Санал өгөх товчнууд + шууд үр дүн. */
 export default function VotePanel({ question, options, total, eligible, myVote, onVote }: VotePanelProps) {
   const { t } = useI18n();
   const v = t.vote;
@@ -36,6 +45,7 @@ export default function VotePanel({ question, options, total, eligible, myVote, 
         {question}
       </p>
 
+      {/* Санал өгөх товчнууд (aria-pressed — дэлгэц уншигч аль нь сонгогдсоныг хэлнэ). */}
       <div role="group" aria-labelledby="showcase-question" className="mt-4 grid gap-2">
         {options.map((option) => {
           const selected = myVote === option.id;
@@ -61,6 +71,7 @@ export default function VotePanel({ question, options, total, eligible, myVote, 
         })}
       </div>
 
+      {/* Үр дүнгийн зураасууд; "дэмжсэн" дээр 50%-ийн батлах босгын тэмдэглэгээтэй. */}
       <div className="mt-6 space-y-3">
         {options.map((option) => (
           <div key={option.id}>
@@ -88,6 +99,7 @@ export default function VotePanel({ question, options, total, eligible, myVote, 
           {eligible - total > 0 ? v.waiting(eligible - total) : v.allVoted}
         </span>
       </div>
+      {/* Санал бүртгэгдсэн гэсэн баталгаа. */}
       {myVote && (
         <p role="status" className="mt-3 rounded-md bg-success-50 px-3 py-2 text-xs text-success-700">
           {v.recorded}

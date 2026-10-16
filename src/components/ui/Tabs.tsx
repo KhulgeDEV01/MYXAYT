@@ -1,8 +1,16 @@
+/**
+ * Tabs.tsx — Табууд: нэг удаад нэг хуудсыг харуулдаг товчнууд ("Оролцооны самбар").
+ *
+ * Гараар удирдах боломжтой: ← → сумаар таб солих, Home / End — эхний / сүүлийн таб.
+ * Утсан дээр табууд 2×2 хэлбэрээр, том дэлгэцэнд нэг мөрөнд харагдана.
+ * Хэрэглээ: <Tabs items={[…]} label="…">{(activeId) => <Агуулга id={activeId} />}</Tabs>
+ */
 import { useId, useRef, useState } from 'react';
 import type { KeyboardEvent, ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
+/** Нэг таб: id, харагдах нэр, дүрс (заавал биш), тоо (жишээ нь асуултын тоо). */
 export interface TabItem {
   id: string;
   label: string;
@@ -16,21 +24,25 @@ interface TabsProps {
   defaultValue?: string;
   className?: string;
   listClassName?: string;
+  /** Идэвхтэй табын id-г авч, харуулах агуулгыг буцаах функц. */
   children: (activeId: string) => ReactNode;
 }
 
-/** Accessible tabs with arrow / Home / End keyboard navigation (automatic activation). */
+/** Хүртээмжтэй табууд (сумаар шилжихэд таб автоматаар идэвхжинэ). */
 export default function Tabs({ items, label, defaultValue, className, listClassName, children }: TabsProps) {
+  // Идэвхтэй табын id (анхдагч — эхний таб).
   const [active, setActive] = useState(defaultValue ?? items[0]?.id);
   const baseId = useId();
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
+  /** Тухайн дугаартай таб руу шилжинэ; төгсгөлөөс давбал эхэнд нь эргэж ирнэ. */
   const focusTab = (index: number) => {
     const next = (index + items.length) % items.length;
     setActive(items[next].id);
     tabRefs.current[next]?.focus();
   };
 
+  /** Гарын товчлуурыг таб шилжүүлэлттэй холбоно. */
   const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     const keyMap: Record<string, number> = {
       ArrowRight: index + 1,
@@ -61,6 +73,7 @@ export default function Tabs({ items, label, defaultValue, className, listClassN
               id={`${baseId}-tab-${item.id}`}
               aria-selected={selected}
               aria-controls={`${baseId}-panel-${item.id}`}
+              // Зөвхөн идэвхтэй таб руу Tab-аар орно; бусад руу сумаар шилжинэ.
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(item.id)}
               onKeyDown={(e) => onKeyDown(e, index)}
@@ -85,6 +98,7 @@ export default function Tabs({ items, label, defaultValue, className, listClassN
           );
         })}
       </div>
+      {/* Таб бүрийн агуулгын хэсэг — зөвхөн идэвхтэй нь харагдана. */}
       {items.map((item) => (
         <div
           key={item.id}

@@ -1,13 +1,16 @@
 /**
- * Placeholder for the future МҮХАҮТ backend client.
+ * apiClient.ts — Ирээдүйн МҮХАҮТ backend (сервер)-тэй холбогдох суурь.
  *
- * Nothing in the marketing site talks to a server yet. Service modules
- * (auth, contact…) expose typed functions that currently reject with
- * `BackendNotConnectedError`, so the UI can show an honest message
- * instead of faking success. Wire `request()` to the real API later.
+ * Одоогоор маркетингийн сайт ямар ч сервертэй харьцдаггүй. Сервис модулиуд
+ * (auth.ts г.м.) нь `BackendNotConnectedError` алдаа буцаадаг тул UI нь
+ * "амжилттай" гэж худал харуулахын оронд үнэн мэдээлэл өгдөг.
+ * Backend бэлэн болоход .env файлд VITE_API_BASE_URL-ийг бөглөхөд `request()` ажиллаж эхэлнэ.
  */
+
+/** Backend-ийн үндсэн хаяг (.env → VITE_API_BASE_URL). Хоосон бол сервергүй гэсэн үг. */
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 
+/** "Backend хараахан холбогдоогүй" гэсэн тусгай алдаа. */
 export class BackendNotConnectedError extends Error {
   constructor(feature: string) {
     super(`${feature}: backend is not connected yet`);
@@ -15,17 +18,23 @@ export class BackendNotConnectedError extends Error {
   }
 }
 
+/** Backend-ийн хаяг тохируулагдсан эсэх. */
 export function isBackendConfigured(): boolean {
   return API_BASE_URL.length > 0;
 }
 
+/**
+ * Сервер рүү хүсэлт илгээж, JSON хариуг буцаана.
+ * @param path Хаягийн зам, жишээ нь '/meetings'
+ * @param init Нэмэлт тохиргоо (method: 'POST', body г.м.)
+ */
 export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (!isBackendConfigured()) throw new BackendNotConnectedError(path);
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...init,
     headers: { 'Content-Type': 'application/json', ...init?.headers },
-    credentials: 'include',
+    credentials: 'include', // Нэвтрэлтийн cookie-г хамт илгээнэ
   });
   if (!response.ok) throw new Error(`Request failed: ${response.status}`);
   return (await response.json()) as T;

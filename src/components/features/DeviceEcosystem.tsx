@@ -1,10 +1,16 @@
+/**
+ * DeviceEcosystem.tsx — "Компьютер, утас, таблет" хэсэг.
+ *
+ * Платформ ямар төхөөрөмж дээр ажилладгийг харуулна. Картуудын текст: data/features.ts → devices.
+ * Утсан дээр 2 баганаар харагдана.
+ */
 import { devices } from '../../data/features';
 import { useI18n } from '../../i18n/useI18n';
 import Reveal from '../ui/Reveal';
 import Section from '../ui/Section';
 import SectionHeading from '../ui/SectionHeading';
 
-/** Shows how the product works across the devices used in a meeting. */
+/** Хурал дээр хэрэглэгддэг төхөөрөмж бүр дээр бүтээгдэхүүн хэрхэн ажилладгийг харуулна. */
 export default function DeviceEcosystem() {
   const { locale, t } = useI18n();
 

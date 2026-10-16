@@ -1,3 +1,13 @@
+/**
+ * RequestForm.tsx — Хүсэлт илгээх маягт (имэйлээр хүлээн авна).
+ *
+ * Ажиллах дараалал:
+ *   1. Зочин төрлөө сонгож (холбоо барих / хамтын ажиллагаа / демо / бусад), талбаруудаа бөглөнө
+ *   2. "Илгээх" дарахад талбаруудыг шалгана — алдаатай бол талбар бүрийн доор мэдэгдэл гарна
+ *   3. Зөв бол services/contact.ts-ээр имэйл болгон илгээнэ (Web3Forms / Formspree)
+ *   4. Амжилттай бол баярлалаа гэсэн дэлгэц; имэйл үйлчилгээ тохируулаагүй эсвэл алдаа гарвал
+ *      зочны имэйл программыг бэлэн бөглөсөн байдлаар нээх товч санал болгоно
+ */
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { CircleCheck, CircleEllipsis, Handshake, Mail, MessageSquareText, MonitorPlay, Send } from 'lucide-react';
@@ -5,17 +15,22 @@ import type { LucideIcon } from 'lucide-react';
 import { siteConfig } from '../../config/site';
 import { useI18n } from '../../i18n/useI18n';
 import { buildMailtoLink, deliveryProvider, sendRequestEmail } from '../../services/contact';
-import type { ContactRequest, RequestEmail, RequestType } from '../../services/contact';
+import type { ContactRequest, RequestType } from '../../services/contact';
+import { buildRequestEmail } from '../../services/emailTemplate';
 import { cn } from '../../utils/cn';
 import Alert from '../ui/Alert';
 import Button from '../ui/Button';
 import Input, { Textarea } from '../ui/Input';
 
+/** Маягтын төлөв: хоосон, илгээж байна, амжилттай, алдаа, имэйл үйлчилгээ тохируулаагүй. */
 type Status = 'idle' | 'submitting' | 'success' | 'error' | 'not-configured';
+/** Талбар бүрийн алдааны мэдэгдэл. */
 type Errors = Partial<Record<'fullName' | 'email' | 'organization' | 'message', string>>;
 
+/** Имэйл хаяг зөв хэлбэртэй эсэхийг шалгах энгийн загвар (нэр@домэйн.mn). */
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/** Хүсэлтийн 4 төрөл ба тэдгээрийн дүрс. */
 export const requestTypes: Array<{ id: RequestType; icon: LucideIcon }> = [
   { id: 'contact', icon: MessageSquareText },
   { id: 'partnership', icon: Handshake },
@@ -29,21 +44,25 @@ interface RequestFormProps {
   onTypeChange: (type: RequestType) => void;
 }
 
-/** Contact / partnership request form. Delivers by email (see services/contact.ts). */
+/** Холбоо барих / хамтын ажиллагааны хүсэлтийн маягт. `type` ба `onTypeChange`-ээр төрлийг эцэг компонент удирдана. */
 export default function RequestForm({ id = 'request-form', type, onTypeChange }: RequestFormProps) {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const f = t.requestForm;
+  // Маягтын төлөв, алдаанууд, амжилттай илгээсэн имэйл, нөөц mailto холбоос.
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<Errors>({});
   const [sentTo, setSentTo] = useState('');
   const [mailtoLink, setMailtoLink] = useState('');
 
+  /** "Илгээх" дарахад: шалгах → имэйл бэлтгэх → илгээх. */
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    // Хөтчийн стандарт илгээлтийг (хуудас дахин ачаалах) зогсооно.
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const value = (key: string) => String(form.get(key) ?? '').trim();
 
-    // Honeypot: real visitors never see or fill this field.
+    // Спам хамгаалалт ("зөгийн балны урхи"): жинхэнэ хүн энэ нууц талбарыг хардаггүй.
+    // Бөглөгдсөн бол робот гэж үзээд илгээлгүйгээр "амжилттай" гэж харуулна.
     if (value('botcheck')) {
       setStatus('success');
       return;
@@ -58,6 +77,7 @@ export default function RequestForm({ id = 'request-form', type, onTypeChange }:
       message: value('message'),
     };
 
+    // Талбаруудыг шалгах: нэр заавал, имэйл зөв хэлбэртэй, хамтын ажиллагаа бол байгууллага заавал, мессеж 10+ тэмдэгт.
     const nextErrors: Errors = {};
     if (!data.fullName) nextErrors.fullName = f.errors.fullName;
     if (!EMAIL_PATTERN.test(data.email)) nextErrors.email = f.errors.email;
@@ -66,27 +86,19 @@ export default function RequestForm({ id = 'request-form', type, onTypeChange }:
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
-    const email: RequestEmail = {
-      subject: f.emailSubject(f.types[type], data.fullName, data.organization),
-      replyTo: data.email,
-      fromName: `${siteConfig.name} — ${f.types[type]}`,
-      fields: [
-        [f.fields.type, f.types[type]],
-        [f.fields.fullName, data.fullName],
-        [f.fields.email, data.email],
-        [f.fields.phone, data.phone],
-        [f.fields.organization, data.organization],
-        [f.fields.message, data.message],
-      ],
-    };
+    // Багт очих имэйлийг бэлтгэнэ — загвар нь services/emailTemplate.ts-д (үргэлж монголоор).
+    const email = buildRequestEmail(data, locale);
+    // Имэйл үйлчилгээ ажиллахгүй үед ашиглах нөөц mailto холбоос.
     const fallback = buildMailtoLink(siteConfig.contact.email, email);
     setMailtoLink(fallback);
 
+    // .env-д Web3Forms / Formspree тохируулаагүй бол илгээх боломжгүй — mailto санал болгоно.
     if (deliveryProvider === 'none') {
       setStatus('not-configured');
       return;
     }
 
+    // Илгээж байх үед товч идэвхгүй болж "Илгээж байна…" гэж харагдана.
     setStatus('submitting');
     try {
       await sendRequestEmail(email);
@@ -97,6 +109,7 @@ export default function RequestForm({ id = 'request-form', type, onTypeChange }:
     }
   };
 
+  // Амжилттай илгээгдсэн бол маягтын оронд баярлалаа гэсэн мэдэгдэл.
   if (status === 'success') {
     return (
       <div id={id} role="status" className="flex flex-col items-center py-10 text-center">
@@ -114,6 +127,7 @@ export default function RequestForm({ id = 'request-form', type, onTypeChange }:
 
   return (
     <form id={id} noValidate onSubmit={onSubmit} className="grid gap-5 sm:grid-cols-2">
+      {/* Хүсэлтийн төрөл сонгох картууд (радио товч нуугдмал, карт өөрөө дарагдана). */}
       <fieldset className="sm:col-span-2">
         <legend className="mb-2 text-sm font-medium text-ink-soft">{f.typeLegend}</legend>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -149,6 +163,7 @@ export default function RequestForm({ id = 'request-form', type, onTypeChange }:
         </div>
       </fieldset>
 
+      {/* Талбарууд: утас ба байгууллага нь (хамтын ажиллагаанаас бусад үед) заавал биш. */}
       <Input name="fullName" label={f.fields.fullName} autoComplete="name" required error={errors.fullName} />
       <Input name="email" type="email" label={f.fields.email} autoComplete="email" required error={errors.email} />
       <Input name="phone" type="tel" label={`${f.fields.phone} (${f.optional})`} autoComplete="tel" />
@@ -169,9 +184,10 @@ export default function RequestForm({ id = 'request-form', type, onTypeChange }:
         />
       </div>
 
-      {/* Honeypot for spam bots — hidden from people and assistive tech. */}
+      {/* Спам роботод зориулсан нууц талбар — хүнд болон дэлгэц уншигчид харагдахгүй. */}
       <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
 
+      {/* Алдаа эсвэл тохируулаагүй үед: анхааруулга + "Имэйл программаар илгээх" товч. */}
       {(status === 'not-configured' || status === 'error') && (
         <div className="space-y-3 sm:col-span-2">
           <Alert tone="warning">{status === 'error' ? f.error : f.notConfigured}</Alert>

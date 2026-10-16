@@ -1,3 +1,8 @@
+/**
+ * Pricing.tsx — "Үнэ" хуудас (/pricing).
+ *
+ * Бүтэц: гарчиг → үнийн багцууд → харьцуулалтын хүснэгт → түгээмэл асуулт → уриалга.
+ */
 import PageHeader from '../components/layout/PageHeader';
 import PricingSection from '../components/pricing/PricingSection';
 import PlanComparison from '../components/pricing/PlanComparison';
@@ -7,6 +12,7 @@ import { siteConfig } from '../config/site';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { useI18n } from '../i18n/useI18n';
 
+/** "Үнэ" хуудас. */
 export default function Pricing() {
   const { t } = useI18n();
   const p = t.pages.pricing;

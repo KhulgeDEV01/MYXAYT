@@ -1,3 +1,9 @@
+/**
+ * Features.tsx — "Боломжууд" хуудас (/features).
+ *
+ * Бүтэц: гарчиг → дэлгэрэнгүй боломжууд → хурлын бүтэн мөчлөг → шууд хурлын жишээ →
+ * төхөөрөмжүүд → аюулгүй байдал → уриалга.
+ */
 import { ArrowRight } from 'lucide-react';
 import PageHeader from '../components/layout/PageHeader';
 import FeaturesSection from '../components/features/FeaturesSection';
@@ -14,6 +20,7 @@ import { siteConfig } from '../config/site';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { useI18n } from '../i18n/useI18n';
 
+/** "Боломжууд" хуудас. */
 export default function Features() {
   const { t } = useI18n();
   const p = t.pages.features;

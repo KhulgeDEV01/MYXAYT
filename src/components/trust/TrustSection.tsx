@@ -1,9 +1,15 @@
+/**
+ * TrustSection.tsx — Итгэлцлийн хэсэг: платформын статистик тоонууд.
+ *
+ * Тоонуудыг data/stats.ts-ээс засна. Хэсэг дэлгэцэнд харагдмагц тоонууд 0-ээс өснө.
+ */
 import { platformStats } from '../../data/stats';
 import { useInView } from '../../hooks/useInView';
 import { useI18n } from '../../i18n/useI18n';
 import Container from '../ui/Container';
 import StatCounter from './StatCounter';
 
+/** Гарчиг + 4 статистик тоо. */
 export default function TrustSection() {
   const { ref, inView } = useInView<HTMLDListElement>();
   const { locale, t } = useI18n();

@@ -1,3 +1,12 @@
+/**
+ * ContactSection.tsx — "Бидэнтэй холбогдох, хамтран ажиллах" хэсэг.
+ *
+ * Гурван хэсгээс бүрдэнэ:
+ *   1. Холбоо барих мэдээлэл (имэйл, утас, хаяг, ажлын цаг)
+ *   2. Хамтын ажиллагааны чиглэлүүд (харанхуй карт) + "Хамтын ажиллагааны хүсэлт" товч
+ *   3. Хүсэлт илгээх маягт (RequestForm.tsx)
+ * Нүүр хуудас ба /contact хуудсанд ашиглагдана.
+ */
 import { useEffect, useState } from 'react';
 import { ArrowRight, Check, Clock, Handshake, Headset, Mail, MapPin, Phone } from 'lucide-react';
 import { siteConfig } from '../../config/site';
@@ -9,23 +18,27 @@ import SectionHeading from '../ui/SectionHeading';
 import RequestForm from './RequestForm';
 
 interface ContactSectionProps {
-  /** The Contact page has its own page header, so it hides this heading. */
+  /** /contact хуудас өөрийн гарчигтай тул энэ хэсгийн гарчгийг нуух боломжтой. */
   showHeading?: boolean;
+  /** Анх сонгогдсон байх хүсэлтийн төрөл. */
   initialType?: RequestType;
   tone?: 'white' | 'muted';
 }
 
+/** Маягтын id — "Хамтын ажиллагааны хүсэлт" товч энэ рүү гүйлгэнэ. */
 const FORM_ID = 'request-form';
 
-/** "Contact us / Work with us" block with contact details, partnership areas and the request form. */
+/** Холбоо барих мэдээлэл, хамтын ажиллагааны чиглэл, хүсэлтийн маягттай хэсэг. */
 export default function ContactSection({ showHeading = true, initialType = 'contact', tone = 'muted' }: ContactSectionProps) {
   const { t } = useI18n();
   const c = t.contactSection;
+  // Маягтад сонгогдсон хүсэлтийн төрөл (энэ хэсэг ба маягт хуваалцана).
   const [type, setType] = useState<RequestType>(initialType);
 
-  // Follow changes coming from the URL (e.g. /contact?type=partnership).
+  // URL-аас ирэх өөрчлөлтийг дагана (жишээ нь /contact?type=partnership → "Хамтын ажиллагаа" сонгогдоно).
   useEffect(() => setType(initialType), [initialType]);
 
+  // Харуулах мэдээллүүд; `href`-тэй нь дарахад имэйл / залгах программ нээгдэнэ.
   const contactItems = [
     { icon: Mail, label: c.labels.email, value: siteConfig.contact.email, href: `mailto:${siteConfig.contact.email}` },
     { icon: Phone, label: c.labels.phone, value: siteConfig.contact.phone, href: `tel:${siteConfig.contact.phone.replace(/\s/g, '')}` },
@@ -33,6 +46,7 @@ export default function ContactSection({ showHeading = true, initialType = 'cont
     { icon: Clock, label: c.labels.hours, value: t.contactInfo.hours },
   ];
 
+  /** "Хамтын ажиллагааны хүсэлт" товч: төрлийг сонгож, маягт руу гүйлгээд, нэрийн талбарт focus өгнө. */
   const startPartnership = () => {
     setType('partnership');
     const form = document.getElementById(FORM_ID);
@@ -48,7 +62,7 @@ export default function ContactSection({ showHeading = true, initialType = 'cont
 
       <div className={showHeading ? 'mt-14 grid gap-6 lg:grid-cols-12' : 'grid gap-6 lg:grid-cols-12'}>
         <div className="space-y-6 lg:col-span-5">
-          {/* Contact us */}
+          {/* 1. Холбоо барих мэдээлэл */}
           <Card as="section" aria-label={c.infoAria}>
             <div className="flex items-center gap-3">
               <span className="flex size-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600 dark:text-brand-400">
@@ -78,7 +92,7 @@ export default function ContactSection({ showHeading = true, initialType = 'cont
             </dl>
           </Card>
 
-          {/* Work with us */}
+          {/* 2. Хамтран ажиллах */}
           <Card as="section" variant="dark" aria-labelledby="partner-title">
             <div className="flex items-center gap-3">
               <span className="flex size-10 items-center justify-center rounded-lg bg-white/10 text-accent-300">
@@ -109,7 +123,7 @@ export default function ContactSection({ showHeading = true, initialType = 'cont
           </Card>
         </div>
 
-        {/* Request form */}
+        {/* 3. Хүсэлтийн маягт */}
         <Card padding="lg" className="lg:col-span-7">
           <h3 className="text-lg font-semibold sm:text-xl">{t.requestForm.title}</h3>
           <p className="mt-1 mb-6 text-sm text-slate-500">{t.requestForm.subtitle}</p>

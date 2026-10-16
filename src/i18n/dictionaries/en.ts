@@ -1,13 +1,20 @@
 import type { Dictionary } from './mn';
 
-/** English UI strings. Must implement the same shape as the Mongolian dictionary. */
+/**
+ * en.ts — Сайтын бүх АНГЛИ текст.
+ *
+ * mn.ts-тэй яг ижил бүтэцтэй байх ёстой (`Dictionary` төрөл үүнийг шалгана).
+ * Монгол текст нэмэх / өөрчлөх бүрт энд англи орчуулгыг нь давхар оруулна.
+ */
 export const en: Dictionary = {
+  // Хөтчийн tab-ийн гарчиг ба хайлтын системийн (SEO) үндсэн тайлбар
   meta: {
     defaultTitle: 'Online meetings, voting and survey platform',
     defaultDescription:
       'МҮХАҮТ — a platform for running online meetings, voting, surveys and real-time participant feedback in one place.',
     ogLocale: 'en_US',
   },
+  // Олон газар давтагддаг ерөнхий үгс
   common: {
     skipToContent: 'Skip to main content',
     loading: 'Loading…',
@@ -15,14 +22,24 @@ export const en: Dictionary = {
     homeAria: (name: string) => `${name} — home`,
     comingSoon: 'Soon',
   },
+  // Алдааны хамгаалалтын дэлгэц (ErrorBoundary)
+  errorBoundary: {
+    title: 'Sorry, something went wrong',
+    description: 'An unexpected error occurred while loading this page. Please reload it. If the problem persists, contact us.',
+    reload: 'Reload page',
+    home: 'Back to home',
+  },
+  // Хэл сонгох цэс
   language: {
     label: 'Choose language',
     names: { mn: 'Монгол', en: 'English' },
   },
+  // Гэгээлэг / харанхуй горимын товч
   theme: {
     toDark: 'Switch to dark mode',
     toLight: 'Switch to light mode',
   },
+  // "Бидэнтэй холбогдох, хамтран ажиллах" хэсэг
   contactSection: {
     eyebrow: 'Contact',
     title: 'Get in touch or work with us',
@@ -42,6 +59,7 @@ export const en: Dictionary = {
     ],
     partnerCta: 'Partnership request',
   },
+  // Хүсэлт илгээх маягт: талбарууд, алдааны мэдэгдэл, имэйлийн гарчиг
   requestForm: {
     title: 'Send a request',
     subtitle: 'Your request goes straight to our team’s inbox.',
@@ -74,8 +92,6 @@ export const en: Dictionary = {
       organization: 'Please enter your organization for a partnership request.',
       message: 'Please add a bit more detail (at least 10 characters).',
     },
-    emailSubject: (type: string, name: string, organization: string) =>
-      `[${type}] ${name}${organization ? ` — ${organization}` : ''}`,
     submit: 'Send request',
     submitting: 'Sending…',
     successTitle: 'Your request has been sent',
@@ -86,6 +102,7 @@ export const en: Dictionary = {
     openEmail: 'Send by email',
     privacy: 'We only use your details to respond to your request.',
   },
+  // Дээд цэс (Navbar)
   nav: {
     mainAria: 'Main navigation',
     mobileAria: 'Mobile navigation',
@@ -94,15 +111,18 @@ export const en: Dictionary = {
     login: 'Log in',
     startFree: 'Start for free',
   },
+  // Доод хэсэг (Footer)
   footer: {
     heading: 'Site footer',
     about: 'One platform for online meetings, voting, surveys and real-time participant feedback.',
     rights: 'All rights reserved.',
   },
+  // Хаяг, ажлын цаг
   contactInfo: {
     address: 'Sukhbaatar District, Ulaanbaatar, Mongolia',
     hours: 'Mon–Fri, 09:00–18:00',
   },
+  // Нүүр хуудасны хамгийн дээд хэсэг (том гарчиг, товчнууд)
   hero: {
     badge: 'Meet · Discuss · Vote · Decide',
     titleLines: ['Smarter meetings.', 'More direct feedback.', 'Decisions made together.'],
@@ -113,6 +133,7 @@ export const en: Dictionary = {
     note: 'No card required · Free for meetings of up to 25 participants',
     highlights: ['Access control and privacy', 'Desktop, phone and tablet', 'For every kind of organization'],
   },
+  // Нүүр хуудасны жишээ самбар
   dashboard: {
     caption: (name: string, title: string, participants: number, question: string, support: number) =>
       `Example ${name} dashboard: ${participants} participants have joined “${title}”, and a vote is running on “${question}”. ${support}% are in favor.`,
@@ -134,11 +155,14 @@ export const en: Dictionary = {
     resultUpdated: 'Results updated',
     supported: (p: number) => `${p}% in favor`,
   },
+  // Шууд үйл явдлын жагсаалт
   activity: { justNow: 'just now' },
+  // Итгэлцлийн хэсэг (статистик)
   trust: {
     title: 'Make decision-making in your organization more open and participatory.',
     description: 'Ideas that go unsaid in a meeting affect the quality of its decisions. We make sure they get counted.',
   },
+  // "Боломжууд" хэсэг
   features: {
     eyebrow: 'Features',
     title: 'Meetings and decision-making in one place',
@@ -146,13 +170,16 @@ export const en: Dictionary = {
       'Every step, from organizing a meeting to archiving its decisions, in a single platform. No more switching between tools.',
     viewAll: 'See all features',
   },
+  // "Хэрхэн ажилладаг вэ" хэсэг
   howItWorks: {
     eyebrow: 'How it works',
     title: 'How does it work?',
     description: 'Four steps from creating a meeting to making a decision. The organizer leads, and every participant takes part.',
     step: (n: number) => `Step ${n}: `,
   },
+  // "Хурлын бүтэн мөчлөг"
   workflow: { title: 'The full meeting cycle', legend: 'Legend' },
+  // "Шууд хурал" жишээ хэсэг (видео + оролцооны самбар)
   showcase: {
     eyebrow: 'Real-time meetings',
     title: 'Discussion and voting on one screen',
@@ -167,6 +194,7 @@ export const en: Dictionary = {
     chair: 'Chair',
     leave: 'Leave',
   },
+  // Санал хураалтын самбар
   vote: {
     secret: 'Secret ballot',
     threshold: 'Approval threshold: 50%',
@@ -175,6 +203,7 @@ export const en: Dictionary = {
     allVoted: 'Everyone has voted',
     recorded: 'Your vote has been recorded. (This is a demo — no real vote is stored.)',
   },
+  // Асуулт / санал / хүсэлтийн жагсаалт
   submissions: {
     upvotes: 'upvotes',
     status: {
@@ -184,6 +213,7 @@ export const en: Dictionary = {
       resolved: 'Resolved',
     },
   },
+  // "Оролцоо" хэсэг
   participation: {
     eyebrow: 'Participation',
     title: 'Every voice in the meeting is heard.',
@@ -212,29 +242,34 @@ export const en: Dictionary = {
       approved: 'Approved',
     },
   },
+  // "Шийдэл" хэсэг
   solutions: {
     eyebrow: 'Who is it for?',
     title: 'Solutions for your organization',
     description:
       'For any organization, team or community that makes decisions in meetings. Configure roles and modes to match how you work.',
   },
+  // "Хэрэглээний жишээ" хэсэг
   useCases: {
     eyebrow: 'Use cases',
     title: 'Which meetings and surveys is it for?',
     description: 'From daily team check-ins to shareholder meetings.',
   },
+  // "Аюулгүй байдал" хэсэг
   security: {
     eyebrow: 'Security',
     title: 'Your data matters to us.',
     description:
       'Voting results and meeting materials are among an organization’s most sensitive information, so security is built into the foundation of the product.',
   },
+  // "Компьютер, утас, таблет" хэсэг
   devices: {
     eyebrow: 'Devices',
     title: 'Works on every device you use',
     description:
       'In the room or remote. Organizers run the meeting from a computer, participants vote from their phone or tablet, and results appear instantly on the room’s main display — all synced to one account.',
   },
+  // "Үнэ" хэсэг
   pricing: {
     eyebrow: 'Pricing',
     title: 'A plan for every size of organization',
@@ -258,12 +293,14 @@ export const en: Dictionary = {
     included: 'Included',
     notIncluded: 'Not included',
   },
+  // Хэрэглэгчдийн сэтгэгдэл
   testimonials: {
     eyebrow: 'Testimonials',
     title: 'Organizations that changed how they meet',
     description: 'How customers increased participation and shortened the time it takes to reach a decision.',
     disclaimer: '* Sample testimonials. To be replaced with real customer quotes.',
   },
+  // "Түгээмэл асуулт" хэсэг
   faq: {
     eyebrow: 'Help',
     title: 'Frequently asked questions',
@@ -271,12 +308,14 @@ export const en: Dictionary = {
     contactLink: 'Contact us',
     or: 'or',
   },
+  // Хуудасны төгсгөлийн уриалга (цэнхэр хэсэг)
   cta: {
     title: 'Make your next meeting more participatory.',
     description: 'Manage meetings, surveys, voting and participant feedback in one place.',
     primary: 'Start for free',
     secondary: 'Contact us',
   },
+  // Тусдаа хуудсуудын текст (Боломжууд, Шийдэл, Үнэ, Бидний тухай, Холбоо барих, Нэвтрэх, 404)
   pages: {
     features: {
       metaTitle: 'Features — online meetings, voting, questions and requests',

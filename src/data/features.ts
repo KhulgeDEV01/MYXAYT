@@ -1,3 +1,12 @@
+/**
+ * features.ts — Бүтээгдэхүүний боломжуудын (feature) жагсаалт.
+ *
+ * `icon` — lucide-react сангийн дүрс (https://lucide.dev/icons-оос нэрээр нь сонгож import хийнэ).
+ * `points` — /features хуудсанд ✓ тэмдэгтэй харагдах дэлгэрэнгүй жагсаалт.
+ *
+ * Текст засах: доорх `mn:` хэсэгт монгол, `en:` хэсэгт англи хувилбарыг засна.
+ * Хоёр хэлэнд ижил `id`-тай байх ёстой.
+ */
 import {
   ChartNoAxesColumnIncreasing,
   History,
@@ -13,6 +22,7 @@ import {
 import type { Feature } from '../types/content';
 import type { Localized } from '../i18n/types';
 
+/** Үндсэн 6 боломж (нүүр хуудас ба /features хуудас). */
 export const coreFeatures: Localized<Feature[]> = {
   mn: [
     {
@@ -104,6 +114,7 @@ export const coreFeatures: Localized<Feature[]> = {
   ],
 };
 
+/** "Компьютер, утас, таблет" хэсгийн төхөөрөмжүүд. */
 export const devices: Localized<Feature[]> = {
   mn: [
     { id: 'desktop', icon: Laptop, title: 'Компьютер', description: 'Зохион байгуулагч хурлаа удирдаж, санал хураалт үүсгэн, үр дүнг хянана.' },
