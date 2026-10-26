@@ -6,6 +6,7 @@
  */
 import { Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import ChatWidget from '../chat/ChatWidget';
 import Navbar from '../navbar/Navbar';
 import Footer from '../footer/Footer';
 import ErrorBoundary from './ErrorBoundary';
@@ -37,6 +38,8 @@ export default function Layout() {
         </ErrorBoundary>
       </main>
       <Footer />
+      {/* Баруун доод буланд байрлах чат товч ба цонх (асуулт, санал хүсэлт) */}
+      <ChatWidget />
     </div>
   );
 }

@@ -7,6 +7,7 @@
  *   • гарчгийг (subject) төрлийн дүрстэй, нэр + байгууллагатай болгоно
  *   • талбар бүрийн шошгыг дүрстэй болгож, утгагүй талбарыг хасна
  *   • илгээсэн цаг (Улаанбаатарын цагаар), сайтын хэл, хуудасны хаягийг нэмнэ
+ * Хоёр загвар бий: buildRequestEmail — "Хүсэлт илгээх" маягт, buildChatEmail — чат цонх.
  * Шошго, дүрс, дарааллыг өөрчлөх бол зөвхөн энэ файлыг засна.
  */
 import { siteConfig } from '../config/site';
@@ -66,6 +67,51 @@ export function buildRequestEmail(data: ContactRequest, locale: Locale): Request
       [labels.fullName, data.fullName],
       [labels.phone, data.phone],
       [labels.organization, data.organization],
+      [labels.message, data.message],
+      [labels.sentAt, `${ulaanbaatarTime()} (Улаанбаатар)`],
+      [labels.language, languageNames[locale]],
+      [labels.page, window.location.href],
+    ],
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Чат цонхны (ChatWidget) зурвас
+// ---------------------------------------------------------------------------
+
+/** Чат цонхны сэдэв: асуулт эсвэл санал хүсэлт. */
+export type ChatTopic = 'question' | 'feedback';
+
+/** Чатаар ирсэн зурвасын өгөгдөл. */
+export interface ChatMessage {
+  topic: ChatTopic;
+  name: string;
+  email: string;
+  message: string;
+}
+
+/** Сэдэв бүрийн нэр ба дүрс (имэйлийн гарчигт). */
+const chatTopicLabels: Record<ChatTopic, { icon: string; label: string }> = {
+  question: { icon: '❓', label: 'Асуулт' },
+  feedback: { icon: '💡', label: 'Санал хүсэлт' },
+};
+
+/**
+ * Чат цонхоор ирсэн зурвасаас багт илгээх имэйлийг бүрдүүлнэ.
+ * Гарчгийн "(чат)" тэмдэглэгээгээр хүсэлтийн маягтаас ирсэн имэйлээс ялгагдана.
+ */
+export function buildChatEmail(data: ChatMessage, locale: Locale): RequestEmail {
+  const topic = chatTopicLabels[data.topic];
+  const who = data.name || data.email;
+
+  return {
+    // Жишээ: "❓ Асуулт (чат) — Б.Бат"
+    subject: `${topic.icon} ${topic.label} (чат) — ${who}`,
+    replyTo: data.email,
+    fromName: `${siteConfig.name} вебсайт — чат`,
+    fields: [
+      [labels.type, `${topic.icon} ${topic.label}`],
+      [labels.fullName, data.name],
       [labels.message, data.message],
       [labels.sentAt, `${ulaanbaatarTime()} (Улаанбаатар)`],
       [labels.language, languageNames[locale]],

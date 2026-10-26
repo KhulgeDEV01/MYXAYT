@@ -18,9 +18,19 @@ export const siteConfig = {
   },
   // TODO: байгууллагын жинхэнэ сошиал хуудсуудын хаягаар солих
   social: {
+    // TODO: Байгууллагын Facebook ХУУДАСНЫ бүтэн хаяг, жишээ нь 'https://www.facebook.com/mukhaut'.
+    // Үүнийг бөглөхөд footer-ийн Facebook дүрс ба чатын (Messenger) товч хоёулаа энэ хуудас руу очно.
     facebook: 'https://facebook.com/',
     linkedin: 'https://linkedin.com/',
     youtube: 'https://youtube.com/',
+    // Messenger (чатын товч) холбогдох Facebook хуудас. Дараах хэлбэрийн аль нь ч болно:
+    //   'mukhaut'  |  '61550000000001' (Page ID)  |  'https://m.me/mukhaut'  |  'https://www.facebook.com/mukhaut'
+    // АНХААР: Хуудасны харагдах НЭР (жишээ нь "Ногоон талбайн гайхамшиг") ажиллахгүй —
+    // хөтчийн хаягийн мөрөнд facebook.com/-ийн араас гарах username эсвэл Page ID хэрэгтэй.
+    // Хоосон бол дээрх facebook хаягаас автоматаар гаргана (utils/messenger.ts).
+    // TODO: "Ногоон талбайн гайхамшиг" хуудасны username эсвэл Page ID-аар солих.
+    // ТҮР ТУРШИЛТ: "VotesProject" хуудас (Page ID 61595969428052).
+    messengerPage: 'https://www.facebook.com/profile.php?id=61595969428052',
   },
   foundedYear: 2026, // Footer дээрх "© 2026" он
 } as const;
