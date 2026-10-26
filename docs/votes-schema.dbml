@@ -1,0 +1,1109 @@
+// votes-backend — PostgreSQL схем (dbdiagram.io / DBML)
+// Эх сурвалж: db/migrations 00001–00022, хоосон DB дээр ажиллуулж каталогоос үүсгэв (2026-10-16).
+// + 00023 (төлөвлөсөн): companies хүснэгт ба түүний холбоосууд (members, ballots, conference_registrations,
+//   conference_people, conferences.organizer_company_id, admins), company_type enum,
+//   байгууллагын trigger / constraint / index, бүх legacy_id баганыг устгасан.
+// + 00024 (төлөвлөсөн): онлайн судалгааны модуль — байгууллагын судалгаа, түгээх суваг / цэг
+//   (survey_collectors), урилга, хэсэг, нөхцөлт логик, нийтэд нээлттэй (гишүүн биш) хариулт.
+// Энэ файл бол ЗУРАГЛАЛ. Жинхэнэ эх сурвалж нь votes-backend repo-ийн db/migrations хэвээр.
+// DBML-д бичигдэхгүй зүйлс (partial/expression index, CHECK, view) хүснэгтийн Note-д бий.
+
+Project votes {
+  database_type: 'PostgreSQL'
+  Note: '''
+votes-backend: хурал, бүртгэл, ирц, санал хураалт, судалгаа.
+View: vote_session_results = vote_sessions JOIN vote_session_options LEFT JOIN ballot_options, сонголт бүрийн vote_count.
+'''
+}
+
+Enum admin_role {
+  superadmin
+  admin
+  operator
+  viewer
+}
+
+Enum company_type {
+  llc [note: 'ХХК — Хязгаарлагдмал хариуцлагатай компани']
+  jsc [note: 'ХК — Хувьцаат компани']
+  state_owned [note: 'ТӨҮГ / ОНӨҮГ — Төрийн болон орон нутгийн өмчит үйлдвэрийн газар']
+  government [note: 'Төрийн байгууллага']
+  ngo [note: 'ТББ — Төрийн бус байгууллага']
+  cooperative [note: 'Хоршоо']
+  partnership [note: 'Нөхөрлөл']
+  sole_proprietor [note: 'Хувиараа хөдөлмөр эрхлэгч']
+  foreign [note: 'Гадаадын хөрөнгө оруулалттай / төлөөлөгчийн газар']
+  other [note: 'Бусад']
+}
+
+Enum conference_status {
+  draft
+  published
+  archived
+}
+
+Enum device_platform {
+  android
+  ios
+}
+
+Enum file_category {
+  document
+  presentation
+  other
+}
+
+Enum news_category {
+  notice
+  news
+  training
+}
+
+Enum person_kind {
+  speaker
+  sponsor
+}
+
+Enum registration_kind {
+  person
+  organization
+}
+
+Enum registration_status {
+  registered
+  attended
+  represented
+  cancel_requested
+}
+
+Enum session_status {
+  pending
+  active
+  closed
+  cancelled
+}
+
+Enum sms_operator {
+  mobicom
+  unitel
+  skytel
+  gmobile
+  unknown
+}
+
+Enum sms_status {
+  queued
+  sent
+  failed
+}
+
+Enum survey_audience {
+  public [note: 'Холбоос / QR-тай хэн ч бөглөнө']
+  invited [note: 'Зөвхөн урилга (survey_invitations) авсан хүмүүс']
+  members [note: 'Зөвхөн нэвтэрсэн гишүүд']
+  attendees [note: 'Зөвхөн тухайн хуралд ирсэн гишүүд']
+}
+
+Enum survey_channel {
+  web_link [note: 'Нийтийн холбоос']
+  qr_code [note: 'Тодорхой байршилд байрлуулсан QR']
+  email [note: 'Имэйл урилга']
+  sms [note: 'SMS урилга']
+  kiosk [note: 'Байршил дээрх таблет / киоск']
+  interviewer [note: 'Ярилцлагч (судлаач) газар дээр нь бөглүүлнэ']
+  embed [note: 'Өөр вебсайтад суулгасан']
+}
+
+Enum survey_logic_action {
+  show_question [note: 'Нөхцөл биелвэл асуултыг харуулна']
+  skip_to_section [note: 'Нөхцөл биелвэл тухайн хэсэг рүү үсэрнэ']
+  end_survey [note: 'Нөхцөл биелвэл судалгааг дуусгана (screened_out)']
+}
+
+Enum survey_question_kind {
+  single [note: 'Нэг сонголт']
+  multi [note: 'Олон сонголт']
+  dropdown [note: 'Жагсаалтаас нэг сонголт']
+  rating [note: 'Од / оноо (1–5)']
+  scale [note: 'Шатлал — scale_min..scale_max (жишээ нь NPS 0–10)']
+  text [note: 'Чөлөөт текст']
+  number [note: 'Тоо']
+  date [note: 'Огноо']
+  email [note: 'Имэйл хаяг']
+  phone [note: 'Утасны дугаар']
+}
+
+Enum survey_response_status {
+  in_progress [note: 'Эхэлсэн, дуусаагүй']
+  completed [note: 'Бүрэн бөглөсөн']
+  screened_out [note: 'Шүүлтүүр асуултаар судалгаанаас гарсан']
+}
+
+Enum survey_status {
+  draft
+  active
+  paused
+  closed
+  archived
+}
+
+Enum vote_type {
+  yes_no
+  multi
+  free
+}
+
+// ===== Хурал ба хөтөлбөр =====
+
+Table conferences {
+  id bigint [pk, increment]
+  title text [not null]
+  info text
+  agenda text
+  location text
+  image_url text
+  map_lat float8
+  map_lng float8
+  map_radius_m integer
+  map_enabled boolean [not null, default: false]
+  start_date timestamptz
+  end_date timestamptz
+  is_main boolean [not null, default: false]
+  status conference_status [not null, default: 'draft']
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  checkin_qr text [unique, default: `encode(gen_random_bytes(16), 'hex'::text)`]
+  is_special boolean [not null, default: false]
+  reg_counter integer [not null, default: 0]
+  organizer text [note: 'Хуучин текст талбар — organizer_company_id руу шилжсэний дараа устгана']
+  organizer_company_id bigint [note: 'Зохион байгуулагч байгууллага']
+  contact_phone text
+  contact_email text
+  stream_url text
+  stream_is_live boolean [not null, default: false]
+  is_free boolean [not null, default: true]
+  screen_token text [unique, default: `encode(gen_random_bytes(16), 'hex'::text)`]
+  quorum_pct smallint [not null, default: 0]
+  fee_note text
+  capacity integer
+  registration_closes_at timestamptz
+  registration_open boolean [not null, default: true]
+  checkin_mode text [not null, default: 'staff', note: 'staff | printed_qr | screen_qr']
+
+  indexes {
+    status [name: 'idx_conferences_status']
+    organizer_company_id [name: 'idx_conferences_organizer_company']
+  }
+
+  Note: '''
+INDEX idx_conferences_main: USING btree (is_main) WHERE is_main
+INDEX idx_conferences_title_trgm: USING gin (title gin_trgm_ops)
+UNIQUE INDEX uq_conferences_single_main: USING btree ((true)) WHERE is_main
+chk_capacity: CHECK (((capacity IS NULL) OR (capacity > 0)))
+chk_checkin_mode: CHECK ((checkin_mode = ANY (ARRAY[\'staff\'::text, \'printed_qr\'::text, \'screen_qr\'::text])))
+chk_checkin_mode_map: CHECK (((checkin_mode = \'staff\'::text) OR map_enabled))
+chk_conference_dates: CHECK (((start_date IS NULL) OR (end_date IS NULL) OR (end_date >= start_date)))
+chk_fee_note_len: CHECK (((fee_note IS NULL) OR (char_length(fee_note) <= 200)))
+chk_quorum_pct: CHECK (((quorum_pct >= 0) AND (quorum_pct <= 100)))
+'''
+}
+
+Table program_items {
+  id bigint [pk, increment]
+  conference_id bigint [not null]
+  starts_at timestamptz [not null]
+  ends_at timestamptz [not null]
+  title text [not null]
+  subtitle text
+  item_type text [not null, default: 'other', note: 'registration | opening | keynote | talk | panel | workshop | break | lunch | networking | ceremony | closing | other']
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (conference_id, starts_at) [name: 'idx_program_items_conf']
+  }
+
+  Note: '''
+chk_program_item_type: CHECK ((item_type = ANY (ARRAY[\'registration\'::text, \'opening\'::text, \'keynote\'::text, \'talk\'::text, \'panel\'::text, \'workshop\'::text, \'break\'::text, \'lunch\'::text, \'networking\'::text, \'ceremony\'::text, \'closing\'::text, \'other\'::text])))
+chk_program_time: CHECK ((ends_at > starts_at))
+'''
+}
+
+Table program_item_speakers {
+  program_item_id bigint
+  person_id bigint
+  sort_order integer [not null, default: 0]
+
+  indexes {
+    (program_item_id, person_id) [pk]
+    person_id [name: 'idx_pis_person']
+  }
+}
+
+Table conference_people {
+  id bigint [pk, increment]
+  conference_id bigint [not null]
+  kind person_kind [not null]
+  full_name text [not null]
+  org_name text [note: 'Байгууллагын нэр (companies-д бүртгэлгүй бол)']
+  company_id bigint [note: 'Илтгэгч / ивээн тэтгэгчийн байгууллага']
+  position text
+  photo_url text
+  sort_order integer [not null, default: 0]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (conference_id, kind, sort_order) [name: 'idx_conf_people']
+    company_id [name: 'idx_conf_people_company']
+  }
+}
+
+Table conference_files {
+  id bigint [pk, increment]
+  conference_id bigint [not null]
+  file_name text [not null]
+  file_url text [not null]
+  mime_type text
+  size_bytes bigint
+  sort_order integer [not null, default: 0]
+  created_at timestamptz [not null, default: `now()`]
+  category file_category [not null, default: 'other']
+  session_tag text
+  pre_read boolean [not null, default: false]
+
+  indexes {
+    conference_id [name: 'idx_conf_files_conf']
+  }
+}
+
+// ===== Бүртгэл, ирц, итгэмжлэл =====
+
+Table conference_registrations {
+  id bigint [pk, increment]
+  conference_id bigint [not null]
+  member_id bigint [not null]
+  company_id bigint [note: 'Бүртгүүлэх үеийн байгууллага (байгууллагаар бүртгүүлсэн, ирцийг байгууллагаар тоолох)']
+  status registration_status [not null, default: 'registered', note: 'attended | represented']
+  reg_number text [not null]
+  registered_at timestamptz [not null, default: `now()`]
+  attended_at timestamptz
+  checked_in_by bigint
+  cancel_requested_at timestamptz
+  cancel_reason text
+  left_at timestamptz
+  checkin_method text [note: 'self_qr | sms | manual | proxy']
+
+  indexes {
+    (conference_id, member_id) [unique, name: 'conference_registrations_conference_id_member_id_key']
+    (conference_id, reg_number) [unique, name: 'conference_registrations_conference_id_reg_number_key']
+    (member_id, registered_at) [name: 'idx_conf_regs_member']
+    (conference_id, company_id) [name: 'idx_conf_regs_company']
+  }
+
+  Note: '''
+INDEX idx_conf_regs_cancel_pending: USING btree (cancel_requested_at) WHERE (status = \'cancel_requested\'::registration_status)
+chk_attended: CHECK (((status = ANY (ARRAY[\'attended\'::registration_status, \'represented\'::registration_status])) = (attended_at IS NOT NULL)))
+chk_cancel_reason_len: CHECK (((cancel_reason IS NULL) OR (char_length(cancel_reason) <= 500)))
+chk_checkin_method: CHECK (((checkin_method IS NULL) OR (checkin_method = ANY (ARRAY[\'self_qr\'::text, \'sms\'::text, \'manual\'::text, \'proxy\'::text]))))
+chk_left_attended: CHECK (((left_at IS NULL) OR (status = \'attended\'::registration_status)))
+TRIGGER trg_conf_regs_company_fill: BEFORE INSERT — company_id NULL бол members.company_id-аас бөглөнө.
+'''
+}
+
+Table conference_invitations {
+  conference_id bigint
+  member_id bigint
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (conference_id, member_id) [pk]
+    member_id [name: 'idx_conf_invites_member']
+  }
+}
+
+Table conference_proxies {
+  id bigint [pk, increment]
+  conference_id bigint [not null]
+  giver_member_id bigint [not null]
+  representative_member_id bigint [not null]
+  attachment_key text [not null]
+  created_by_member_id bigint
+  created_at timestamptz [not null, default: `now()`]
+  created_by_admin_id bigint
+
+  indexes {
+    (conference_id, giver_member_id) [unique, name: 'conference_proxies_conference_id_giver_member_id_key']
+    (conference_id, created_at) [name: 'idx_conf_proxies_conf']
+    (conference_id, representative_member_id) [name: 'idx_conf_proxies_rep']
+  }
+
+  Note: '''
+chk_proxy_not_self: CHECK ((giver_member_id <> representative_member_id))
+'''
+}
+
+// ===== Санал хураалт =====
+
+Table votes {
+  id bigint [pk, increment]
+  conference_id bigint [not null]
+  question text [not null]
+  type vote_type [not null, default: 'yes_no']
+  max_choices integer [not null, default: 1]
+  duration_sec integer [not null, default: 60]
+  sort_order integer [not null, default: 0]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  is_secret boolean [not null, default: false]
+  threshold text [not null, default: 'simple', note: 'simple | two_thirds | absolute | three_quarters_all']
+  allow_abstain boolean [not null, default: false]
+
+  indexes {
+    (conference_id, sort_order) [name: 'idx_votes_conf']
+  }
+
+  Note: '''
+chk_duration: CHECK ((duration_sec > 0))
+chk_max_choices: CHECK ((max_choices >= 1))
+chk_vote_threshold: CHECK ((threshold = ANY (ARRAY[\'simple\'::text, \'two_thirds\'::text, \'absolute\'::text, \'three_quarters_all\'::text])))
+'''
+}
+
+Table vote_options {
+  id bigint [pk, increment]
+  vote_id bigint [not null]
+  answer_text text [not null]
+  sort_order integer [not null, default: 0]
+
+  indexes {
+    (vote_id, sort_order) [unique, name: 'vote_options_vote_id_sort_order_key']
+  }
+}
+
+Table vote_sessions {
+  id bigint [pk, increment]
+  vote_id bigint [not null]
+  conference_id bigint [not null]
+  question text [not null]
+  type vote_type [not null]
+  max_choices integer [not null]
+  duration_sec integer [not null]
+  status session_status [not null, default: 'pending']
+  started_at timestamptz
+  ends_at timestamptz
+  closed_at timestamptz
+  total_eligible integer [not null, default: 0]
+  started_by bigint
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  is_secret boolean [not null, default: false]
+  threshold text [not null, default: 'simple', note: 'simple | two_thirds | absolute | three_quarters_all']
+  total_entitled integer [not null, default: 0]
+  quorum_pct smallint [not null, default: 0]
+  closed_by bigint
+  outcome text [note: 'passed | failed | none']
+  void_reason text
+  voided_at timestamptz
+  voided_by bigint
+
+  indexes {
+    (conference_id, created_at) [name: 'idx_sessions_conf']
+    status [name: 'idx_sessions_status']
+  }
+
+  Note: '''
+UNIQUE INDEX uq_one_active_session: USING btree (((status = \'active\'::session_status))) WHERE (status = \'active\'::session_status)
+chk_active_has_window: CHECK (((status <> \'active\'::session_status) OR ((started_at IS NOT NULL) AND (ends_at IS NOT NULL))))
+chk_session_outcome: CHECK ((outcome = ANY (ARRAY[\'passed\'::text, \'failed\'::text, \'none\'::text])))
+chk_session_threshold: CHECK ((threshold = ANY (ARRAY[\'simple\'::text, \'two_thirds\'::text, \'absolute\'::text, \'three_quarters_all\'::text])))
+'''
+}
+
+Table vote_session_options {
+  id bigint [pk, increment]
+  session_id bigint [not null]
+  vote_option_id bigint
+  answer_text text [not null]
+  sort_order integer [not null, default: 0]
+  is_abstain boolean [not null, default: false]
+
+  indexes {
+    (session_id, sort_order) [unique, name: 'vote_session_options_session_id_sort_order_key']
+  }
+}
+
+Table ballots {
+  id bigint [pk, increment]
+  session_id bigint [not null]
+  member_id bigint [not null]
+  cast_at timestamptz [not null, default: `now()`]
+  company_snapshot text [note: 'Санал өгөх үеийн байгууллагын нэр (өөрчлөгдөхгүй түүх)']
+  company_id bigint [note: 'Санал өгөх үеийн байгууллага']
+  cast_by_member_id bigint
+
+  indexes {
+    (session_id, member_id) [unique, name: 'ballots_session_id_member_id_key']
+    (session_id, company_id) [name: 'idx_ballots_session_company']
+  }
+
+  Note: '''
+TRIGGER trg_ballots_company_fill: BEFORE INSERT — company_id NULL бол members.company_id-аас,
+company_snapshot NULL бол companies.name-ээс автоматаар бөглөнө.
+'''
+}
+
+Table ballot_options {
+  ballot_id bigint
+  session_option_id bigint
+
+  indexes {
+    (ballot_id, session_option_id) [pk]
+    session_option_id [name: 'idx_ballot_options_opt']
+  }
+}
+
+// ===== Судалгаа, санал хүсэлт =====
+// Байгууллагууд (companies) олон эх сурвалжаас онлайнаар судалгаа авна:
+// нийтийн холбоос, байршил дээрх QR / киоск, имэйл / SMS урилга, ярилцлагч.
+// Хариулагч нь гишүүн (members) эсвэл нийтийн хэн нэгэн (нэргүй ч байж болно).
+
+Table surveys {
+  id bigint [pk, increment]
+  company_id bigint [note: 'Судалгаа эзэмшигч байгууллага (NULL = платформын судалгаа)']
+  conference_id bigint [note: 'Хуралтай холбоотой судалгаа бол']
+  title text [not null]
+  description text
+  status survey_status [not null, default: 'draft']
+  audience survey_audience [not null, default: 'public']
+  is_anonymous boolean [not null, default: false, note: 'true бол хариулагчийн хувийн мэдээлэл хадгалахгүй']
+  allow_multiple boolean [not null, default: false, note: 'Нэг хүн / төхөөрөмж олон удаа бөглөж болох эсэх']
+  response_limit integer [note: 'Дээд хариултын тоо (NULL = хязгааргүй)']
+  target_responses integer [note: 'Зорилтот хариултын тоо (явцыг хэмжих)']
+  welcome_message text
+  thank_you_message text
+  default_language text [not null, default: 'mn']
+  opens_at timestamptz
+  closes_at timestamptz
+  created_by_admin_id bigint
+  is_active boolean [not null, default: false, note: 'Хуучин талбар — status руу шилжсэний дараа устгана']
+  attendees_only boolean [not null, default: false, note: 'Хуучин талбар — audience = attendees руу шилжинэ']
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    conference_id [name: 'idx_surveys_conf']
+    (company_id, status) [name: 'idx_surveys_company_status']
+  }
+
+  Note: '''
+INDEX idx_surveys_active_window: USING btree (opens_at, closes_at) WHERE (status = \'active\'::survey_status)
+chk_survey_attendees_conf: CHECK (((NOT attendees_only) OR (conference_id IS NOT NULL)))
+chk_survey_audience_conf: CHECK (((audience <> \'attendees\'::survey_audience) OR (conference_id IS NOT NULL)))
+chk_survey_window: CHECK (((opens_at IS NULL) OR (closes_at IS NULL) OR (opens_at < closes_at)))
+chk_survey_limits: CHECK ((((response_limit IS NULL) OR (response_limit > 0)) AND ((target_responses IS NULL) OR (target_responses > 0))))
+chk_survey_language: CHECK ((default_language = ANY (ARRAY[\'mn\'::text, \'en\'::text])))
+TRIGGER trg_surveys_updated_at: BEFORE UPDATE — updated_at = now()
+'''
+}
+
+Table survey_sections {
+  id bigint [pk, increment]
+  survey_id bigint [not null]
+  title text
+  description text
+  sort_order integer [not null, default: 0]
+
+  indexes {
+    (survey_id, sort_order) [name: 'idx_survey_sections']
+  }
+
+  Note: 'Судалгааны хуудас / хэсэг — урт судалгааг алхам алхмаар харуулна.'
+}
+
+Table survey_questions {
+  id bigint [pk, increment]
+  survey_id bigint [not null]
+  section_id bigint [note: 'NULL бол хэсэгт хамаарахгүй (нэг хуудастай судалгаа)']
+  question text [not null]
+  description text [note: 'Асуултын доорх тайлбар / заавар']
+  kind survey_question_kind [not null, default: 'single']
+  required boolean [not null, default: true]
+  allow_other boolean [not null, default: false]
+  min_choices smallint [note: 'multi — хамгийн бага сонголт']
+  max_choices smallint [note: 'multi — хамгийн их сонголт']
+  scale_min smallint [note: 'scale — доод утга (жишээ нь 0)']
+  scale_max smallint [note: 'scale — дээд утга (жишээ нь 10)']
+  scale_min_label text [note: 'Жишээ нь "Огт санал болгохгүй"']
+  scale_max_label text [note: 'Жишээ нь "Заавал санал болгоно"']
+  sort_order integer [not null, default: 0]
+
+  indexes {
+    (survey_id, sort_order) [name: 'idx_survey_questions']
+    section_id [name: 'idx_survey_questions_section']
+  }
+
+  Note: '''
+chk_question_scale: CHECK (((kind <> \'scale\'::survey_question_kind) OR ((scale_min IS NOT NULL) AND (scale_max IS NOT NULL) AND (scale_min < scale_max))))
+chk_question_choices: CHECK ((((min_choices IS NULL) OR (min_choices >= 0)) AND ((max_choices IS NULL) OR (max_choices >= 1)) AND ((min_choices IS NULL) OR (max_choices IS NULL) OR (min_choices <= max_choices))))
+'''
+}
+
+Table survey_options {
+  id bigint [pk, increment]
+  question_id bigint [not null]
+  option_text text [not null]
+  sort_order integer [not null, default: 0]
+
+  indexes {
+    (question_id, sort_order) [name: 'idx_survey_options']
+    (id, question_id) [unique, name: 'survey_options_id_question_id_key']
+  }
+}
+
+Table survey_logic {
+  id bigint [pk, increment]
+  survey_id bigint [not null]
+  source_question_id bigint [not null, note: 'Нөхцөл шалгах асуулт']
+  source_option_id bigint [note: 'Энэ сонголтыг сонгосон бол (NULL = асуултад хариулсан л бол)']
+  action survey_logic_action [not null]
+  target_question_id bigint
+  target_section_id bigint
+  sort_order integer [not null, default: 0]
+
+  indexes {
+    (survey_id, sort_order) [name: 'idx_survey_logic']
+    source_question_id [name: 'idx_survey_logic_source']
+  }
+
+  Note: '''
+Нөхцөлт логик (skip logic). Жишээ: "Та манай үйлчилгээг ашиглаж байсан уу?" → "Үгүй" бол дараагийн хэсэг рүү үсрэх.
+chk_logic_target: CHECK ((((action = \'show_question\'::survey_logic_action) = (target_question_id IS NOT NULL)) AND ((action = \'skip_to_section\'::survey_logic_action) = (target_section_id IS NOT NULL))))
+'''
+}
+
+Table survey_collectors {
+  id bigint [pk, increment]
+  survey_id bigint [not null]
+  channel survey_channel [not null]
+  name text [not null, note: 'Жишээ нь "Сүхбаатар дүүрэг — 1-р хороо QR", "Facebook пост холбоос"']
+  token text [not null, unique, default: `encode(gen_random_bytes(12), 'hex'::text)`, note: 'Нийтийн холбоос: /s/<token>']
+  location_name text [note: 'Байршил (QR, киоск, ярилцлагчийн цэг)']
+  map_lat float8
+  map_lng float8
+  response_limit integer [note: 'Энэ сувгаар авах дээд хариулт (квот)']
+  opens_at timestamptz
+  closes_at timestamptz
+  is_active boolean [not null, default: true]
+  created_by_admin_id bigint
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (survey_id, channel) [name: 'idx_survey_collectors_survey']
+  }
+
+  Note: '''
+Түгээх суваг / цуглуулах цэг — судалгааг хаанаас, ямар сувгаар авсныг ялгана ("энд тэндээс").
+Нэг судалгаа олон collector-тэй: байршил бүрт тусдаа QR, суваг бүрт тусдаа холбоос.
+chk_collector_window: CHECK (((opens_at IS NULL) OR (closes_at IS NULL) OR (opens_at < closes_at)))
+chk_collector_limit: CHECK (((response_limit IS NULL) OR (response_limit > 0)))
+chk_collector_geo: CHECK (((map_lat IS NULL) = (map_lng IS NULL)))
+chk_collector_name_len: CHECK (((char_length(btrim(name)) >= 1) AND (char_length(name) <= 200)))
+TRIGGER trg_survey_collectors_updated_at: BEFORE UPDATE — updated_at = now()
+'''
+}
+
+Table survey_invitations {
+  id bigint [pk, increment]
+  collector_id bigint [not null, note: 'channel = email | sms collector']
+  member_id bigint [note: 'Гишүүнийг урьсан бол']
+  email text
+  mobile text
+  token text [not null, unique, default: `encode(gen_random_bytes(16), 'hex'::text)`, note: 'Хувийн холбоос: /s/i/<token>']
+  sms_log_id bigint [note: 'SMS-ээр илгээсэн бол sms_logs бичлэг']
+  sent_at timestamptz
+  opened_at timestamptz
+  responded_at timestamptz
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    collector_id [name: 'idx_survey_invitations_collector']
+  }
+
+  Note: '''
+UNIQUE INDEX uq_survey_invitation_email: USING btree (collector_id, lower(email)) WHERE (email IS NOT NULL)
+UNIQUE INDEX uq_survey_invitation_mobile: USING btree (collector_id, mobile) WHERE (mobile IS NOT NULL)
+chk_invitation_contact: CHECK ((num_nonnulls(member_id, email, mobile) >= 1))
+'''
+}
+
+Table survey_responses {
+  id bigint [pk, increment]
+  survey_id bigint [not null]
+  collector_id bigint [note: 'Аль суваг / цэгээс ирсэн']
+  invitation_id bigint [note: 'Урилгаар ирсэн бол']
+  member_id bigint [note: 'Нэвтэрсэн гишүүн бол (нийтийн хариулагчид NULL)']
+  status survey_response_status [not null, default: 'in_progress']
+  respondent_key text [note: 'Нэргүй хариулагчийн хөтөч / төхөөрөмжийн түлхүүр — давхар бөглөлтөөс сэргийлнэ']
+  respondent_name text [note: 'is_anonymous = false үед (заавал биш)']
+  respondent_email text
+  respondent_phone text
+  collected_by_admin_id bigint [note: 'Ярилцлагч (interviewer) бөглүүлсэн бол']
+  map_lat float8 [note: 'Бөглөсөн байршил (зөвшөөрсөн үед, ярилцлагч г.м.)']
+  map_lng float8
+  language text
+  ip_hash text [note: 'IP хаягийн hash — луйврын шинжилгээнд (IP-г шууд хадгалахгүй)']
+  started_at timestamptz [not null, default: `now()`]
+  completed_at timestamptz
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (survey_id, member_id) [unique, name: 'survey_responses_survey_id_member_id_key']
+    (survey_id, status, completed_at) [name: 'idx_survey_responses_status']
+    collector_id [name: 'idx_survey_responses_collector']
+    (survey_id, respondent_key) [name: 'idx_survey_responses_respondent']
+  }
+
+  Note: '''
+UNIQUE INDEX uq_survey_response_invitation: USING btree (invitation_id) WHERE (invitation_id IS NOT NULL)
+chk_response_completed: CHECK ((((status = \'in_progress\'::survey_response_status)) = (completed_at IS NULL)))
+chk_response_geo: CHECK (((map_lat IS NULL) = (map_lng IS NULL)))
+TRIGGER trg_survey_response_guard: BEFORE INSERT — судалгаа active, хугацаа дотор, collector идэвхтэй,
+  response_limit / collector.response_limit хэтрээгүй, audience-ийн шаардлага (members / attendees / invited) хангагдсан эсэхийг шалгана.
+TRIGGER trg_survey_response_invitation: AFTER UPDATE (status → completed) — survey_invitations.responded_at бөглөнө.
+'''
+}
+
+Table survey_answers {
+  id bigint [pk, increment]
+  response_id bigint [not null]
+  question_id bigint [not null]
+  option_id bigint [note: 'single / multi / dropdown']
+  other_text text [note: 'text / email / phone эсвэл "Бусад"-ын текст']
+  rating smallint [note: 'rating (1–5) / scale (scale_min..scale_max)']
+  value_number numeric [note: 'number']
+  value_date date [note: 'date']
+
+  indexes {
+    (question_id, option_id) [name: 'idx_survey_answers_question']
+  }
+
+  Note: '''
+UNIQUE INDEX uq_survey_answer_free: USING btree (response_id, question_id) WHERE (option_id IS NULL)
+UNIQUE INDEX uq_survey_answer_option: USING btree (response_id, question_id, option_id) WHERE (option_id IS NOT NULL)
+chk_answer_one: CHECK ((num_nonnulls(option_id, other_text, rating, value_number, value_date) = 1))
+chk_answer_rating: CHECK (((rating >= 0) AND (rating <= 10)))
+'''
+}
+
+Table member_feedback {
+  id bigint [pk, increment]
+  member_id bigint [not null]
+  body text [not null]
+  created_at timestamptz [not null, default: `now()`]
+  conference_id bigint
+  resolved_at timestamptz
+  resolved_by bigint
+
+  Note: '''
+INDEX idx_member_feedback_conf: USING btree (conference_id, created_at DESC) WHERE (conference_id IS NOT NULL)
+'''
+}
+
+// ===== Гишүүд, байгууллага ба нэвтрэлт =====
+
+Table companies {
+  id bigint [pk, increment]
+  name text [not null]
+  register_no text [note: 'Байгууллагын регистрийн дугаар (7 оронтой тоо)']
+  company_type company_type [not null, default: 'other']
+  is_active boolean [not null, default: true]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    company_type [name: 'idx_companies_type']
+  }
+
+  Note: '''
+UNIQUE INDEX uq_companies_register_no: USING btree (register_no) WHERE (register_no IS NOT NULL)
+UNIQUE INDEX uq_companies_name_unregistered: USING btree (lower(btrim(name))) WHERE (register_no IS NULL)
+INDEX idx_companies_name_trgm: USING gin (name gin_trgm_ops)
+INDEX idx_companies_active_name: USING btree (name) WHERE is_active
+chk_company_name_len: CHECK (((char_length(btrim(name)) >= 1) AND (char_length(name) <= 300)))
+chk_company_name_trimmed: CHECK ((name = btrim(name)))
+chk_company_register_no: CHECK ((register_no ~ \'^[0-9]{7}$\'::text)) NOT VALID
+TRIGGER trg_companies_updated_at: BEFORE UPDATE — updated_at = now()
+Устгахын оронд is_active = false болгоно — санал, бүртгэл, админтай байгууллагыг устгах боломжгүй (RESTRICT).
+'''
+}
+
+Table members {
+  id bigint [pk, increment]
+  mobile text [not null, unique]
+  password_hash text
+  firstname text [not null]
+  lastname text [not null]
+  email text
+  company_id bigint [note: 'Гишүүний байгууллага']
+  company_name text [note: 'Хуучин текст талбар — company_id руу шилжсэний дараа устгана']
+  company_type text [note: 'Хуучин текст талбар — companies.company_type руу шилжсэн']
+  position text
+  member_type text
+  agent_name text
+  qrcode text [unique, default: `encode(gen_random_bytes(16), 'hex'::text)`]
+  profile_url text
+  is_confirmed boolean [not null, default: false]
+  is_active boolean [not null, default: false]
+  device_uuid text
+  last_login_at timestamptz
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  is_registrar boolean [not null, default: false]
+  registration_kind registration_kind
+  org_register text [note: 'Хуучин текст талбар — companies.register_no руу шилжсэн']
+  token_version integer [not null, default: 0]
+
+  indexes {
+    company_id [name: 'idx_members_company']
+  }
+
+  Note: '''
+INDEX idx_members_active: USING btree (is_active) WHERE is_active
+INDEX idx_members_search_trgm: USING gin ((((((((COALESCE(company_name, \'\'::text) || \' \'::text) || lastname) || \' \'::text) || firstname) || \' \'::text) || mobile)) gin_trgm_ops)
+'''
+}
+
+Table member_devices {
+  id bigint [pk, increment]
+  member_id bigint [not null]
+  platform device_platform [not null]
+  push_token text [not null]
+  last_seen_at timestamptz [not null, default: `now()`]
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    member_id [name: 'idx_member_devices_member']
+    (platform, push_token) [unique, name: 'member_devices_platform_push_token_key']
+  }
+}
+
+Table otps {
+  id bigint [pk, increment]
+  mobile text [not null]
+  code text [not null]
+  expires_at timestamptz [not null]
+  consumed_at timestamptz
+  attempts integer [not null, default: 0]
+  created_at timestamptz [not null, default: `now()`]
+  purpose text [not null, default: 'auth', note: 'auth | attendance']
+  created_by_member_id bigint
+  conference_id bigint
+
+  Note: '''
+INDEX idx_otps_lookup: USING btree (mobile, purpose, code) WHERE (consumed_at IS NULL)
+chk_otp_purpose: CHECK ((purpose = ANY (ARRAY[\'auth\'::text, \'attendance\'::text])))
+'''
+}
+
+Table sms_logs {
+  id bigint [pk, increment]
+  operator sms_operator [not null, default: 'unknown']
+  mobile text [not null]
+  message text [not null]
+  status sms_status [not null, default: 'queued']
+  provider_response text
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (mobile, created_at) [name: 'idx_sms_logs_mobile']
+  }
+}
+
+// ===== Контент ба апп =====
+
+Table banners {
+  id bigint [pk, increment]
+  title text
+  image_url text [not null]
+  link_url text
+  sort_order integer [not null, default: 0]
+  is_active boolean [not null, default: true]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  conference_id bigint
+  ends_at timestamptz
+  starts_at timestamptz
+  created_by_admin_id bigint
+  updated_by_admin_id bigint
+
+  Note: '''
+banners_window: CHECK (((starts_at IS NULL) OR (ends_at IS NULL) OR (starts_at < ends_at)))
+'''
+}
+
+Table news {
+  id bigint [pk, increment]
+  title text [not null]
+  body text
+  image_url text
+  is_published boolean [not null, default: false]
+  published_at timestamptz
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  category news_category [not null, default: 'news']
+  conference_id bigint
+
+  Note: '''
+news_published_needs_date: CHECK (((NOT is_published) OR (published_at IS NOT NULL)))
+'''
+}
+
+Table newsletters {
+  id bigint [pk, increment]
+  title text [not null]
+  file_url text
+  created_at timestamptz [not null, default: `now()`]
+}
+
+Table mobile_menus {
+  id bigint [pk, increment]
+  title text [not null]
+  url text [not null]
+  icon text [not null, default: 'mdi:link-variant']
+  sort_order integer [not null, default: 0]
+  is_active boolean [not null, default: true]
+  starts_at timestamptz
+  ends_at timestamptz
+  created_by_admin_id bigint
+  updated_by_admin_id bigint
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  Note: '''
+mobile_menus_icon_fmt: CHECK ((icon ~ \'^[a-z0-9-]+:[a-z0-9-]+$\'::text))
+mobile_menus_title_len: CHECK (((char_length(btrim(title)) >= 1) AND (char_length(btrim(title)) <= 100)))
+mobile_menus_url_scheme: CHECK (((url ~* \'^https?://[^[:space:]]+$\'::text) AND (char_length(url) <= 2048)))
+mobile_menus_window: CHECK (((starts_at IS NULL) OR (ends_at IS NULL) OR (starts_at < ends_at)))
+'''
+}
+
+// ===== Админ ба систем =====
+
+Table admins {
+  id bigint [pk, increment]
+  username text [not null, unique]
+  password_hash text [not null]
+  firstname text [not null]
+  lastname text [not null]
+  email text
+  mobile text
+  company_id bigint [note: 'NULL = платформын админ, утгатай = тухайн байгууллагын админ']
+  role admin_role [not null, default: 'viewer']
+  is_active boolean [not null, default: true]
+  last_login_at timestamptz
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    company_id [name: 'idx_admins_company']
+  }
+
+  Note: '''
+chk_superadmin_platform: CHECK (((role <> \'superadmin\'::admin_role) OR (company_id IS NULL)))
+'''
+}
+
+Table admin_menus {
+  id bigint [pk, increment]
+  code text [not null, unique]
+  name text [not null]
+  icon text
+  route text
+  parent_id bigint
+  sort_order integer [not null, default: 0]
+}
+
+Table admin_permissions {
+  id bigint [pk, increment]
+  role admin_role [not null]
+  menu_id bigint [not null]
+  can_read boolean [not null, default: false]
+  can_create boolean [not null, default: false]
+  can_update boolean [not null, default: false]
+  can_delete boolean [not null, default: false]
+
+  indexes {
+    (role, menu_id) [unique, name: 'admin_permissions_role_menu_id_key']
+  }
+}
+
+Table admin_audit_log {
+  id bigint [pk, increment]
+  actor_id bigint
+  actor_name text [not null, default: '']
+  method text [not null]
+  route text [not null]
+  path text [not null]
+  status integer [not null]
+  body jsonb
+  request_id text [not null, default: '']
+  created_at timestamptz [not null, default: `now()`]
+  actor_member_id bigint
+  actor_kind text [not null, default: 'admin', note: 'admin | staff']
+
+  indexes {
+    (actor_id, created_at) [name: 'idx_admin_audit_actor']
+  }
+
+  Note: '''
+INDEX idx_admin_audit_member: USING btree (actor_member_id, created_at DESC) WHERE (actor_member_id IS NOT NULL)
+chk_audit_actor_kind: CHECK ((actor_kind = ANY (ARRAY[\'admin\'::text, \'staff\'::text])))
+chk_audit_actor_pair: CHECK (((actor_kind <> \'admin\'::text) OR (actor_member_id IS NULL)))
+'''
+}
+
+Table settings {
+  key text [pk]
+  value jsonb [not null]
+  updated_at timestamptz [not null, default: `now()`]
+}
+
+// ===== Холбоосууд (ON DELETE) =====
+
+Ref: admin_menus.parent_id > admin_menus.id [delete: set null]
+Ref: admin_permissions.menu_id > admin_menus.id [delete: cascade]
+Ref: admin_audit_log.actor_id > admins.id [delete: set null]
+Ref: banners.created_by_admin_id > admins.id [delete: set null]
+Ref: banners.updated_by_admin_id > admins.id [delete: set null]
+Ref: conference_proxies.created_by_admin_id > admins.id [delete: set null]
+Ref: member_feedback.resolved_by > admins.id [delete: set null]
+Ref: mobile_menus.created_by_admin_id > admins.id [delete: set null]
+Ref: mobile_menus.updated_by_admin_id > admins.id [delete: set null]
+Ref: vote_sessions.closed_by > admins.id [delete: no action]
+Ref: vote_sessions.started_by > admins.id [delete: no action]
+Ref: vote_sessions.voided_by > admins.id [delete: no action]
+Ref: ballot_options.ballot_id > ballots.id [delete: cascade]
+Ref: admins.company_id > companies.id [delete: restrict]
+Ref: ballots.company_id > companies.id [delete: restrict]
+Ref: conference_registrations.company_id > companies.id [delete: restrict]
+Ref: conference_people.company_id > companies.id [delete: set null]
+Ref: conferences.organizer_company_id > companies.id [delete: set null]
+Ref: members.company_id > companies.id [delete: set null]
+Ref: program_item_speakers.person_id > conference_people.id [delete: cascade]
+Ref: banners.conference_id > conferences.id [delete: set null]
+Ref: conference_files.conference_id > conferences.id [delete: cascade]
+Ref: conference_invitations.conference_id > conferences.id [delete: cascade]
+Ref: conference_people.conference_id > conferences.id [delete: cascade]
+Ref: conference_proxies.conference_id > conferences.id [delete: cascade]
+Ref: conference_registrations.conference_id > conferences.id [delete: cascade]
+Ref: member_feedback.conference_id > conferences.id [delete: set null]
+Ref: news.conference_id > conferences.id [delete: set null]
+Ref: otps.conference_id > conferences.id [delete: cascade]
+Ref: program_items.conference_id > conferences.id [delete: cascade]
+Ref: surveys.conference_id > conferences.id [delete: restrict]
+Ref: vote_sessions.conference_id > conferences.id [delete: restrict]
+Ref: votes.conference_id > conferences.id [delete: cascade]
+Ref: admin_audit_log.actor_member_id > members.id [delete: set null]
+Ref: ballots.cast_by_member_id > members.id [delete: no action]
+Ref: ballots.member_id > members.id [delete: restrict]
+Ref: conference_invitations.member_id > members.id [delete: cascade]
+Ref: conference_proxies.created_by_member_id > members.id [delete: no action]
+Ref: conference_proxies.giver_member_id > members.id [delete: restrict]
+Ref: conference_proxies.representative_member_id > members.id [delete: restrict]
+Ref: conference_registrations.checked_in_by > members.id [delete: no action]
+Ref: conference_registrations.member_id > members.id [delete: restrict]
+Ref: member_devices.member_id > members.id [delete: cascade]
+Ref: member_feedback.member_id > members.id [delete: cascade]
+Ref: otps.created_by_member_id > members.id [delete: no action]
+Ref: survey_responses.member_id > members.id [delete: set null]
+Ref: program_item_speakers.program_item_id > program_items.id [delete: cascade]
+Ref: survey_answers.(option_id, question_id) > survey_options.(id, question_id) [delete: no action]
+Ref: survey_answers.question_id > survey_questions.id [delete: cascade]
+Ref: survey_options.question_id > survey_questions.id [delete: cascade]
+Ref: survey_answers.response_id > survey_responses.id [delete: cascade]
+Ref: survey_questions.survey_id > surveys.id [delete: cascade]
+Ref: survey_responses.survey_id > surveys.id [delete: restrict]
+Ref: surveys.company_id > companies.id [delete: restrict]
+Ref: surveys.created_by_admin_id > admins.id [delete: set null]
+Ref: survey_sections.survey_id > surveys.id [delete: cascade]
+Ref: survey_questions.section_id > survey_sections.id [delete: set null]
+Ref: survey_logic.survey_id > surveys.id [delete: cascade]
+Ref: survey_logic.source_question_id > survey_questions.id [delete: cascade]
+Ref: survey_logic.source_option_id > survey_options.id [delete: cascade]
+Ref: survey_logic.target_question_id > survey_questions.id [delete: cascade]
+Ref: survey_logic.target_section_id > survey_sections.id [delete: cascade]
+Ref: survey_collectors.survey_id > surveys.id [delete: cascade]
+Ref: survey_collectors.created_by_admin_id > admins.id [delete: set null]
+Ref: survey_invitations.collector_id > survey_collectors.id [delete: cascade]
+Ref: survey_invitations.member_id > members.id [delete: set null]
+Ref: survey_invitations.sms_log_id > sms_logs.id [delete: set null]
+Ref: survey_responses.collector_id > survey_collectors.id [delete: restrict]
+Ref: survey_responses.invitation_id > survey_invitations.id [delete: set null]
+Ref: survey_responses.collected_by_admin_id > admins.id [delete: set null]
+Ref: vote_session_options.vote_option_id > vote_options.id [delete: set null]
+Ref: ballot_options.session_option_id > vote_session_options.id [delete: cascade]
+Ref: ballots.session_id > vote_sessions.id [delete: cascade]
+Ref: vote_session_options.session_id > vote_sessions.id [delete: cascade]
+Ref: vote_options.vote_id > votes.id [delete: cascade]
+Ref: vote_sessions.vote_id > votes.id [delete: restrict]
+
+TableGroup conference [color: #2a4db0] {
+  conferences
+  program_items
+  program_item_speakers
+  conference_people
+  conference_files
+}
+
+TableGroup registration [color: #0f7a6a] {
+  conference_registrations
+  conference_invitations
+  conference_proxies
+}
+
+TableGroup voting [color: #b0512a] {
+  votes
+  vote_options
+  vote_sessions
+  vote_session_options
+  ballots
+  ballot_options
+}
+
+TableGroup surveys [color: #7a4fb0] {
+  surveys
+  survey_sections
+  survey_questions
+  survey_options
+  survey_logic
+  survey_collectors
+  survey_invitations
+  survey_responses
+  survey_answers
+  member_feedback
+}
+
+TableGroup members [color: #2a7ab0] {
+  companies
+  members
+  member_devices
+  otps
+  sms_logs
+}
+
+TableGroup content [color: #8a7a1a] {
+  banners
+  news
+  newsletters
+  mobile_menus
+}
+
+TableGroup admin [color: #5a6477] {
+  admins
+  admin_menus
+  admin_permissions
+  admin_audit_log
+  settings
+}
